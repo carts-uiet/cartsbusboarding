@@ -16,6 +16,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".gsm.GsmService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+        <service
+            android:name=".acc.AccService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

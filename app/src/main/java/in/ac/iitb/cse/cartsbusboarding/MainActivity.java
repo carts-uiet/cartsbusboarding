@@ -1,23 +1,21 @@
 package in.ac.iitb.cse.cartsbusboarding;
 
-import java.util.Locale;
-
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import java.util.Locale;
+
+import in.ac.iitb.cse.cartsbusboarding.gsm.GsmService;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -41,8 +39,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -51,8 +47,18 @@ public class MainActivity extends ActionBarActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        /* Our Stuff */
+        init_gsm();
+        init_acc();
     }
 
+    public void init_gsm(){
+        startService(new Intent(this, GsmService.class));
+    }
+
+    public void init_acc(){
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

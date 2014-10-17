@@ -3,10 +3,8 @@ package in.ac.iitb.cse.cartsbusboarding.gsm;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.os.IBinder;
 
 import java.util.Calendar;
@@ -15,13 +13,14 @@ public class GsmService extends Service {
     LocationManager GPSmgr, GSMmgr;
     double GSMLat, GSMLong;
     float GSMAccuracy;
+    Context mContext;
 
     public GsmService() {
-        Context mContext;
         GPSmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         GSMmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        GSMmgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
-                GSMlistener);
+        LocationListener gsmListener = new GsmListner();
+
+        GSMmgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gsmListener);
         Calendar c = Calendar.getInstance();
         String filename = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-"
                 + c.get(Calendar.DATE) + "--" + c.get(Calendar.HOUR) + ":"
@@ -35,28 +34,6 @@ public class GsmService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    LocationListener GSMlistener = new LocationListener() {
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-        }
-
-        @Override
-        public void onLocationChanged(Location location) {
-            // TODO Auto-generated method stub
-            GSMLat = location.getLatitude();
-            GSMLong = location.getLongitude();
-            GSMAccuracy = location.getAccuracy();
-        }
-    };
 
 /*
     LocationListener GPSlistener = new LocationListener() {

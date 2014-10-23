@@ -19,7 +19,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        />
+        android:paddingTop="30dp" />
 
     <TextView
         android:id="@+id/section_data"
@@ -30,8 +30,27 @@
         android:textColor="@color/holo_orange_light"
         android:textStyle="bold"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:onClick="textViewClicked"
+        android:paddingTop="80dp"
+        android:paddingBottom="40dp"
+        />
+
+    <TextView
+        android:id="@+id/section_data_acc"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="Data"
+        android:textColor="@color/holo_orange_light"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="textViewClicked"
+        android:layout_below="@+id/section_data"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingTop="20dp"
+        android:paddingBottom="60dp"
         />
 
     <Button
@@ -39,9 +58,10 @@
         android:layout_height="wrap_content"
         android:text="Fetch"
         android:id="@+id/button_fetch"
-        android:layout_below="@+id/section_data"
+        android:layout_below="@+id/section_data_acc"
         android:layout_centerHorizontal="true"
         android:onClick="textViewClicked"
+        android:textSize="20sp"
         />
 
 

@@ -83,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
         if (accData != null){
             Log.i(_ClassName, "Data- "+accData.toString());
 
-            TextView twData = (TextView) findViewById(R.id.section_data);
+            TextView twData = (TextView) findViewById(R.id.section_data_acc);
             twData.setText(accData.toString());
         }
     }

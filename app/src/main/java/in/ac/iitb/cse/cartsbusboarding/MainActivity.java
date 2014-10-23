@@ -1,6 +1,5 @@
 package in.ac.iitb.cse.cartsbusboarding;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +14,7 @@ import android.view.ViewGroup;
 
 import java.util.Locale;
 
-import in.ac.iitb.cse.cartsbusboarding.gsm.GsmService;
+import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -33,6 +32,8 @@ public class MainActivity extends ActionBarActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+
+    GsmEngine gsmEngine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void init_gsm(){
-        startService(new Intent(this, GsmService.class));
+        gsmEngine = new GsmEngine(this.getApplicationContext());
     }
 
     public void init_acc(){

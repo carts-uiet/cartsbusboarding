@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -17,7 +18,31 @@
         android:textColor="@color/holo_orange_dark"
         android:textStyle="bold"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="100dp"
         />
+
+    <TextView
+        android:id="@+id/section_data"
+        android:gravity="center"
+        android:layout_below="@+id/section_label"
+        android:textSize="20sp"
+        android:text="Data"
+        android:textColor="@color/holo_orange_light"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:onClick="textViewClicked"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fetch"
+        android:id="@+id/button_fetch"
+        android:layout_below="@+id/section_data"
+        android:layout_centerHorizontal="true"
+        android:onClick="textViewClicked"
+        />
+
 
 </RelativeLayout>

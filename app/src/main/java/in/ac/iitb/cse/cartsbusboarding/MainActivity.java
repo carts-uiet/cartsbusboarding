@@ -6,17 +6,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.Locale;
 
+import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 
 public class MainActivity extends ActionBarActivity {
+
+    public static final String _ClassName = MainActivity.class.getName();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -59,6 +64,15 @@ public class MainActivity extends ActionBarActivity {
 
     public void init_acc(){
 
+    }
+
+    public void textViewClicked(View v) {
+        GsmData data = gsmEngine.getData();
+        Log.i(_ClassName, "Received: "+data);
+        if (data != null){
+            TextView twData = (TextView) findViewById(R.id.section_data);
+            twData.setText(data.toString());
+        }
     }
 
     @Override

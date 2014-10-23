@@ -7,7 +7,7 @@ import android.os.Bundle;
 /**
  * Created by chaudhary on 10/17/14.
  */
-public class GsmListner implements LocationListener {
+public class GsmListener implements LocationListener {
     GsmData data;
 
     @Override

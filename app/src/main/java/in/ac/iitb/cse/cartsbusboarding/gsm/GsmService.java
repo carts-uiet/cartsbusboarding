@@ -8,14 +8,14 @@ import android.os.IBinder;
 
 public class GsmService extends Service {
     LocationManager gsmMgr;
-    GsmListner gsmListener;
+    GsmListener gsmListener;
     GsmData dataRead;
 
     @Override
     public void onCreate() {
         super.onCreate();
         gsmMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        gsmListener = new GsmListner();
+        gsmListener = new GsmListener();
 
         gsmMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gsmListener);
         dataRead = gsmListener.getData();

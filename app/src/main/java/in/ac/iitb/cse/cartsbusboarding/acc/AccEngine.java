@@ -19,7 +19,7 @@ public class AccEngine {
     public AccEngine(Context context) {
         mContext = context;
         mContext.startService(new Intent(mContext, AccService.class));
-
+        Log.e("Engine","Acc");
         initServiceConnection();
     }
 

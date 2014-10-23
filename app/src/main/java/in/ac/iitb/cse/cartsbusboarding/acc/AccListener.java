@@ -3,13 +3,22 @@ package in.ac.iitb.cse.cartsbusboarding.acc;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
 /**
  * Created by chaudhary on 10/17/14.
  */
 public class AccListener implements SensorEventListener {
     AccData data;
+    SensorManager sensorManager;
+    Sensor sensor;
 
+    AccListener(SensorManager sm,Sensor s){
+        sensorManager = sm;
+        sensor = s;
+        this.sensorManager.registerListener(this,sensor,SensorManager.SENSOR_DELAY_NORMAL);
+
+    }
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() != Sensor.TYPE_ACCELEROMETER) return;

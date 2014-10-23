@@ -66,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void init_acc(){
+        Log.e("Main","Acc");
         accEngine = new AccEngine(this.getApplicationContext());
     }
 
@@ -80,6 +81,8 @@ public class MainActivity extends ActionBarActivity {
         }
         Log.i(_ClassName, "Received: "+accData);
         if (accData != null){
+            Log.i(_ClassName, "Data- "+accData.toString());
+
             TextView twData = (TextView) findViewById(R.id.section_data);
             twData.setText(accData.toString());
         }

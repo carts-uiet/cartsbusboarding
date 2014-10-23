@@ -1,19 +1,29 @@
 package in.ac.iitb.cse.cartsbusboarding.acc;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 public class AccService extends Service {
     AccListener accListener;
     AccData dataRead;
+    SensorManager sensorManager;
+    Sensor sensor;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        accListener = new AccListener();
-
+//        TODO: look out for a way to create it's object in listner itself
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        accListener = new AccListener();
+        accListener = new AccListener(sensorManager,sensor);
+        Log.e("Service", "Acc");
         dataRead = accListener.getData();
     }
 

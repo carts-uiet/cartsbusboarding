@@ -7,6 +7,29 @@ public class GsmData {
     /*
      * Data Encapsulation
      */
-    double gsmLat, gsmLong;
+    double gsmLat;
+    double gsmLong;
     float gsmAccuracy;
+
+    @Override
+    public String toString() {
+        String base = "GSM Data: ";
+        base += getGsmLat();
+        base += getGsmLong();
+        base += getGsmAccuracy();
+        return base;
+    }
+    /* Getters */
+    public double getGsmLat() {
+        return gsmLat;
+    }
+
+    public double getGsmLong() {
+        return gsmLong;
+    }
+
+    public float getGsmAccuracy() {
+        return gsmAccuracy;
+    }
+
 }

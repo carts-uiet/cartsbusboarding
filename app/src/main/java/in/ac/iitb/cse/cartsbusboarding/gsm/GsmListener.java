@@ -24,7 +24,7 @@ public class GsmListener implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        // TODO Auto-generated method stub
+        data = new GsmData();
         data.gsmLat = location.getLatitude();
         data.gsmLong = location.getLongitude();
         data.gsmAccuracy = location.getAccuracy();

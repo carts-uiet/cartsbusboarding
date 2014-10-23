@@ -15,8 +15,10 @@ public class GsmService extends Service {
     float GSMAccuracy;
     Context mContext;
 
-    public GsmService() {
-        GPSmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //GPSmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         GSMmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationListener gsmListener = new GsmListner();
 

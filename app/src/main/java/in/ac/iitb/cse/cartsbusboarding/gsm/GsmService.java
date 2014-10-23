@@ -18,9 +18,10 @@ public class GsmService extends Service {
         super.onCreate();
         //GPSmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         gsmMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationListener gsmListener = new GsmListner();
+        GsmListner gsmListener = new GsmListner();
 
         gsmMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gsmListener);
+        GsmData dataRead = gsmListener.getData();
     }
 
     @Override

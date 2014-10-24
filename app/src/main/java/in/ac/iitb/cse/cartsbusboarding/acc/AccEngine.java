@@ -78,34 +78,6 @@ public class AccEngine{
 
         return accReadings;
     }
-
-    public double[] mean(Queue queue){
-
-        queue = getDataList();
-
-        if(queue == null) return(null);
-
-        double sum[] = new double[3];
-
-        while(!queue.isEmpty()){ //assumed that size of x, y, z are same
-            data = (AccData) queue.remove();
-            Log.e("data","x"+data.getX()+",y"+data.getY()+",z"+data.getZ()+"sum"+sum[0]);
-
-            sum[0] += data.getX();
-            sum[1] += data.getY();
-            sum[2] += data.getZ();
-        }
-
-        double mean[] = new double[3];
-
-        int size = getQueueSize();
-        mean[0] = sum[0]/size;
-        mean[1] = sum[1]/size;
-        mean[2] = sum[2]/size;
-        Log.e("mean","x:"+mean[0]+",y:"+mean[1]+",z:"+mean[2]);
-        return  mean;
-    }
-
     public  ArrayList separateXYZ(int windowSize){
 
         int windowCount = 0;
@@ -248,10 +220,6 @@ public class AccEngine{
 
                 if(!queue.isEmpty()){
                     accReadings.addAll(queue);
-//                    Log.e("her","here");
-//                    Log.e("Acc Readings in thread",""+queue);
-//                    Log.e("Size in thread",""+mAccService.getQueueSize());
-
                 }
 
                 try {

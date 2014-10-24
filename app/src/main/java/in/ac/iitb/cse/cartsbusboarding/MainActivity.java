@@ -85,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
 
             TextView twData = (TextView) findViewById(R.id.section_data_acc);
             twData.setText(accData.toString());
-            accEngine.mean(2);
+            accEngine.mean(10);
         }
     }
 

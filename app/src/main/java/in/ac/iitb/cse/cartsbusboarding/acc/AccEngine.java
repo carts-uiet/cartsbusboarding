@@ -75,8 +75,9 @@ public class AccEngine {
                 i--;
             }
 
-            int sleepTime = 10;//unit is milliseconds
+            int sleepTime = 10000;//unit is milliseconds
             try{
+                Log.e("sleep","zzzzzz...");
                 Thread.sleep(sleepTime);
             }catch (Exception e){
                 Log.e("Interrupted error: ",""+e);

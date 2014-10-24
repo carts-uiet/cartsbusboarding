@@ -4,6 +4,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.text.format.Time;
+import android.util.Log;
 
 /**
  * Created by chaudhary on 10/17/14.
@@ -29,6 +31,10 @@ public class AccListener implements SensorEventListener {
         data.x = curX;
         data.y = curY;
         data.z = curZ;
+        
+//        Log.e("Listner","changed acc");
+//        Log.e("data in listner","x"+data.getX()+",y"+data.getY()+",z"+data.getZ()+""+Time.SECOND);
+
     }
 
     @Override
@@ -37,6 +43,11 @@ public class AccListener implements SensorEventListener {
     }
 
     public AccData getData() {
+        if(data != null){
+            Log.e("data in listner","x"+data.getX()+",y"+data.getY()+",z"+data.getZ());
+
+        }
+
         return data;
     }
 }

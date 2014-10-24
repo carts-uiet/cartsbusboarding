@@ -75,7 +75,15 @@ public class AccListener implements SensorEventListener {
      * Flag indicates data will be collected not fetched
      */
     public void updateQueue(){
-        localBuffer.removeAll(localBuffer);
+        localBuffer.clear();
+        // localBuffer.removeAll(localBuffer);
+        /** Avoid ConcurrentModificationException */
+        /*
+        Iterator<AccData> iter = localBuffer.iterator();
+        while (iter.hasNext())
+            iter.remove();
+        */
+
         getDataList = false;
     }
 }

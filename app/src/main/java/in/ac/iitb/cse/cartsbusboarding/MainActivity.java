@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity {
 //        Log.i(_ClassName, "Received: "+gsmData);
 //        if (gsmData != null){
 //            Log.i(_ClassName, "Data- "+gsmData.toString());
-//            TextView twData = (TextView) findViewById(R.id.section_data);
+//            TextView twData = (TextView) findViewById(R.id.section_data_gsm);
 //            twData.setText(gsmData.toString());
 //        }
 //        Log.i(_ClassName, "Received: "+accData);

@@ -23,7 +23,7 @@ public class AccEngine{
     AccData data;
     Queue<AccData> mainBuffer;
     int bufferSize = 60;
-    long listenerPollingTime = 1000;
+    private static final long listenerPollingTime = 500;
     EngineFillerThread engineFillerThread;
 
     /**
@@ -97,16 +97,16 @@ public class AccEngine{
                 // If mainBuffer is not of the desired size
                 while(!(localDataQueue.isEmpty())) {
                     if (mainBuffer.size() < bufferSize) {
+                        Log.i(_ClassName, "New Value: " + localDataQueue.peek());
                         mainBuffer.add(localDataQueue.remove());
-                        Log.i(_ClassName, "New Value: " + mainBuffer.peek());
                     } else {
                         // If mainBuffer is full
                         mainBuffer.remove();
                         mainBuffer.add(localDataQueue.remove());
                     }
                 }//end while
-                Log.d(_ClassName, "in thread" + mainBuffer);
-                Log.d(_ClassName, "in thread mean: " + calculateMean());
+                Log.d(_ClassName, "Thread Data: " + mainBuffer.size());
+                Log.d(_ClassName, "Thread Mean: " + calculateMean());
                 try {
                     Thread.sleep(listenerPollingTime);
                 } catch (InterruptedException e) {

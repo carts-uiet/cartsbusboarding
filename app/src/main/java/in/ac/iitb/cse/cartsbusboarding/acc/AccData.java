@@ -7,14 +7,17 @@ public class AccData {
     /*
      * Data Encapsulation
      */
-    float x,y,z;
+    float x;
+    float y;
+    float z;
 
     @Override
     public String toString() {
-        String base = "ACC Data: ";
-        base += getX()+",";
-        base += getY()+",";
+        String base = "(";
+        base += getX()+", ";
+        base += getY()+", ";
         base += getZ();
+        base += ")";
         return base;
     }
 

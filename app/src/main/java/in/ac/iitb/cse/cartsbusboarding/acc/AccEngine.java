@@ -95,17 +95,17 @@ public class AccEngine{
             while( true ){
                 if (mAccService == null)
                     continue;
-                Queue<AccData> queue = mAccService.getDataList();    //Clears localBuffer of Listener
-                if(!queue.isEmpty()){
-                    while( (mainBuffer.size() < bufferSize) && !(queue.isEmpty())){
-                        Log.e("peek",""+queue.peek());
+                Queue<AccData> localDataQueue = mAccService.getDataList();    //Clears localBuffer of Listener
+                if(!localDataQueue.isEmpty()){
+                    while( (mainBuffer.size() < bufferSize) && !(localDataQueue.isEmpty())){
+                        Log.e("peek",""+localDataQueue.peek());
 
-                        mainBuffer.add(queue.remove());
+                        mainBuffer.add(localDataQueue.remove());
 
                     }
-                    while (!queue.isEmpty()){
+                    while (!localDataQueue.isEmpty()){
                         mainBuffer.remove();
-                        mainBuffer.add(queue.remove());
+                        mainBuffer.add(localDataQueue.remove());
                     }
 
                 }

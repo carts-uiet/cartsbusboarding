@@ -76,16 +76,14 @@ public class AccEngine{
      * EngineFillerThread fills data in mainBuffer
      */
     class EngineFillerThread implements Runnable{
-        long startTime;
-        long specReadingTime;//Time in ms for which to read data
-        long listnerPollingTime;//Time in ms to sleep
+        long listenerPollingTime;//Time in ms to sleep
 
         /**
          * EngineFillerThread fills data in mainBuffer
          * @param listenerPollingTime Sleep duration of listener read
          */
         EngineFillerThread(long listenerPollingTime){
-            this.listnerPollingTime = listenerPollingTime;
+            this.listenerPollingTime = listenerPollingTime;
         }
 
         @Override
@@ -96,23 +94,21 @@ public class AccEngine{
                 if (mAccService == null)
                     continue;
                 Queue<AccData> localDataQueue = mAccService.getDataList();    //Clears localBuffer of Listener
-                if(!localDataQueue.isEmpty()){
-                    while( (mainBuffer.size() < bufferSize) && !(localDataQueue.isEmpty())){
-                        Log.e("peek",""+localDataQueue.peek());
-
+                // If mainBuffer is not of the desired size
+                while(!(localDataQueue.isEmpty())) {
+                    if (mainBuffer.size() < bufferSize) {
                         mainBuffer.add(localDataQueue.remove());
-
-                    }
-                    while (!localDataQueue.isEmpty()){
+                        Log.i(_ClassName, "New Value: " + mainBuffer.peek());
+                    } else {
+                        // If mainBuffer is full
                         mainBuffer.remove();
                         mainBuffer.add(localDataQueue.remove());
                     }
-
-                }
-                Log.e("in thread mean: ",""+calculateMean());
-                Log.e("in thread",""+mainBuffer);
+                }//end while
+                Log.d(_ClassName, "in thread" + mainBuffer);
+                Log.d(_ClassName, "in thread mean: " + calculateMean());
                 try {
-                    Thread.sleep(listnerPollingTime);
+                    Thread.sleep(listenerPollingTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

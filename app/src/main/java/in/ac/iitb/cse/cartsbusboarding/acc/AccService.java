@@ -39,11 +39,6 @@ public class AccService extends Service {
         return accListener.getDataList();
     }
 
-
-    public int getQueueSize(){
-        return accListener.getQueueSize();
-    }
-
     @Override
     public IBinder onBind(Intent intent) {
         // Return the communication channel to the service.

@@ -4,8 +4,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.text.format.Time;
-import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -14,10 +12,13 @@ import java.util.Queue;
  * Created by chaudhary on 10/17/14.
  */
 public class AccListener implements SensorEventListener {
-    AccData data;
     SensorManager sensorManager;
     Sensor sensor;
-    Queue accBuffer;
+    /** data: Most recent acceleration value */
+    AccData data;
+    /** localBuffer contains acceleration values and is cleared externally */
+    Queue localBuffer;
+
     int bufferSize;
     int itemsInBuffer;
     boolean getDataList;
@@ -41,16 +42,16 @@ public class AccListener implements SensorEventListener {
         data.y = curY;
         data.z = curZ;
 
+        //TODO: Explaination
         if(getDataList){
             updateQueue();
         }
-
         if(itemsInBuffer < bufferSize){
-            accBuffer.add(data);
+            localBuffer.add(data);
             itemsInBuffer++;
         }else{
-            accBuffer.remove();
-            accBuffer.add(data);
+            localBuffer.remove();
+            localBuffer.add(data);
         }
 
     }
@@ -60,26 +61,31 @@ public class AccListener implements SensorEventListener {
 
     }
 
+    /**
+     * Returns the most recent acceleration value
+     * @return most recent acc value
+     */
     public AccData getData() {
         return data;
     }
 
+    /**
+     * TODO: Documentation
+     * @return
+     */
     public Queue getDataList(){
-//        Log.e("Item",accBuffer.toString());
+//        Log.e("Item",localBuffer.toString());
         getDataList = true;
-        return accBuffer;
+        return localBuffer;
      }
 
+    /**
+     * updateQueue: TODO: Documentation
+     */
     public void updateQueue(){
-        accBuffer = new LinkedList();
+        localBuffer = new LinkedList();
         getDataList = false;
         itemsInBuffer = 0;
     }
-
-    public int getQueueSize(){
-        return itemsInBuffer;
-    }
-
-
 }
 

@@ -4,19 +4,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.AvoidXfermode;
 import android.os.IBinder;
 import android.util.Log;
 
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-
-import in.ac.iitb.cse.cartsbusboarding.MainActivity;
 
 /**
  * Created by chaudhary on 10/23/14.
@@ -26,16 +22,24 @@ public class AccEngine{
     AccService mAccService;
     Context mContext;
     AccData data;
-    Queue accReadings;
+    Queue mainBuffer;
 
+    /**
+     * Default constructor
+     * @param context needed to start the service
+     */
     public AccEngine(Context context) {
         mContext = context;
         mContext.startService(new Intent(mContext, AccService.class));
-        Log.e("Engine","Acc");
+        Log.e("Engine", "Acc");
         initServiceConnection();
-        accReadings = new LinkedList();
+        mainBuffer = new LinkedList();
     }
 
+    /**
+     * Creates a initial connection of engine with service
+     * so that the service is accessible via mAccService
+     */
     private void initServiceConnection() {
         mServiceConnection = new ServiceConnection() {
 
@@ -55,31 +59,44 @@ public class AccEngine{
         mContext.bindService(new Intent(mContext, AccService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    /**
+     * Return most recent acceleration value
+     * @return most recent acceleration value as AccData
+     */
     public AccData getData() {
         data = mAccService.getData();
         Log.e("data","x"+data.getX()+",y"+data.getY()+",z"+data.getZ());
         return data;
     }
 
+    /**
+     * TODO: Documentation
+     * @return
+     */
     public Queue getDataList(){
             return mAccService.getDataList();
     }
 
     public Queue getDataList(long specReadingTime, long listnerPollingTime){
-        /*new GetDataThread(specReadingTime,listnerPollingTime).run(); would run the functions called from thread in main thread itself*/
-        Thread t = new Thread(new GetDataThread(specReadingTime,listnerPollingTime));
+        /*new EngineFillerThread(specReadingTime,listnerPollingTime).run(); would run the functions called from thread in main thread itself*/
+        Thread t = new Thread(new EngineFillerThread(specReadingTime,listnerPollingTime));
         t.start();
         try {
             t.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Log.e("Acc Readings ",""+accReadings);
+        Log.e("Acc Readings ",""+ mainBuffer);
 
-        return accReadings;
+        return mainBuffer;
     }
-    public  ArrayList separateXYZ(int windowSize){
 
+    /**
+     * Separates the mainBuffer data into array list from accdata
+     * @param windowSize
+     * @return
+     */
+    public  ArrayList separateXYZ(int windowSize){
         int windowCount = 0;
         int dataArrayIndex = 0;
         /*double bcoz MEAN and Median use double data type*/
@@ -87,8 +104,8 @@ public class AccEngine{
         double dataArrayY[] = new double[windowSize];
         double dataArrayZ[] = new double[windowSize];
 
-        while( (windowCount < windowSize) && !accReadings.isEmpty()){
-            AccData data = (AccData) accReadings.remove();
+        while( (windowCount < windowSize) && !mainBuffer.isEmpty()){
+            AccData data = (AccData) mainBuffer.remove();   //One value at a time
             dataArrayX[dataArrayIndex] = data.getX();
             dataArrayY[dataArrayIndex] = data.getY();
             dataArrayZ[dataArrayIndex] = data.getZ();
@@ -99,20 +116,24 @@ public class AccEngine{
         al.add(dataArrayX);
         al.add(dataArrayY);
         al.add(dataArrayZ);
-
         return al;
     }
 
+    /**
+     * Mean for main
+     * @param windowSize
+     * @return
+     */
     public ArrayList getMean(int windowSize){
-        if (accReadings == null) return null;
+        if (mainBuffer == null) return null;
 
-        Queue temp_accReadings = accReadings;
+        Queue temp_accReadings = mainBuffer;
         ArrayList meanList = null;
 
         meanList = new ArrayList();
         Mean mean = new Mean();
 
-        while(!accReadings.isEmpty()){
+        while(!mainBuffer.isEmpty()){
             ArrayList xyz = separateXYZ(windowSize);
 
             AccData meanData = new AccData();
@@ -125,19 +146,25 @@ public class AccEngine{
 
         }
 
-        accReadings = temp_accReadings;
+        mainBuffer = temp_accReadings;
         return meanList;
     }
 
+    /**
+     * FIXME: Probably will be deleted
+     * @param windowSize
+     * @param operation_list
+     * @return
+     */
     public ArrayList operations(int windowSize, ArrayList operation_list){//windowSize is no of values to be taken in a window
 
-        Queue temp_accReadings = accReadings;
+        Queue temp_accReadings = mainBuffer;
         boolean findMean = false;
         ArrayList meanList = null;
         boolean findMedian = false;
         ArrayList medianList = null;
 
-        while(!accReadings.isEmpty()){
+        while(!mainBuffer.isEmpty()){
             ArrayList xyz = separateXYZ(windowSize);
 
             for(int j=0; j<operation_list.size(); j++){
@@ -188,25 +215,26 @@ public class AccEngine{
         if (findMedian){
             retList.add(meanList);
         }
-        accReadings = temp_accReadings;
+        mainBuffer = temp_accReadings;
         return retList;
     }
 
-
-
-
-    public int getQueueSize(){
-        return mAccService.getQueueSize();
-    }
-
-    class GetDataThread implements Runnable{
+    /**
+     * EngineFillerThread fills data in mainBuffer
+     */
+    class EngineFillerThread implements Runnable{
         long startTime;
         long specReadingTime;//Time in ms for which to read data
         long listnerPollingTime;//Time in ms to sleep
 
-        GetDataThread(long specReadingTime, long listnerPollingTime){
-            this.specReadingTime = specReadingTime;
-            this.listnerPollingTime = listnerPollingTime;
+        /**
+         * EngineFillerThread fills data in mainBuffer
+         * @param readingDuration Duration for the time for which read
+         * @param listenerPollingTime Sleep duration of listener read
+         */
+        EngineFillerThread(long readingDuration, long listenerPollingTime){
+            this.specReadingTime = readingDuration;
+            this.listnerPollingTime = listenerPollingTime;
 
         }
 
@@ -214,12 +242,12 @@ public class AccEngine{
         public void run() {
             startTime = System.currentTimeMillis();
             long endtime = startTime + specReadingTime;
-
+            //Run for specReadingTime seconds only
             while( System.currentTimeMillis() < endtime ){
-                Queue queue = mAccService.getDataList();
+                Queue queue = mAccService.getDataList();    //Clears localBuffer of Listener
 
                 if(!queue.isEmpty()){
-                    accReadings.addAll(queue);
+                    mainBuffer.addAll(queue);
                 }
 
                 try {
@@ -227,12 +255,8 @@ public class AccEngine{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
             Log.e("in thread","End");
-
         }
-
-
     }
 }

@@ -25,6 +25,14 @@ public class AccData {
         return x;
     }
 
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
     public void setX(float x) {
         this.x = x;
     }
@@ -37,11 +45,4 @@ public class AccData {
         this.z = z;
     }
 
-    public float getY() {
-        return y;
-    }
-
-    public float getZ() {
-        return z;
-    }
 }

@@ -9,9 +9,6 @@ public class AccData {
      */
     float x,y,z;
 
-    /*Temp adjustment*/
-    final static int MEAN = 1;
-    final static int MODE = 2;
     @Override
     public String toString() {
         String base = "ACC Data: ";

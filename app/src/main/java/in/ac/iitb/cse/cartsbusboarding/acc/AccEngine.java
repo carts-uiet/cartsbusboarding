@@ -8,9 +8,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
-import org.apache.commons.math3.stat.descriptive.rank.Median;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -50,7 +48,7 @@ public class AccEngine{
             public void onServiceConnected(ComponentName className, IBinder service) {
                 try {
                     mAccService = ((AccService.LocalBinder) service).getService();
-                  /*Start here bcoz it will work only after service has started*/
+                  /*Started from here bcoz it will work only after service has started*/
                     startEngineFiller();
                 } catch (Throwable t) {
                     Log.e("AccEngine", "mServiceConnection.onServiceConnected() -> " + t);
@@ -118,6 +116,10 @@ public class AccEngine{
             }
         }
 
+        /**
+         * Calculates mean of data in mainBuffer
+         * @return
+         */
         private synchronized double calculateMean(){
 
             //temp Queue to store buffer values because we will have to remove these values
@@ -160,152 +162,4 @@ public class AccEngine{
     public double getMean(){
         return engineFillerThread.getMean();
     }
-//    /**
-//     * TODO: Documentation
-//     * @return
-//     */
-//    public Queue getDataList(){
-//            return mAccService.getDataList();
-//    }
-////
-////    public Queue getDataList(long specReadingTime, long listnerPollingTime){
-////        /*new EngineFillerThread(specReadingTime,listnerPollingTime).run(); would run the functions called from thread in main thread itself*/
-////        Thread t = new Thread(new EngineFillerThread(specReadingTime,listnerPollingTime));
-////        t.start();
-////        try {
-////            t.join();
-////        } catch (InterruptedException e) {
-////            e.printStackTrace();
-////        }
-////        Log.e("Acc Readings ",""+ mainBuffer);
-////
-////        return mainBuffer;
-////    }
-//
-//    /**
-//     * Separates the mainBuffer data into array list from accdata
-//     * @return
-//     */
-//    public  ArrayList separateXYZ(){
-//        int dataArrayIndex = 0;
-//        int size = mainBuffer.size();
-//        Queue temp = mainBuffer;
-//        /*double bcoz MEAN and Median use double data type*/
-//        double dataArrayX[] = new double[size];
-//        double dataArrayY[] = new double[size];
-//        double dataArrayZ[] = new double[size];
-//
-//        while( !mainBuffer.isEmpty()){
-//            AccData data = (AccData) temp.remove();   //One value at a time
-//            dataArrayX[dataArrayIndex] = data.getX();
-//            dataArrayY[dataArrayIndex] = data.getY();
-//            dataArrayZ[dataArrayIndex] = data.getZ();
-//            dataArrayIndex++;
-//        }
-//        ArrayList al = new ArrayList(3);
-//        al.add(dataArrayX);
-//        al.add(dataArrayY);
-//        al.add(dataArrayZ);
-//        return al;
-//    }
-//
-//    /**
-//     * Mean for main
-//     * @param windowSize
-//     * @return
-//     */
-//    public ArrayList getMean(int windowSize){
-//        if (mainBuffer == null) return null;
-//
-//        Queue temp_accReadings = mainBuffer;
-//        ArrayList meanList = null;
-//
-//        meanList = new ArrayList();
-//        Mean mean = new Mean();
-//
-//        while(!mainBuffer.isEmpty()){
-//            ArrayList xyz = separateXYZ(windowSize);
-//
-//            AccData meanData = new AccData();
-//            meanData.setX((float) mean.evaluate((double[]) xyz.get(0)));
-//            meanData.setY((float) mean.evaluate((double[]) xyz.get(1)));
-//            meanData.setZ((float) mean.evaluate((double[]) xyz.get(2)));
-//
-//            meanList.add(meanData);
-//            Log.e("MEAN",""+"x"+meanData.getX()+",y"+meanData.getY()+",z"+meanData.getZ());
-//
-//        }
-//
-//        mainBuffer = temp_accReadings;
-//        return meanList;
-//    }
-//
-//    /**
-//     * FIXME: Probably will be deleted
-//     * @param windowSize
-//     * @param operation_list
-//     * @return
-//     */
-//    public ArrayList operations(int windowSize, ArrayList operation_list){//windowSize is no of values to be taken in a window
-//
-//        Queue temp_accReadings = mainBuffer;
-//        boolean findMean = false;
-//        ArrayList meanList = null;
-//        boolean findMedian = false;
-//        ArrayList medianList = null;
-//
-//        while(!mainBuffer.isEmpty()){
-//            ArrayList xyz = separateXYZ(windowSize);
-//
-//            for(int j=0; j<operation_list.size(); j++){
-//
-//                int operation = Integer.parseInt(""+operation_list.get(j));
-//
-//                switch (operation){
-//                    case AccData.MEAN:
-//                        if (!findMean){
-//                            findMean = true;
-//                            meanList = new ArrayList();
-//                        }
-//
-//                        Mean mean = new Mean();
-//                        AccData meanData = new AccData();
-//                        meanData.setX((float) mean.evaluate((double[]) xyz.get(0)));
-//                        meanData.setY((float) mean.evaluate((double[]) xyz.get(1)));
-//                        meanData.setZ((float) mean.evaluate((double[]) xyz.get(2)));
-//
-//                        meanList.add(meanData);
-//                        Log.e("MEAN",""+"x"+meanData.getX()+",y"+meanData.getY()+",z"+meanData.getZ());
-//                        break;
-//
-//                    case AccData.MODE:
-//                        if (!findMedian){
-//                            findMedian = true;
-//                            medianList = new ArrayList();
-//                        }
-//
-//                        Median median = new Median();
-//                        AccData medianData = new AccData();
-//                        medianData.setX((float) median .evaluate((double[]) xyz.get(0)));
-//                        medianData.setY((float) median .evaluate((double[]) xyz.get(1)));
-//                        medianData.setZ((float) median .evaluate((double[]) xyz.get(2)));
-//
-//                        medianList.add(medianData);
-//
-//                        Log.e("MEDIAN",""+"x"+medianData.getX()+",y"+medianData.getY()+",z"+medianData.getZ());
-//                        break;
-//                }
-//            }
-//        }
-//
-//        ArrayList retList = new ArrayList();
-//        if(findMean){
-//            retList.add(meanList);
-//        }
-//        if (findMedian){
-//            retList.add(meanList);
-//        }
-//        mainBuffer = temp_accReadings;
-//        return retList;
-//    }
 }

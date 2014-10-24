@@ -4,7 +4,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -29,7 +28,6 @@ public class AccListener implements SensorEventListener {
         sensor = s;
         this.sensorManager.registerListener(this,sensor,SensorManager.SENSOR_DELAY_NORMAL);
         localBuffer = new LinkedList();
-//        bufferSize = 30;//no of readings to be stored in buffer
         updateQueue();
     }
 
@@ -48,14 +46,7 @@ public class AccListener implements SensorEventListener {
         if(getDataList){
             updateQueue();
         }
-//        if(itemsInBuffer < bufferSize){
-//            localBuffer.add(data);
-//            itemsInBuffer++;
-//        }else{
-//            localBuffer.remove();
-//            localBuffer.add(data);
-//        }
-            localBuffer.add(data);
+        localBuffer.add(data);
     }
 
     @Override
@@ -77,7 +68,6 @@ public class AccListener implements SensorEventListener {
      * @return
      */
     public Queue getDataList(){
-//        Log.e("Item",localBuffer.toString());
         getDataList = true;
         return localBuffer;
      }
@@ -88,9 +78,6 @@ public class AccListener implements SensorEventListener {
      */
     public void updateQueue(){
         localBuffer.removeAll(localBuffer);
-        Log.e("Item",""+localBuffer.isEmpty());
-
-//        localBuffer = new LinkedList();
         getDataList = false;
     }
 }

@@ -14,13 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Queue;
 
 import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
-import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 
 public class MainActivity extends ActionBarActivity {

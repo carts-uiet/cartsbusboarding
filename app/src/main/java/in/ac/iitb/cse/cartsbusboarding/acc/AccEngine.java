@@ -113,6 +113,9 @@ public class AccEngine{
         @Override
         public void run() {
             startTime = System.currentTimeMillis();
+            long endtime = startTime + specReadingTime;
+
+            while( System.currentTimeMillis() < endtime ){
                 Queue queue = mAccService.getDataList();
 
                 if(!queue.isEmpty()){
@@ -129,7 +132,7 @@ public class AccEngine{
                     e.printStackTrace();
                 }
 
-
+            }
         }
 
 

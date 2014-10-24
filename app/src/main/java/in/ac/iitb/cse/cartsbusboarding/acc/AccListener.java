@@ -7,6 +7,9 @@ import android.hardware.SensorManager;
 import android.text.format.Time;
 import android.util.Log;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * Created by chaudhary on 10/17/14.
  */
@@ -14,13 +17,19 @@ public class AccListener implements SensorEventListener {
     AccData data;
     SensorManager sensorManager;
     Sensor sensor;
+    Queue accBuffer;
+    int bufferSize;
+    int itemsInBuffer;
 
     AccListener(SensorManager sm,Sensor s){
         sensorManager = sm;
         sensor = s;
         this.sensorManager.registerListener(this,sensor,SensorManager.SENSOR_DELAY_NORMAL);
-
+        accBuffer = new LinkedList();
+        bufferSize = 60;//no of readings to be stored in buffer
+        itemsInBuffer = 0;
     }
+
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() != Sensor.TYPE_ACCELEROMETER) return;
@@ -31,9 +40,16 @@ public class AccListener implements SensorEventListener {
         data.x = curX;
         data.y = curY;
         data.z = curZ;
-        
+
+        if(itemsInBuffer < bufferSize){
+            accBuffer.add(data);
+        }else{
+            accBuffer.remove();
+            accBuffer.add(data);
+        }
+//        Log.e("Time: ",""+System.currentTimeMillis());
 //        Log.e("Listner","changed acc");
-//        Log.e("data in listner","x"+data.getX()+",y"+data.getY()+",z"+data.getZ()+""+Time.SECOND);
+//       Log.e("data in listner","x"+data.getX()+",y"+data.getY()+",z"+data.getZ()+""+Time.SECOND);
 
     }
 
@@ -43,11 +59,19 @@ public class AccListener implements SensorEventListener {
     }
 
     public AccData getData() {
-        if(data != null){
-            Log.e("data in listner","x"+data.getX()+",y"+data.getY()+",z"+data.getZ());
-
-        }
-
         return data;
+    }
+
+    public Queue getDataList(){
+
+        Log.e("Item",accBuffer.toString());
+//      for(int i=0;i<itemsInBuffer;i++){
+//          Log.e("Item"+i,""+accBuffer.get(i))
+//      }
+        return accBuffer;
+     }
+
+    public int getQueueSize(){
+        return itemsInBuffer;
     }
 }

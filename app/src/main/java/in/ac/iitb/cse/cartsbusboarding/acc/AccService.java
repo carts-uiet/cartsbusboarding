@@ -9,6 +9,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.util.Queue;
+
 public class AccService extends Service {
     AccListener accListener;
     AccData dataRead;
@@ -31,6 +33,15 @@ public class AccService extends Service {
     public AccData getData() {
         dataRead = accListener.getData();
         return dataRead;
+    }
+
+    public Queue getDataList(){
+        return accListener.getDataList();
+    }
+
+
+    public int getQueueSize(){
+        return accListener.getQueueSize();
     }
 
     @Override

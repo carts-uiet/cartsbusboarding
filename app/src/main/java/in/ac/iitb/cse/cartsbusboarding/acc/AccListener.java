@@ -20,14 +20,14 @@ public class AccListener implements SensorEventListener {
     Queue accBuffer;
     int bufferSize;
     int itemsInBuffer;
+    boolean getDataList;
 
     AccListener(SensorManager sm,Sensor s){
         sensorManager = sm;
         sensor = s;
         this.sensorManager.registerListener(this,sensor,SensorManager.SENSOR_DELAY_NORMAL);
-        accBuffer = new LinkedList();
-        bufferSize = 60;//no of readings to be stored in buffer
-        itemsInBuffer = 0;
+        bufferSize = 30;//no of readings to be stored in buffer
+        updateQueue();
     }
 
     @Override
@@ -41,8 +41,13 @@ public class AccListener implements SensorEventListener {
         data.y = curY;
         data.z = curZ;
 
+        if(getDataList){
+            updateQueue();
+        }
+
         if(itemsInBuffer < bufferSize){
             accBuffer.add(data);
+            itemsInBuffer++;
         }else{
             accBuffer.remove();
             accBuffer.add(data);
@@ -60,11 +65,21 @@ public class AccListener implements SensorEventListener {
     }
 
     public Queue getDataList(){
-        Log.e("Item",accBuffer.toString());
+//        Log.e("Item",accBuffer.toString());
+        getDataList = true;
         return accBuffer;
      }
+
+    public void updateQueue(){
+        accBuffer = new LinkedList();
+        getDataList = false;
+        itemsInBuffer = 0;
+    }
 
     public int getQueueSize(){
         return itemsInBuffer;
     }
+
+
 }
+

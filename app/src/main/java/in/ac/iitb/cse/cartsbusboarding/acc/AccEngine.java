@@ -9,6 +9,8 @@ import android.util.Log;
 
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -20,15 +22,14 @@ public class AccEngine{
     AccService mAccService;
     Context mContext;
     AccData data;
-    int queueSize;
-    Queue queue[];
-    int noOfReadings;
+    Queue accReadings;
 
     public AccEngine(Context context) {
         mContext = context;
         mContext.startService(new Intent(mContext, AccService.class));
         Log.e("Engine","Acc");
         initServiceConnection();
+        accReadings = new LinkedList();
     }
 
     private void initServiceConnection() {
@@ -58,11 +59,17 @@ public class AccEngine{
 
     public Queue getDataList(){
             return mAccService.getDataList();
-
     }
 
-    public double[] mean(){
-        Queue queue = getDataList();
+    public Queue getDataList(long specReadingTime, long listnerPollingTime){
+        /*new GetDataThread(specReadingTime,listnerPollingTime).run(); would run the functions called from thread in main thread itself*/
+        new Thread(new GetDataThread(specReadingTime,listnerPollingTime)).start();
+        return accReadings;
+    }
+
+    public double[] mean(Queue queue){
+
+        queue = getDataList();
 
         if(queue == null) return(null);
 
@@ -87,7 +94,44 @@ public class AccEngine{
         return  mean;
     }
 
+
     public int getQueueSize(){
         return mAccService.getQueueSize();
+    }
+
+    class GetDataThread implements Runnable{
+        long startTime;
+        long specReadingTime;//Time in ms for which to read data
+        long listnerPollingTime;//Time in ms to sleep
+
+        GetDataThread(long specReadingTime, long listnerPollingTime){
+            this.specReadingTime = specReadingTime;
+            this.listnerPollingTime = listnerPollingTime;
+
+        }
+
+        @Override
+        public void run() {
+            startTime = System.currentTimeMillis();
+                Queue queue = mAccService.getDataList();
+
+                if(!queue.isEmpty()){
+                    accReadings.addAll(queue);
+                    Log.e("her","here");
+                    Log.e("Acc Readings in thread",""+queue);
+                    Log.e("Size in thread",""+mAccService.getQueueSize());
+
+                }
+
+                try {
+                    Thread.sleep(listnerPollingTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+        }
+
+
     }
 }

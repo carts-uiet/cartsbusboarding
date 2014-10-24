@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.Locale;
+import java.util.Queue;
 
 import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
@@ -57,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         /* Our Stuff */
-        init_gsm();
+//        init_gsm();
         init_acc();
     }
 
@@ -71,21 +72,25 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void textViewClicked(View v) {
-        GsmData gsmData = gsmEngine.getData();
+//        GsmData gsmData = gsmEngine.getData();
         AccData accData = accEngine.getData();
-        Log.i(_ClassName, "Received: "+gsmData);
-        if (gsmData != null){
-            Log.i(_ClassName, "Data- "+gsmData.toString());
-            TextView twData = (TextView) findViewById(R.id.section_data);
-            twData.setText(gsmData.toString());
-        }
-        Log.i(_ClassName, "Received: "+accData);
+//        Log.i(_ClassName, "Received: "+gsmData);
+//        if (gsmData != null){
+//            Log.i(_ClassName, "Data- "+gsmData.toString());
+//            TextView twData = (TextView) findViewById(R.id.section_data);
+//            twData.setText(gsmData.toString());
+//        }
+//        Log.i(_ClassName, "Received: "+accData);
         if (accData != null){
             Log.i(_ClassName, "Data- "+accData.toString());
 
             TextView twData = (TextView) findViewById(R.id.section_data_acc);
-            twData.setText(accData.toString());
-            accEngine.mean();
+//            twData.setText(accData.toString());
+//            accEngine.mean();
+//             Queue queue =
+            accEngine.getDataList((long) (1 * 60 * 1000), 1000);
+            accEngine.getDataList((long) (1 * 60 * 1000), 10000);
+
         }
     }
 

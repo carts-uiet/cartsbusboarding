@@ -16,6 +16,7 @@ import java.util.Queue;
  * Created by chaudhary on 10/23/14.
  */
 public class AccEngine{
+    public static final String _ClassName = AccEngine.class.getSimpleName();
     private ServiceConnection mServiceConnection;
     AccService mAccService;
     Context mContext;
@@ -34,6 +35,8 @@ public class AccEngine{
         mContext.startService(new Intent(mContext, AccService.class));
         Log.e("Engine", "Acc");
         initServiceConnection();
+        /** Started from here bcoz it will work only after service has started */
+        startEngineFiller();
         mainBuffer = new LinkedList();
 
     }
@@ -48,8 +51,6 @@ public class AccEngine{
             public void onServiceConnected(ComponentName className, IBinder service) {
                 try {
                     mAccService = ((AccService.LocalBinder) service).getService();
-                  /*Started from here bcoz it will work only after service has started*/
-                    startEngineFiller();
                 } catch (Throwable t) {
                     Log.e("AccEngine", "mServiceConnection.onServiceConnected() -> " + t);
                 }
@@ -92,6 +93,8 @@ public class AccEngine{
 
             //Keeps running till the time app runs
             while( true ){
+                if (mAccService == null)
+                    continue;
                 Queue queue = mAccService.getDataList();    //Clears localBuffer of Listener
                 if(!queue.isEmpty()){
                     while( (mainBuffer.size() < bufferSize) && !(queue.isEmpty())){
@@ -121,29 +124,35 @@ public class AccEngine{
          * @return
          */
         private synchronized double calculateMean(){
+            double bufferValues[] = new double[mainBuffer.size()];
 
-            //temp Queue to store buffer values because we will have to remove these values
-            Queue temp = new LinkedList();
-            temp.addAll(mainBuffer);
-
-                    /*Applying mean on data in buffer*/
-            int size = mainBuffer.size();
-            double bufferValues[] = new double[size];
             int index = 0;
-            while (index < size){
-                AccData accData = new AccData();
-                accData = (AccData) temp.remove();
-                bufferValues[index++] = Math.sqrt(Math.pow(accData.getX(), 2) + Math.pow(accData.getY(), 2) + Math.pow(accData.getZ(), 2));
+            for (AccData data : ((LinkedList<AccData>) mainBuffer)) {
+                bufferValues[index++] = Math.sqrt(
+                    Math.pow(data.getX(), 2)
+                    + Math.pow(data.getY(), 2)
+                    + Math.pow(data.getZ(), 2)
+                );
             }
-            Mean mean = new Mean();
-            double meanBuffer = mean.evaluate(bufferValues);
 
-            return meanBuffer;
+            return (new Mean()).evaluate(bufferValues);
         }
+
+        /**
+         * get latest mean value of mainBuffer from the thread
+         * @return mean of mainBuffer content
+         */
         public double getMean(){
-            double meanBuffer = calculateMean();
-            return meanBuffer;
+            return calculateMean();
         }
+    }
+
+    /**
+     * Get the mean of data in mainBuffer
+     * @return mean from mainBuffer
+     */
+    public double getMean(){
+        return engineFillerThread.getMean();
     }
 
     /**
@@ -156,10 +165,4 @@ public class AccEngine{
         return data;
     }
 
-    /**
-     * Returns mean of data in mainBuffer
-     */
-    public double getMean(){
-        return engineFillerThread.getMean();
-    }
 }

@@ -21,7 +21,7 @@ public class AccEngine{
     AccService mAccService;
     Context mContext;
     AccData data;
-    Queue mainBuffer;
+    Queue<AccData> mainBuffer;
     int bufferSize = 60;
     long listenerPollingTime = 1000;
     EngineFillerThread engineFillerThread;
@@ -95,7 +95,7 @@ public class AccEngine{
             while( true ){
                 if (mAccService == null)
                     continue;
-                Queue queue = mAccService.getDataList();    //Clears localBuffer of Listener
+                Queue<AccData> queue = mAccService.getDataList();    //Clears localBuffer of Listener
                 if(!queue.isEmpty()){
                     while( (mainBuffer.size() < bufferSize) && !(queue.isEmpty())){
                         Log.e("peek",""+queue.peek());

@@ -17,10 +17,8 @@ public class AccListener implements SensorEventListener {
     /** data: Most recent acceleration value */
     AccData data;
     /** localBuffer contains acceleration values and is cleared externally */
-    Queue localBuffer;
-
-    int bufferSize;
-    int itemsInBuffer;
+    Queue<AccData> localBuffer;
+    /** Flag indicates that we need to empty the buffer after returning it */
     boolean getDataList;
 
     AccListener(SensorManager sm,Sensor s){
@@ -65,9 +63,9 @@ public class AccListener implements SensorEventListener {
     /**
      * getDataList returns localBufferData
      * Flag indicates that we need to empty the buffer after returning it
-     * @return
+     * @return Queue of AccData values
      */
-    public Queue getDataList(){
+    public Queue<AccData> getDataList(){
         getDataList = true;
         return localBuffer;
      }

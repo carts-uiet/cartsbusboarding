@@ -51,7 +51,8 @@
         android:layout_alignParentStart="true"
         android:paddingTop="20dp"
         android:paddingBottom="60dp"
-        />
+        android:isScrollContainer="true"
+        android:singleLine="true"/>
 
     <Button
         android:layout_width="wrap_content"

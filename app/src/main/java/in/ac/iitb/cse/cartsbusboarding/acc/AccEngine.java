@@ -107,7 +107,6 @@ public class AccEngine{
     }
 
     public  ArrayList separateXYZ(int windowSize){
-        if(accReadings.isEmpty()) return null;
 
         int windowCount = 0;
         int dataArrayIndex = 0;
@@ -131,6 +130,33 @@ public class AccEngine{
 
         return al;
     }
+
+    public ArrayList getMean(int windowSize){
+        if (accReadings == null) return null;
+
+        Queue temp_accReadings = accReadings;
+        ArrayList meanList = null;
+
+        meanList = new ArrayList();
+        Mean mean = new Mean();
+
+        while(!accReadings.isEmpty()){
+            ArrayList xyz = separateXYZ(windowSize);
+
+            AccData meanData = new AccData();
+            meanData.setX((float) mean.evaluate((double[]) xyz.get(0)));
+            meanData.setY((float) mean.evaluate((double[]) xyz.get(1)));
+            meanData.setZ((float) mean.evaluate((double[]) xyz.get(2)));
+
+            meanList.add(meanData);
+            Log.e("MEAN",""+"x"+meanData.getX()+",y"+meanData.getY()+",z"+meanData.getZ());
+
+        }
+
+        accReadings = temp_accReadings;
+        return meanList;
+    }
+
     public ArrayList operations(int windowSize, ArrayList operation_list){//windowSize is no of values to be taken in a window
 
         Queue temp_accReadings = accReadings;

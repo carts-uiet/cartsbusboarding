@@ -60,69 +60,8 @@ public class AccEngine{
             return mAccService.getDataList();
 
     }
-//
-//    public Queue[] getData(int noOfReadings){
-//        Queue queueX = null;
-//        Queue queueY = null;
-//        Queue queueZ = null;
-//
-//        queueSize = 0;
-//        queueX = new LinkedList();
-//        queueY = new LinkedList();
-//        queueZ = new LinkedList();
-//
-////        int outOfLoop = 100 + noOfReadings;
-//
-//        for(int i=0; i<noOfReadings; i++){
-//            if(getData() != null){
-//                queueX.add(data.getX());
-//                queueY.add(data.getY());
-//                queueZ.add(data.getZ());
-//                queueSize++;
-//            }else{
-//                i--;
-//            }
-//
-//            int sleepTime = 10000;//unit is milliseconds
-//            try{
-//                Log.e("sleep","zzzzzz...");
-//                Thread.sleep(sleepTime);
-//            }catch (Exception e){
-//                Log.e("Interrupted error: ",""+e);
-//            }
-//
-////            TODO:check for infinte loop i.e. if all values obtained are null
-//        }
-//        Queue queue[] = null;
-//
-//        if(queueSize > 0){
-//            queue = new Queue[3];
-//            queue[0] = queueX;
-//            queue[1] = queueY;
-//            queue[2] = queueZ;
-//        }
-//        return  queue;
-//    }
 
     public double[] mean(){
-//        Queue queue[] = getDataList();
-//
-//        if(queue == null) return(null);
-//
-//        float sum[] = new float[3];
-//
-//        while(!queue[0].isEmpty()){ //assumed that size of x, y, z are same
-//            sum[0] += Float.parseFloat((queue[0].remove()).toString());
-//            sum[1] += Float.parseFloat((queue[1].remove()).toString());
-//            sum[2] += Float.parseFloat((queue[2].remove()).toString());
-//        }
-//
-//        float mean[] = new float[3];
-//        mean[0] = sum[0]/queueSize;
-//        mean[1] = sum[1]/queueSize;
-//        mean[2] = sum[2]/queueSize;
-//        Log.e("mean","x:"+mean[0]+",y:"+mean[1]+",z:"+mean[2]);
-//        return  mean;
         Queue queue = getDataList();
 
         if(queue == null) return(null);
@@ -142,7 +81,6 @@ public class AccEngine{
 
         int size = getQueueSize();
         mean[0] = sum[0]/size;
-        Log.e("Shittttt","mean"+mean[0]+"sum"+sum[0]+"size"+queue.size());
         mean[1] = sum[1]/size;
         mean[2] = sum[2]/size;
         Log.e("mean","x:"+mean[0]+",y:"+mean[1]+",z:"+mean[2]);

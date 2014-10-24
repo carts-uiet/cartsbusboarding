@@ -47,9 +47,6 @@ public class AccListener implements SensorEventListener {
             accBuffer.remove();
             accBuffer.add(data);
         }
-//        Log.e("Time: ",""+System.currentTimeMillis());
-//        Log.e("Listner","changed acc");
-//       Log.e("data in listner","x"+data.getX()+",y"+data.getY()+",z"+data.getZ()+""+Time.SECOND);
 
     }
 
@@ -63,11 +60,7 @@ public class AccListener implements SensorEventListener {
     }
 
     public Queue getDataList(){
-
         Log.e("Item",accBuffer.toString());
-//      for(int i=0;i<itemsInBuffer;i++){
-//          Log.e("Item"+i,""+accBuffer.get(i))
-//      }
         return accBuffer;
      }
 

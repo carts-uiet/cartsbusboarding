@@ -4,6 +4,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -27,7 +28,8 @@ public class AccListener implements SensorEventListener {
         sensorManager = sm;
         sensor = s;
         this.sensorManager.registerListener(this,sensor,SensorManager.SENSOR_DELAY_NORMAL);
-        bufferSize = 30;//no of readings to be stored in buffer
+        localBuffer = new LinkedList();
+//        bufferSize = 30;//no of readings to be stored in buffer
         updateQueue();
     }
 
@@ -42,18 +44,18 @@ public class AccListener implements SensorEventListener {
         data.y = curY;
         data.z = curZ;
 
-        //TODO: Explaination
+        //If update is called before returning buffer, it will send an empty buffer to calling method
         if(getDataList){
             updateQueue();
         }
-        if(itemsInBuffer < bufferSize){
+//        if(itemsInBuffer < bufferSize){
+//            localBuffer.add(data);
+//            itemsInBuffer++;
+//        }else{
+//            localBuffer.remove();
+//            localBuffer.add(data);
+//        }
             localBuffer.add(data);
-            itemsInBuffer++;
-        }else{
-            localBuffer.remove();
-            localBuffer.add(data);
-        }
-
     }
 
     @Override
@@ -70,7 +72,8 @@ public class AccListener implements SensorEventListener {
     }
 
     /**
-     * TODO: Documentation
+     * getDataList returns localBufferData
+     * Flag indicates that we need to empty the buffer after returning it
      * @return
      */
     public Queue getDataList(){
@@ -80,12 +83,15 @@ public class AccListener implements SensorEventListener {
      }
 
     /**
-     * updateQueue: TODO: Documentation
+     * updateQueue empties the localBuffer
+     * Flag indicates data will be collected not fetched
      */
     public void updateQueue(){
-        localBuffer = new LinkedList();
+        localBuffer.removeAll(localBuffer);
+        Log.e("Item",""+localBuffer.isEmpty());
+
+//        localBuffer = new LinkedList();
         getDataList = false;
-        itemsInBuffer = 0;
     }
 }
 

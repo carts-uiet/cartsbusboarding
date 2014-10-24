@@ -88,18 +88,8 @@ public class MainActivity extends ActionBarActivity {
             Log.i(_ClassName, "Data- "+accData.toString());
 
             TextView twData = (TextView) findViewById(R.id.section_data_acc);
-            Queue q = accEngine.getDataList((long) (0.5 * 60 * 1000), 1000);
-            Log.e("operation","queue size"+q.size());
-//            ArrayList al = new ArrayList();
-            //temporary
-//            al.add(1);
-//            al.add(2);
-            ArrayList al = accEngine.getMean(60);
-            String mean = "";
-            for(int i=0;i<al.size();i++){
-                mean = mean+al.get(i)+"\n";
-            }
-            twData.setText(mean);
+            twData.setText("Mean: " + accEngine.getMean());
+
         }
     }
 

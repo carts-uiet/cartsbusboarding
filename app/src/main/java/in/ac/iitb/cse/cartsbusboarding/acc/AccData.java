@@ -8,6 +8,10 @@ public class AccData {
      * Data Encapsulation
      */
     float x,y,z;
+
+    /*Temp adjustment*/
+    final static int MEAN = 1;
+    final static int MODE = 2;
     @Override
     public String toString() {
         String base = "ACC Data: ";
@@ -19,6 +23,18 @@ public class AccData {
 
     public float getX() {
         return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
     }
 
     public float getY() {

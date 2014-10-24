@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Queue;
 
@@ -43,6 +44,8 @@ public class MainActivity extends ActionBarActivity {
 
     AccEngine accEngine;
     GsmEngine gsmEngine;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +89,14 @@ public class MainActivity extends ActionBarActivity {
 
             TextView twData = (TextView) findViewById(R.id.section_data_acc);
 //            twData.setText(accData.toString());
-//            accEngine.mean();
-//             Queue queue =
-            accEngine.getDataList((long) (1 * 60 * 1000), 1000);
-            accEngine.getDataList((long) (1 * 60 * 1000), 10000);
 
+            Queue q = accEngine.getDataList((long) (0.5 * 60 * 1000), 1000);
+            Log.e("operation","queue size"+q.size());
+            ArrayList al = new ArrayList();
+            //temporary
+            al.add(1);
+            al.add(2);
+            accEngine.operations(20,al);
         }
     }
 

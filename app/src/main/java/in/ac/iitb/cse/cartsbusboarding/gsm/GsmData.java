@@ -13,10 +13,11 @@ public class GsmData {
 
     @Override
     public String toString() {
-        String base = "GSM Data: ";
-        base += getGsmLat();
-        base += getGsmLong();
+        String base = "GSM Data: (";
+        base += getGsmLat() + ", ";
+        base += getGsmLong() + ", ";
         base += getGsmAccuracy();
+        base += ")";
         return base;
     }
     /* Getters */

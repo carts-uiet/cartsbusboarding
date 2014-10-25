@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,11 +19,12 @@ import java.util.Locale;
 
 import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
+import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 
 public class MainActivity extends ActionBarActivity {
 
-    public static final String _ClassName = MainActivity.class.getName();
+    public static final String _ClassName = MainActivity.class.getSimpleName();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -58,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         /* Our Stuff */
-//        init_gsm();
+        init_gsm();
         init_acc();
     }
 
@@ -72,21 +74,22 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void textViewClicked(View v) {
-//        GsmData gsmData = gsmEngine.getData();
+        GsmData gsmData = gsmEngine.getData();
+        Log.i(_ClassName, "Received: "+gsmData);
+        if (gsmData != null){
+            Log.i(_ClassName, "Data- "+gsmData.toString());
+            TextView twData = (TextView) findViewById(R.id.section_data_gsm);
+            twData.setText(gsmData.toString());
+        }
+
         AccData accData = accEngine.getData();
-//        Log.i(_ClassName, "Received: "+gsmData);
-//        if (gsmData != null){
-//            Log.i(_ClassName, "Data- "+gsmData.toString());
-//            TextView twData = (TextView) findViewById(R.id.section_data_gsm);
-//            twData.setText(gsmData.toString());
-//        }
-//        Log.i(_ClassName, "Received: "+accData);
         if (accData != null){
-            Log.i(_ClassName, "Data- "+accData.toString());
-
+            Log.i(_ClassName, "Data- "+accData);
             TextView twData = (TextView) findViewById(R.id.section_data_acc);
-            twData.setText("Mean: " + accEngine.getMean());
-
+            twData.setText(Html.fromHtml(
+                    "Mean: " + accEngine.getMean()
+                    + " m/s<sup><small> 2 </small></sup>")
+            );
         }
     }
 

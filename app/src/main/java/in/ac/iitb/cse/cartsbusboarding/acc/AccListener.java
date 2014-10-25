@@ -12,8 +12,8 @@ import java.util.Queue;
  * Created by chaudhary on 10/17/14.
  */
 public class AccListener implements SensorEventListener {
-    private SensorManager sensorManager;
-    private Sensor sensor;
+    private final SensorManager sensorManager;
+    private final Sensor sensor;
     /**
      * data: Most recent acceleration value
      */

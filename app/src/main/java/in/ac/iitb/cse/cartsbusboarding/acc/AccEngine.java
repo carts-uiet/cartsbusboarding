@@ -19,9 +19,9 @@ public class AccEngine {
     public static final String _ClassName = AccEngine.class.getSimpleName();
     public static final int bufferSize = 60;
     public static final long listenerPollingTime = 500;
+    private final Context mContext;
     private AccData data;
     private AccService mAccService;
-    private Context mContext;
     private EngineFillerThread engineFillerThread;
     private Queue<AccData> mainBuffer;
     private ServiceConnection mServiceConnection;
@@ -69,7 +69,7 @@ public class AccEngine {
      * Starts thread for collecting data
      */
     public void startEngineFiller() {
-        engineFillerThread = new EngineFillerThread(listenerPollingTime);
+        engineFillerThread = new EngineFillerThread();
         new Thread(engineFillerThread).start();
     }
 
@@ -96,18 +96,7 @@ public class AccEngine {
     /**
      * EngineFillerThread fills data in mainBuffer
      */
-    class EngineFillerThread implements Runnable {
-        long listenerPollingTime;//Time in ms to sleep
-
-        /**
-         * EngineFillerThread fills data in mainBuffer
-         *
-         * @param listenerPollingTime Sleep duration of listener read
-         */
-        EngineFillerThread(long listenerPollingTime) {
-            this.listenerPollingTime = listenerPollingTime;
-        }
-
+    private class EngineFillerThread implements Runnable {
         @Override
         public void run() {
 
@@ -146,7 +135,7 @@ public class AccEngine {
             double bufferValues[] = new double[mainBuffer.size()];
 
             int index = 0;
-            for (AccData data : ((LinkedList<AccData>) mainBuffer)) {
+            for (AccData data : mainBuffer) {
                 bufferValues[index++] = Math.sqrt(
                         Math.pow(data.getX(), 2)
                                 + Math.pow(data.getY(), 2)

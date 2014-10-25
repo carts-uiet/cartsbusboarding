@@ -25,7 +25,8 @@ import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 public class MainActivity extends ActionBarActivity {
 
     public static final String _ClassName = MainActivity.class.getSimpleName();
-
+    public AccEngine accEngine;
+    public GsmEngine gsmEngine;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -35,15 +36,10 @@ public class MainActivity extends ActionBarActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
-
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
-
-    AccEngine accEngine;
-    GsmEngine gsmEngine;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +59,11 @@ public class MainActivity extends ActionBarActivity {
         init_acc();
     }
 
-    public void init_gsm() {
+    private void init_gsm() {
         gsmEngine = new GsmEngine(this.getApplicationContext());
     }
 
-    public void init_acc() {
+    private void init_acc() {
         Log.e("Main", "Acc");
         accEngine = new AccEngine(this.getApplicationContext());
     }

@@ -14,9 +14,9 @@ public class AccData {
     @Override
     public String toString() {
         String base = "(";
-        base += getX() + ", ";
-        base += getY() + ", ";
-        base += getZ();
+        base += x + ", ";
+        base += y + ", ";
+        base += z;
         base += ")";
         return base;
     }

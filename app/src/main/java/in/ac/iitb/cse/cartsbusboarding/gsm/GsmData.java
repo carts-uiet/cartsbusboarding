@@ -14,9 +14,9 @@ public class GsmData {
     @Override
     public String toString() {
         String base = "GSM Data: (";
-        base += getGsmLat() + ", ";
-        base += getGsmLong() + ", ";
-        base += getGsmAccuracy();
+        base += gsmLat + ", ";
+        base += gsmLong + ", ";
+        base += gsmAccuracy;
         base += ")";
         return base;
     }

@@ -14,12 +14,12 @@
         android:id="@+id/section_label"
         android:gravity="center"
         android:textSize="40sp"
-        android:text="Welcome"
+        android:text="CARTS"
         android:textColor="@color/holo_orange_dark"
         android:textStyle="bold"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:paddingTop="30dp" />
+        android:layout_height="wrap_content"
+        />
 
     <TextView
         android:id="@+id/section_data_gsm"
@@ -29,6 +29,7 @@
         android:text="GSM Data"
         android:textColor="@color/holo_orange_light"
         android:textStyle="bold"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="textViewClicked"
@@ -49,21 +50,10 @@
         android:layout_below="@+id/section_data_gsm"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:paddingTop="20dp"
-        android:paddingBottom="60dp"
+        android:clickable="true"
+        android:paddingTop="80dp"
+        android:paddingBottom="80dp"
         android:isScrollContainer="true"
         android:singleLine="true"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fetch"
-        android:id="@+id/button_fetch"
-        android:layout_below="@+id/section_data_acc"
-        android:layout_centerHorizontal="true"
-        android:onClick="textViewClicked"
-        android:textSize="20sp"
-        />
-
 
 </RelativeLayout>

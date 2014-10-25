@@ -12,20 +12,20 @@ import java.util.Queue;
  * Created by chaudhary on 10/17/14.
  */
 public class AccListener implements SensorEventListener {
-    SensorManager sensorManager;
-    Sensor sensor;
+    private SensorManager sensorManager;
+    private Sensor sensor;
     /**
      * data: Most recent acceleration value
      */
-    AccData data;
+    private AccData data;
     /**
      * localBuffer contains acceleration values and is cleared externally
      */
-    Queue<AccData> localBuffer;
+    private Queue<AccData> localBuffer;
     /**
      * Flag indicates that we need to empty the buffer after returning it
      */
-    boolean getDataList;
+    private boolean getDataList;
 
     AccListener(SensorManager sm, Sensor s) {
         sensorManager = sm;

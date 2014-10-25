@@ -8,7 +8,7 @@ import android.os.Bundle;
  * Created by chaudhary on 10/17/14.
  */
 public class GsmListener implements LocationListener {
-    GsmData data;
+    private GsmData data;
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {

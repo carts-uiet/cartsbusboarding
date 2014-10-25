@@ -17,13 +17,13 @@ import java.util.Queue;
  */
 public class AccEngine {
     public static final String _ClassName = AccEngine.class.getSimpleName();
-    private static final long listenerPollingTime = 500;
-    AccService mAccService;
-    Context mContext;
-    AccData data;
-    Queue<AccData> mainBuffer;
-    int bufferSize = 60;
-    EngineFillerThread engineFillerThread;
+    public static final int bufferSize = 60;
+    public static final long listenerPollingTime = 500;
+    private AccData data;
+    private AccService mAccService;
+    private Context mContext;
+    private EngineFillerThread engineFillerThread;
+    private Queue<AccData> mainBuffer;
     private ServiceConnection mServiceConnection;
 
     /**

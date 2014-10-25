@@ -15,10 +15,10 @@ public class AccService extends Service {
     // This is the object that receives interactions from clients. See
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
-    AccListener accListener;
-    AccData dataRead;
-    SensorManager sensorManager;
-    Sensor sensor;
+    private AccListener accListener;
+    private AccData dataRead;
+    private SensorManager sensorManager;
+    private Sensor sensor;
 
     @Override
     public void onCreate() {

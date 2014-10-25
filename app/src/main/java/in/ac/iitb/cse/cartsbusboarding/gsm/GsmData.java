@@ -7,9 +7,9 @@ public class GsmData {
     /*
      * Data Encapsulation
      */
-    double gsmLat;
-    double gsmLong;
-    float gsmAccuracy;
+    public double gsmLat;
+    public double gsmLong;
+    public float gsmAccuracy;
 
     @Override
     public String toString() {

@@ -11,9 +11,9 @@ public class GsmService extends Service {
     // This is the object that receives interactions from clients. See
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
-    LocationManager gsmMgr;
-    GsmListener gsmListener;
-    GsmData dataRead;
+    private LocationManager gsmMgr;
+    private GsmListener gsmListener;
+    private GsmData dataRead;
 
     @Override
     public void onCreate() {

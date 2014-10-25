@@ -7,9 +7,9 @@ public class AccData {
     /*
      * Data Encapsulation
      */
-    float x;
-    float y;
-    float z;
+    public float x;
+    public float y;
+    public float z;
 
     @Override
     public String toString() {

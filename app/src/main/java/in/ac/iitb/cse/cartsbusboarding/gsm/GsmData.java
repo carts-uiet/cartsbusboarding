@@ -20,6 +20,7 @@ public class GsmData {
         base += ")";
         return base;
     }
+
     /* Getters */
     public double getGsmLat() {
         return gsmLat;

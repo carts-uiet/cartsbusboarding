@@ -12,6 +12,9 @@ import android.util.Log;
 import java.util.Queue;
 
 public class AccService extends Service {
+    // This is the object that receives interactions from clients. See
+    // RemoteService for a more complete example.
+    private final IBinder mBinder = new LocalBinder();
     AccListener accListener;
     AccData dataRead;
     SensorManager sensorManager;
@@ -24,7 +27,7 @@ public class AccService extends Service {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 //        accListener = new AccListener();
-        accListener = new AccListener(sensorManager,sensor);
+        accListener = new AccListener(sensorManager, sensor);
         Log.e("Service", "Acc");
         dataRead = accListener.getData();
     }
@@ -35,7 +38,7 @@ public class AccService extends Service {
         return dataRead;
     }
 
-    public Queue getDataList(){
+    public Queue getDataList() {
         return accListener.getDataList();
     }
 
@@ -55,9 +58,5 @@ public class AccService extends Service {
             return AccService.this;
         }
     }// LocalBinder
-
-    // This is the object that receives interactions from clients. See
-    // RemoteService for a more complete example.
-    private final IBinder mBinder = new LocalBinder();
 
 }

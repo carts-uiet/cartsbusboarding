@@ -45,7 +45,6 @@ public class MainActivity extends ActionBarActivity {
     GsmEngine gsmEngine;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,31 +63,31 @@ public class MainActivity extends ActionBarActivity {
         init_acc();
     }
 
-    public void init_gsm(){
+    public void init_gsm() {
         gsmEngine = new GsmEngine(this.getApplicationContext());
     }
 
-    public void init_acc(){
-        Log.e("Main","Acc");
+    public void init_acc() {
+        Log.e("Main", "Acc");
         accEngine = new AccEngine(this.getApplicationContext());
     }
 
     public void textViewClicked(View v) {
         GsmData gsmData = gsmEngine.getData();
-        Log.i(_ClassName, "Received: "+gsmData);
-        if (gsmData != null){
-            Log.i(_ClassName, "Data- "+gsmData.toString());
+        Log.i(_ClassName, "Received: " + gsmData);
+        if (gsmData != null) {
+            Log.i(_ClassName, "Data- " + gsmData.toString());
             TextView twData = (TextView) findViewById(R.id.section_data_gsm);
             twData.setText(gsmData.toString());
         }
 
         AccData accData = accEngine.getData();
-        if (accData != null){
-            Log.i(_ClassName, "Data- "+accData);
+        if (accData != null) {
+            Log.i(_ClassName, "Data- " + accData);
             TextView twData = (TextView) findViewById(R.id.section_data_acc);
             twData.setText(Html.fromHtml(
-                    "Mean: " + accEngine.getMean()
-                    + " m/s<sup><small> 2 </small></sup>")
+                            "Mean: " + accEngine.getMean()
+                                    + " m/s<sup><small> 2 </small></sup>")
             );
         }
     }
@@ -112,7 +111,38 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            return rootView;
+        }
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -149,39 +179,6 @@ public class MainActivity extends ActionBarActivity {
                     return getString(R.string.title_section3).toUpperCase(l);
             }
             return null;
-        }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
         }
     }
 

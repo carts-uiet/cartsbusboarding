@@ -11,10 +11,10 @@ import android.util.Log;
  * Created by chaudhary on 10/23/14.
  */
 public class GsmEngine {
-    private ServiceConnection mServiceConnection;
     GsmService mGsmService;
     Context mContext;
     GsmData data;
+    private ServiceConnection mServiceConnection;
 
     public GsmEngine(Context context) {
         mContext = context;

@@ -15,19 +15,20 @@ import java.util.Queue;
 /**
  * Created by chaudhary on 10/23/14.
  */
-public class AccEngine{
+public class AccEngine {
     public static final String _ClassName = AccEngine.class.getSimpleName();
-    private ServiceConnection mServiceConnection;
+    private static final long listenerPollingTime = 500;
     AccService mAccService;
     Context mContext;
     AccData data;
     Queue<AccData> mainBuffer;
     int bufferSize = 60;
-    private static final long listenerPollingTime = 500;
     EngineFillerThread engineFillerThread;
+    private ServiceConnection mServiceConnection;
 
     /**
      * Default constructor
+     *
      * @param context needed to start the service
      */
     public AccEngine(Context context) {
@@ -67,22 +68,43 @@ public class AccEngine{
     /**
      * Starts thread for collecting data
      */
-    public void startEngineFiller(){
+    public void startEngineFiller() {
         engineFillerThread = new EngineFillerThread(listenerPollingTime);
         new Thread(engineFillerThread).start();
     }
 
     /**
+     * Get the mean of data in mainBuffer
+     *
+     * @return mean from mainBuffer
+     */
+    public double getMean() {
+        return engineFillerThread.getMean();
+    }
+
+    /**
+     * Return most recent acceleration value
+     *
+     * @return most recent acceleration value as AccData
+     */
+    public AccData getData() {
+        data = mAccService.getData();
+        Log.e("data", "x" + data.getX() + ",y" + data.getY() + ",z" + data.getZ());
+        return data;
+    }
+
+    /**
      * EngineFillerThread fills data in mainBuffer
      */
-    class EngineFillerThread implements Runnable{
+    class EngineFillerThread implements Runnable {
         long listenerPollingTime;//Time in ms to sleep
 
         /**
          * EngineFillerThread fills data in mainBuffer
+         *
          * @param listenerPollingTime Sleep duration of listener read
          */
-        EngineFillerThread(long listenerPollingTime){
+        EngineFillerThread(long listenerPollingTime) {
             this.listenerPollingTime = listenerPollingTime;
         }
 
@@ -90,12 +112,12 @@ public class AccEngine{
         public void run() {
 
             //Keeps running till the time app runs
-            while( true ){
+            while (true) {
                 if (mAccService == null)
                     continue;
                 Queue<AccData> localDataQueue = mAccService.getDataList();    //Clears localBuffer of Listener
                 // If mainBuffer is not of the desired size
-                while(!(localDataQueue.isEmpty())) {
+                while (!(localDataQueue.isEmpty())) {
                     if (mainBuffer.size() < bufferSize) {
                         Log.i(_ClassName, "New Value: " + localDataQueue.peek());
                         mainBuffer.add(localDataQueue.remove());
@@ -117,17 +139,18 @@ public class AccEngine{
 
         /**
          * Calculates mean of data in mainBuffer
+         *
          * @return
          */
-        private synchronized double calculateMean(){
+        private synchronized double calculateMean() {
             double bufferValues[] = new double[mainBuffer.size()];
 
             int index = 0;
             for (AccData data : ((LinkedList<AccData>) mainBuffer)) {
                 bufferValues[index++] = Math.sqrt(
-                    Math.pow(data.getX(), 2)
-                    + Math.pow(data.getY(), 2)
-                    + Math.pow(data.getZ(), 2)
+                        Math.pow(data.getX(), 2)
+                                + Math.pow(data.getY(), 2)
+                                + Math.pow(data.getZ(), 2)
                 );
             }
 
@@ -136,29 +159,12 @@ public class AccEngine{
 
         /**
          * get latest mean value of mainBuffer from the thread
+         *
          * @return mean of mainBuffer content
          */
-        public double getMean(){
+        public double getMean() {
             return calculateMean();
         }
-    }
-
-    /**
-     * Get the mean of data in mainBuffer
-     * @return mean from mainBuffer
-     */
-    public double getMean(){
-        return engineFillerThread.getMean();
-    }
-
-    /**
-     * Return most recent acceleration value
-     * @return most recent acceleration value as AccData
-     */
-    public AccData getData() {
-        data = mAccService.getData();
-        Log.e("data","x"+data.getX()+",y"+data.getY()+",z"+data.getZ());
-        return data;
     }
 
 }

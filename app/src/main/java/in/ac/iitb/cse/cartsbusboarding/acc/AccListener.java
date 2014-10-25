@@ -14,17 +14,23 @@ import java.util.Queue;
 public class AccListener implements SensorEventListener {
     SensorManager sensorManager;
     Sensor sensor;
-    /** data: Most recent acceleration value */
+    /**
+     * data: Most recent acceleration value
+     */
     AccData data;
-    /** localBuffer contains acceleration values and is cleared externally */
+    /**
+     * localBuffer contains acceleration values and is cleared externally
+     */
     Queue<AccData> localBuffer;
-    /** Flag indicates that we need to empty the buffer after returning it */
+    /**
+     * Flag indicates that we need to empty the buffer after returning it
+     */
     boolean getDataList;
 
-    AccListener(SensorManager sm,Sensor s){
+    AccListener(SensorManager sm, Sensor s) {
         sensorManager = sm;
         sensor = s;
-        this.sensorManager.registerListener(this,sensor,SensorManager.SENSOR_DELAY_NORMAL);
+        this.sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         localBuffer = new LinkedList();
         updateQueue();
     }
@@ -41,7 +47,7 @@ public class AccListener implements SensorEventListener {
         data.z = curZ;
 
         //If update is called before returning buffer, it will send an empty buffer to calling method
-        if(getDataList){
+        if (getDataList) {
             updateQueue();
         }
         localBuffer.add(data);
@@ -54,6 +60,7 @@ public class AccListener implements SensorEventListener {
 
     /**
      * Returns the most recent acceleration value
+     *
      * @return most recent acc value
      */
     public AccData getData() {
@@ -63,18 +70,19 @@ public class AccListener implements SensorEventListener {
     /**
      * getDataList returns localBufferData
      * Flag indicates that we need to empty the buffer after returning it
+     *
      * @return Queue of AccData values
      */
-    public Queue<AccData> getDataList(){
+    public Queue<AccData> getDataList() {
         getDataList = true;
         return localBuffer;
-     }
+    }
 
     /**
      * updateQueue empties the localBuffer
      * Flag indicates data will be collected not fetched
      */
-    public void updateQueue(){
+    public void updateQueue() {
         localBuffer.clear();
         // localBuffer.removeAll(localBuffer);
         /** Avoid ConcurrentModificationException */

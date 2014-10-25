@@ -8,6 +8,9 @@ import android.os.Binder;
 import android.os.IBinder;
 
 public class GsmService extends Service {
+    // This is the object that receives interactions from clients. See
+    // RemoteService for a more complete example.
+    private final IBinder mBinder = new LocalBinder();
     LocationManager gsmMgr;
     GsmListener gsmListener;
     GsmData dataRead;
@@ -44,9 +47,5 @@ public class GsmService extends Service {
             return GsmService.this;
         }
     }// LocalBinder
-
-    // This is the object that receives interactions from clients. See
-    // RemoteService for a more complete example.
-    private final IBinder mBinder = new LocalBinder();
 
 }

@@ -14,8 +14,8 @@ public class AccData {
     @Override
     public String toString() {
         String base = "(";
-        base += getX()+", ";
-        base += getY()+", ";
+        base += getX() + ", ";
+        base += getY() + ", ";
         base += getZ();
         base += ")";
         return base;
@@ -25,20 +25,20 @@ public class AccData {
         return x;
     }
 
-    public float getY() {
-        return y;
-    }
-
-    public float getZ() {
-        return z;
-    }
-
     public void setX(float x) {
         this.x = x;
     }
 
+    public float getY() {
+        return y;
+    }
+
     public void setY(float y) {
         this.y = y;
+    }
+
+    public float getZ() {
+        return z;
     }
 
     public void setZ(float z) {

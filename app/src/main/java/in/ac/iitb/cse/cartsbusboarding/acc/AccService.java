@@ -1,7 +1,6 @@
 package in.ac.iitb.cse.cartsbusboarding.acc;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -16,26 +15,20 @@ public class AccService extends Service {
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
     private AccListener accListener;
-    private AccData dataRead;
     private SensorManager sensorManager;
     private Sensor sensor;
 
     @Override
     public void onCreate() {
         super.onCreate();
-//        TODO: look out for a way to create it's object in listner itself
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-//        accListener = new AccListener();
-        accListener = new AccListener(sensorManager, sensor);
+        /** Context needed to create sensor manager in listener */
+        accListener = new AccListener(this.getApplicationContext());
         Log.e("Service", "Acc");
-        dataRead = accListener.getData();
     }
 
     /* Getter */
     public AccData getData() {
-        dataRead = accListener.getData();
-        return dataRead;
+        return accListener.getData();
     }
 
     public Queue getDataList() {
@@ -53,7 +46,6 @@ public class AccService extends Service {
      * the same process as its clients, we don't need to deal with IPC.
      */
     public class LocalBinder extends Binder {
-
         public AccService getService() {
             return AccService.this;
         }

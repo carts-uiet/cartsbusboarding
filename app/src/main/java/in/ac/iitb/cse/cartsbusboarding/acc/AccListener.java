@@ -1,5 +1,6 @@
 package in.ac.iitb.cse.cartsbusboarding.acc;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -25,30 +26,30 @@ public class AccListener implements SensorEventListener {
     /**
      * Flag indicates that we need to empty the buffer after returning it
      */
-    private boolean getDataList;
+    private boolean mustClearBufferNow;
+    private Context mContext;
 
-    AccListener(SensorManager sm, Sensor s) {
-        sensorManager = sm;
-        sensor = s;
+    AccListener(Context context) {
+//        TODO: look out for a way to create it's object in listner itself
+        mContext = context;
+        sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         this.sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         localBuffer = new LinkedList();
-        updateQueue();
+        clearBuffer();
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() != Sensor.TYPE_ACCELEROMETER) return;
-        float curX = sensorEvent.values[0];
-        float curY = sensorEvent.values[1];
-        float curZ = sensorEvent.values[2];
         data = new AccData();
-        data.x = curX;
-        data.y = curY;
-        data.z = curZ;
+        data.x = sensorEvent.values[0];
+        data.y = sensorEvent.values[1];
+        data.z = sensorEvent.values[2];
 
         //If update is called before returning buffer, it will send an empty buffer to calling method
-        if (getDataList) {
-            updateQueue();
+        if (mustClearBufferNow) {
+            clearBuffer();
         }
         localBuffer.add(data);
     }
@@ -74,25 +75,18 @@ public class AccListener implements SensorEventListener {
      * @return Queue of AccData values
      */
     public Queue<AccData> getDataList() {
-        getDataList = true;
+        mustClearBufferNow = true;
+        //XXX: Returning a reference, which might be modified here and outside, while clear is called
         return localBuffer;
     }
 
     /**
-     * updateQueue empties the localBuffer
+     * clearBuffer empties the localBuffer
      * Flag indicates data will be collected not fetched
      */
-    public void updateQueue() {
+    private void clearBuffer() {
         localBuffer.clear();
-        // localBuffer.removeAll(localBuffer);
-        /** Avoid ConcurrentModificationException */
-        /*
-        Iterator<AccData> iter = localBuffer.iterator();
-        while (iter.hasNext())
-            iter.remove();
-        */
-
-        getDataList = false;
+        mustClearBufferNow = false;
     }
 }
 

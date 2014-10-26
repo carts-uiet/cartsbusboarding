@@ -16,9 +16,9 @@ import java.util.Queue;
  * Created by chaudhary on 10/23/14.
  */
 public class AccEngine {
-    public static final String _ClassName = AccEngine.class.getSimpleName();
-    public static final int bufferSize = 60;
-    public static final long listenerPollingTime = 500;
+    private static final String _ClassName = AccEngine.class.getSimpleName();
+    private static final int bufferSize = 60;
+    private static final long listenerPollingTime = 500;
     private final Context mContext;
     private AccData data;
     private AccService mAccService;
@@ -68,7 +68,7 @@ public class AccEngine {
     /**
      * Starts thread for collecting data
      */
-    public void startEngineFiller() {
+    private void startEngineFiller() {
         engineFillerThread = new EngineFillerThread();
         new Thread(engineFillerThread).start();
     }
@@ -105,6 +105,7 @@ public class AccEngine {
                 if (mAccService == null)
                     continue;
                 Queue<AccData> localDataQueue = mAccService.getDataList();    //Clears localBuffer of Listener
+                Log.v(_ClassName, "Local: "+localDataQueue);
                 // If mainBuffer is not of the desired size
                 while (!(localDataQueue.isEmpty())) {
                     if (mainBuffer.size() < bufferSize) {

@@ -105,7 +105,6 @@ public class AccEngine {
                 if (mAccService == null)
                     continue;
                 Queue<AccData> localDataQueue = mAccService.getDataList();    //Clears localBuffer of Listener
-                Log.v(_ClassName, "Local: "+localDataQueue);
                 // If mainBuffer is not of the desired size
                 while (!(localDataQueue.isEmpty())) {
                     if (mainBuffer.size() < bufferSize) {

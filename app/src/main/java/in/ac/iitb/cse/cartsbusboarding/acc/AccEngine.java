@@ -79,7 +79,7 @@ public class AccEngine {
      * @return mean from mainBuffer
      */
     public double getMean() {
-        return engineFillerThread.getMean();
+        return engineFillerThread.calculateMean();
     }
 
     /**
@@ -146,14 +146,6 @@ public class AccEngine {
             return (new Mean()).evaluate(bufferValues);
         }
 
-        /**
-         * get latest mean value of mainBuffer from the thread
-         *
-         * @return mean of mainBuffer content
-         */
-        public double getMean() {
-            return calculateMean();
-        }
     }
 
 }

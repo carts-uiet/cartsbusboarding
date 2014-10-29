@@ -27,8 +27,8 @@ public class AccService extends Service {
     }
 
     /* Getter */
-    public AccData getData() {
-        return accListener.getData();
+    public AccData getCurrentData() {
+        return accListener.getCurrentData();
     }
 
     public Queue getDataList() {

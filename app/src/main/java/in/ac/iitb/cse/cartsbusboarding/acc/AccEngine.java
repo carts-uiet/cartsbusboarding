@@ -98,15 +98,17 @@ public class AccEngine {
      * @return mean from mainBuffer
      */
     public double getMean() {
-        return calculateMean();
+        return calculateMean(bufferToArray());
     }
 
     /**
-     * Calculates mean of data in mainBuffer
+     * Calculates mean of whatever data is given to this function
      * @return
      */
-    private double calculateMean() {
-        return ((new Mean()).evaluate(bufferToArray()));
+//    private double calculateMean() {
+//        return ((new Mean()).evaluate(bufferToArray()));
+    private double calculateMean(double input[]) {
+        return ((new Mean()).evaluate(input));
     }
 
 
@@ -116,8 +118,8 @@ public class AccEngine {
      *
      * @return most recent acceleration value as AccData
      */
-    public AccData getData() {
-        data = mAccService.getData();
+    public AccData getCurrentData() {
+        data = mAccService.getCurrentData();
         Log.e("data", "x" + data.getX() + ",y" + data.getY() + ",z" + data.getZ());
         return data;
     }

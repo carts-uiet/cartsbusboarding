@@ -64,7 +64,7 @@ public class AccListener implements SensorEventListener {
      *
      * @return most recent acc value
      */
-    public AccData getData() {
+    public AccData getCurrentData() {
         return data;
     }
 

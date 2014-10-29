@@ -74,22 +74,23 @@ public class AccEngine {
     }
 
     /**
-     * Stores the absolute(x,y,z) of current buffer values in a double array
+     * Stores the absolute acceleration(x,y,z) of current buffer
+     * values in a double array
      * synchronized to sync threads(both access mainBuffer)
-     * @return double array corresponding to data in buffer
+     * @return double array of absolute acc of data in buffer
      */
-    public synchronized double[] bufferToArray(){
-        double bufferArray[] = new double[mainBuffer.size()];
+    public synchronized double[] bufferArrayAbsAcc(){
+        double bufferAbsAcc[] = new double[mainBuffer.size()];
 
         int index = 0;
         for (AccData data : mainBuffer) {
-            bufferArray[index++] = Math.sqrt(
+            bufferAbsAcc[index++] = Math.sqrt(
                     Math.pow(data.getX(), 2)
                             + Math.pow(data.getY(), 2)
                             + Math.pow(data.getZ(), 2)
             );
         }
-        return bufferArray;
+        return bufferAbsAcc;
     }
 
     /**
@@ -98,7 +99,7 @@ public class AccEngine {
      * @return mean from mainBuffer
      */
     public double getMean() {
-        return calculateMean(bufferToArray());
+        return calculateMean(bufferArrayAbsAcc());
     }
 
     /**

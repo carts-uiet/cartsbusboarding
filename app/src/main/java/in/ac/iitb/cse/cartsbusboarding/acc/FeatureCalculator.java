@@ -49,6 +49,15 @@ public class FeatureCalculator {
         return calculateDCComponent(bufferArrayAbsAcc());
     }
 
+    /**
+     * Get the energy value of data in mainBuffer
+     *
+     * @return energy value
+     */
+    public double getEnergy() {
+        return calculateEnergy(bufferArrayAbsAcc());
+    }
+
 
     /**
      * Stores the absolute acceleration(x,y,z) of current buffer
@@ -97,6 +106,18 @@ public class FeatureCalculator {
         return input[0];
     }
 
+    /**
+     * Calculates energy of data array
+     * @param input
+     * @return energy value
+     */
+    private double calculateEnergy(double input[]){
+        double sum = 0;
+        for ( double input_value : input){
+            sum += input_value*input_value;
+        }
+        return sum/(input.length);
+    }
 
     /**
      * Applies fft on data given

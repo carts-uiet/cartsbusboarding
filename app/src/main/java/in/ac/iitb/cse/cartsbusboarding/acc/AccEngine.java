@@ -75,9 +75,10 @@ public class AccEngine {
 
     /**
      * Stores the absolute(x,y,z) of current buffer values in a double array
+     * synchronized to sync threads(both access mainBuffer)
      * @return double array corresponding to data in buffer
      */
-    public double[] bufferToArray(){
+    public synchronized double[] bufferToArray(){
         double bufferArray[] = new double[mainBuffer.size()];
 
         int index = 0;
@@ -102,10 +103,9 @@ public class AccEngine {
 
     /**
      * Calculates mean of data in mainBuffer
-     * synchronized to sync threads(both access mainBuffer)
      * @return
      */
-    private synchronized double calculateMean() {
+    private double calculateMean() {
         return (new Mean()).evaluate(bufferToArray());
     }
 
@@ -146,7 +146,7 @@ public class AccEngine {
                     }
                 }//end while
                 Log.d(_ClassName, "Thread Data: " + mainBuffer.size());
-                Log.d(_ClassName, "Thread Mean: " + calculateMean());
+                Log.d(_ClassName, "Thread Mean: " + getMean());
                 try {
                     Thread.sleep(listenerPollingTime);
                 } catch (InterruptedException e) {

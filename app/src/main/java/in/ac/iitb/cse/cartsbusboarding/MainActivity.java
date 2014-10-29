@@ -83,9 +83,15 @@ public class MainActivity extends ActionBarActivity {
             Log.i(_ClassName, "Data- " + accData);
             TextView twData = (TextView) findViewById(R.id.section_data_acc);
             FeatureCalculator featureCalculator = new FeatureCalculator(accEngine);
+            double mean = featureCalculator.getMean();
+            double std = featureCalculator.getStd();
+            String format = "%.5f";
             twData.setText(Html.fromHtml(
-                            "Mean: " + featureCalculator.getMean()
-                                    + " m/s<sup><small> 2 </small></sup>")
+                            "Mean: " + String.format(format,mean)
+                                    + " m/s<sup><small> 2 </small></sup>"
+                                    + "<br/>"
+                            + "Std: " + String.format(format,std)
+                                    + " m/s<sup><small> 2 </small></sup>" )
             );
         }
     }

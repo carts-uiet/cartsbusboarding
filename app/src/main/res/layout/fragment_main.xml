@@ -48,10 +48,10 @@
         android:onClick="textViewClicked"
         android:paddingBottom="80dp"
         android:paddingTop="80dp"
-        android:singleLine="true"
         android:text="Acceleration Data"
         android:textColor="@color/holo_orange_light"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:maxLines="5" />
 
 </RelativeLayout>

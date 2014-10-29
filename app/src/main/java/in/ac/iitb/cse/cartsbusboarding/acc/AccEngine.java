@@ -7,9 +7,6 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
-import org.apache.commons.math3.stat.descriptive.moment.Mean;
-import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -40,7 +37,6 @@ public class AccEngine {
         /** Started from here bcoz it will work only after service has started */
         startEngineFiller();
         mainBuffer = new LinkedList();
-
     }
 
     /**
@@ -85,65 +81,13 @@ public class AccEngine {
         return data;
     }
 
-    /**
-     * Get the mean of data in mainBuffer
-     *
-     * @return mean from mainBuffer
-     */
-    public double getMean() {
-        return calculateMean(bufferArrayAbsAcc());
+
+    public Queue<AccData> getMainBuffer() {
+        Queue<AccData> output = new LinkedList<AccData>();
+        for (AccData data : mainBuffer)
+            output.add(data);
+        return output;
     }
-
-    /**
-     * Get the Standard Deviation of data in mainBuffer
-     *
-     * @return StD from mainBuffer
-     */
-    public double getStd() {
-        return calculateStd(bufferArrayAbsAcc());
-    }
-
-
-    /**
-     * Stores the absolute acceleration(x,y,z) of current buffer
-     * values in a double array
-     * synchronized to sync threads(both access mainBuffer)
-     * @return double array of absolute acc of data in buffer
-     */
-    public synchronized double[] bufferArrayAbsAcc(){
-        double bufferAbsAcc[] = new double[mainBuffer.size()];
-
-        int index = 0;
-        for (AccData data : mainBuffer) {
-            bufferAbsAcc[index++] = Math.sqrt(
-                    Math.pow(data.getX(), 2)
-                            + Math.pow(data.getY(), 2)
-                            + Math.pow(data.getZ(), 2)
-            );
-        }
-        return bufferAbsAcc;
-    }
-
-
-/* Generic Functions */
-
-    /**
-     * Calculates mean of whatever data is given to this function
-     * @return
-     */
-    private double calculateMean(double input[]) {
-        return ((new Mean()).evaluate(input));
-    }
-
-    /**
-     * Calculates StDev of whatever data is given to this function
-     * @return
-     */
-    private double calculateStd(double input[]) {
-        return (new StandardDeviation()).evaluate(input);
-    }
-
-
 
     /**
      * EngineFillerThread fills data in mainBuffer
@@ -169,7 +113,6 @@ public class AccEngine {
                     }
                 }//end while
                 Log.d(_ClassName, "Thread Data: " + mainBuffer.size());
-                Log.d(_ClassName, "Thread Mean: " + getMean());
                 try {
                     Thread.sleep(listenerPollingTime);
                 } catch (InterruptedException e) {

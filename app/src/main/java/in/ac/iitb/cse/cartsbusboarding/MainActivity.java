@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
+import in.ac.iitb.cse.cartsbusboarding.acc.FeatureCalculator;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 
@@ -81,8 +82,9 @@ public class MainActivity extends ActionBarActivity {
         if (accData != null) {
             Log.i(_ClassName, "Data- " + accData);
             TextView twData = (TextView) findViewById(R.id.section_data_acc);
+            FeatureCalculator featureCalculator = new FeatureCalculator(accEngine);
             twData.setText(Html.fromHtml(
-                            "Mean: " + accEngine.getMean()
+                            "Mean: " + featureCalculator.getMean()
                                     + " m/s<sup><small> 2 </small></sup>")
             );
         }

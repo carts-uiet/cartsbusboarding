@@ -78,18 +78,18 @@ public class AccEngine {
      * synchronized to sync threads(both access mainBuffer)
      * @return double array corresponding to data in buffer
      */
-    public synchronized double[] bufferToArray(){
-        double bufferArray[] = new double[mainBuffer.size()];
+    public synchronized double[] bufferArrayAvgAcc(){
+        double bufferAvgAcc[] = new double[mainBuffer.size()];
 
         int index = 0;
         for (AccData data : mainBuffer) {
-            bufferArray[index++] = Math.sqrt(
+            bufferAvgAcc[index++] = Math.sqrt(
                     Math.pow(data.getX(), 2)
                             + Math.pow(data.getY(), 2)
                             + Math.pow(data.getZ(), 2)
             );
         }
-        return bufferArray;
+        return bufferAvgAcc;
     }
 
     /**
@@ -98,7 +98,7 @@ public class AccEngine {
      * @return mean from mainBuffer
      */
     public double getMean() {
-        return calculateMean(bufferToArray());
+        return calculateMean(bufferArrayAvgAcc());
     }
 
     /**

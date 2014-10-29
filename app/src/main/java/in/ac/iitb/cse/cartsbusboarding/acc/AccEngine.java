@@ -106,7 +106,7 @@ public class AccEngine {
      * @return
      */
     private double calculateMean() {
-        return (new Mean()).evaluate(bufferToArray());
+        return ((new Mean()).evaluate(bufferToArray()));
     }
 
 

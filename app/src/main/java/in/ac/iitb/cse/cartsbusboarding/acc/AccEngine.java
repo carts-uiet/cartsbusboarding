@@ -79,7 +79,28 @@ public class AccEngine {
      * @return mean from mainBuffer
      */
     public double getMean() {
-        return engineFillerThread.calculateMean();
+        return calculateMean();
+    }
+
+
+    /**
+     * Calculates mean of data in mainBuffer
+     * synchronized to sync threads(both access mainBuffer)
+     * @return
+     */
+    private synchronized double calculateMean() {
+        double bufferValues[] = new double[mainBuffer.size()];
+
+        int index = 0;
+        for (AccData data : mainBuffer) {
+            bufferValues[index++] = Math.sqrt(
+                    Math.pow(data.getX(), 2)
+                            + Math.pow(data.getY(), 2)
+                            + Math.pow(data.getZ(), 2)
+            );
+        }
+
+        return (new Mean()).evaluate(bufferValues);
     }
 
     /**
@@ -125,27 +146,6 @@ public class AccEngine {
                 }
             }
         }
-
-        /**
-         * Calculates mean of data in mainBuffer
-         *
-         * @return
-         */
-        private synchronized double calculateMean() {
-            double bufferValues[] = new double[mainBuffer.size()];
-
-            int index = 0;
-            for (AccData data : mainBuffer) {
-                bufferValues[index++] = Math.sqrt(
-                        Math.pow(data.getX(), 2)
-                                + Math.pow(data.getY(), 2)
-                                + Math.pow(data.getZ(), 2)
-                );
-            }
-
-            return (new Mean()).evaluate(bufferValues);
-        }
-
     }
 
 }

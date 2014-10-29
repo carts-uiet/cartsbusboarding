@@ -87,6 +87,7 @@ public class MainActivity extends ActionBarActivity {
                             "Mean: " + featureCalculator.getMean()
                                     + " m/s<sup><small> 2 </small></sup>")
             );
+            Log.e(_ClassName, "Feature dc comp- " + featureCalculator.getDCComponent());
         }
     }
 

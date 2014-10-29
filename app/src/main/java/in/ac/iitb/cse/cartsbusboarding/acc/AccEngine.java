@@ -116,8 +116,8 @@ public class AccEngine {
      *
      * @return most recent acceleration value as AccData
      */
-    public AccData getData() {
-        data = mAccService.getData();
+    public AccData getCurrentData() {
+        data = mAccService.getCurrentData();
         Log.e("data", "x" + data.getX() + ",y" + data.getY() + ",z" + data.getZ());
         return data;
     }

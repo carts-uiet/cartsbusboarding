@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity {
             twData.setText(gsmData.toString());
         }
 
-        AccData accData = accEngine.getData();
+        AccData accData = accEngine.getCurrentData();
         if (accData != null) {
             Log.i(_ClassName, "Data- " + accData);
             TextView twData = (TextView) findViewById(R.id.section_data_acc);

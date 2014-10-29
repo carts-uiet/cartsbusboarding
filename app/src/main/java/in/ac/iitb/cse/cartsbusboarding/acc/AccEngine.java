@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -74,6 +75,36 @@ public class AccEngine {
     }
 
     /**
+     * Return most recent acceleration value
+     *
+     * @return most recent acceleration value as AccData
+     */
+    public AccData getCurrentData() {
+        data = mAccService.getCurrentData();
+        Log.e("data", "x" + data.getX() + ",y" + data.getY() + ",z" + data.getZ());
+        return data;
+    }
+
+    /**
+     * Get the mean of data in mainBuffer
+     *
+     * @return mean from mainBuffer
+     */
+    public double getMean() {
+        return calculateMean(bufferArrayAbsAcc());
+    }
+
+    /**
+     * Get the Standard Deviation of data in mainBuffer
+     *
+     * @return StD from mainBuffer
+     */
+    public double getStd() {
+        return calculateStd(bufferArrayAbsAcc());
+    }
+
+
+    /**
      * Stores the absolute acceleration(x,y,z) of current buffer
      * values in a double array
      * synchronized to sync threads(both access mainBuffer)
@@ -93,14 +124,8 @@ public class AccEngine {
         return bufferAbsAcc;
     }
 
-    /**
-     * Get the mean of data in mainBuffer
-     *
-     * @return mean from mainBuffer
-     */
-    public double getMean() {
-        return calculateMean(bufferArrayAbsAcc());
-    }
+
+/* Generic Functions */
 
     /**
      * Calculates mean of whatever data is given to this function
@@ -110,18 +135,15 @@ public class AccEngine {
         return (new Mean()).evaluate(input);
     }
 
-
-
     /**
-     * Return most recent acceleration value
-     *
-     * @return most recent acceleration value as AccData
+     * Calculates StDev of whatever data is given to this function
+     * @return
      */
-    public AccData getCurrentData() {
-        data = mAccService.getCurrentData();
-        Log.e("data", "x" + data.getX() + ",y" + data.getY() + ",z" + data.getZ());
-        return data;
+    private double calculateStd(double input[]) {
+        return (new StandardDeviation()).evaluate(input);
     }
+
+
 
     /**
      * EngineFillerThread fills data in mainBuffer

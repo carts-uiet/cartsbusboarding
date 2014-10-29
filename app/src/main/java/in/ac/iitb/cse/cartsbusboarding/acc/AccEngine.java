@@ -74,6 +74,24 @@ public class AccEngine {
     }
 
     /**
+     * Stores the absolute(x,y,z) of current buffer values in a double array
+     * @return double array corresponding to data in buffer
+     */
+    public double[] bufferToArray(){
+        double bufferArray[] = new double[mainBuffer.size()];
+
+        int index = 0;
+        for (AccData data : mainBuffer) {
+            bufferArray[index++] = Math.sqrt(
+                    Math.pow(data.getX(), 2)
+                            + Math.pow(data.getY(), 2)
+                            + Math.pow(data.getZ(), 2)
+            );
+        }
+        return bufferArray;
+    }
+
+    /**
      * Get the mean of data in mainBuffer
      *
      * @return mean from mainBuffer
@@ -82,26 +100,16 @@ public class AccEngine {
         return calculateMean();
     }
 
-
     /**
      * Calculates mean of data in mainBuffer
      * synchronized to sync threads(both access mainBuffer)
      * @return
      */
     private synchronized double calculateMean() {
-        double bufferValues[] = new double[mainBuffer.size()];
-
-        int index = 0;
-        for (AccData data : mainBuffer) {
-            bufferValues[index++] = Math.sqrt(
-                    Math.pow(data.getX(), 2)
-                            + Math.pow(data.getY(), 2)
-                            + Math.pow(data.getZ(), 2)
-            );
-        }
-
-        return (new Mean()).evaluate(bufferValues);
+        return (new Mean()).evaluate(bufferToArray());
     }
+
+
 
     /**
      * Return most recent acceleration value

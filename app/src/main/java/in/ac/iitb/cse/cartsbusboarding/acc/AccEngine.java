@@ -132,7 +132,7 @@ public class AccEngine {
      * @return
      */
     private double calculateMean(double input[]) {
-        return (new Mean()).evaluate(input);
+        return ((new Mean()).evaluate(input));
     }
 
     /**

@@ -93,20 +93,20 @@ public class AccEngine {
 
     /**
      * Get the mean of data in mainBuffer
+     * synchronized to sync threads(both access mainBuffer)
      *
      * @return mean from mainBuffer
      */
-    public double getMean() {
-        return calculateMean();
+    public synchronized double getMean() {
+        return calculateMean(bufferToArray());
     }
 
     /**
-     * Calculates mean of data in mainBuffer
-     * synchronized to sync threads(both access mainBuffer)
+     * Calculates mean of whatever data is given to this function
      * @return
      */
-    private synchronized double calculateMean() {
-        return (new Mean()).evaluate(bufferToArray());
+    private double calculateMean(double input[]) {
+        return (new Mean()).evaluate(input);
     }
 
 
@@ -146,7 +146,7 @@ public class AccEngine {
                     }
                 }//end while
                 Log.d(_ClassName, "Thread Data: " + mainBuffer.size());
-                Log.d(_ClassName, "Thread Mean: " + calculateMean());
+                Log.d(_ClassName, "Thread Mean: " + calculateMean(bufferToArray()));
                 try {
                     Thread.sleep(listenerPollingTime);
                 } catch (InterruptedException e) {

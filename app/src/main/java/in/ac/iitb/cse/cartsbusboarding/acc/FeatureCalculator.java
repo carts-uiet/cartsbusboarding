@@ -1,7 +1,5 @@
 package in.ac.iitb.cse.cartsbusboarding.acc;
 
-import android.util.Log;
-
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
@@ -16,11 +14,9 @@ import java.util.Queue;
  * Created by chaudhary on 10/30/14.
  */
 public class FeatureCalculator {
-    private AccEngine accEngine;
     Queue<AccData> currentBuffer;
 
     public FeatureCalculator(AccEngine accEngine) {
-        this.accEngine = accEngine;
         currentBuffer = accEngine.getMainBuffer();
     }
 

@@ -1,4 +1,4 @@
-package in.ac.iitb.cse.cartsbusboarding;
+package in.ac.iitb.cse.cartsbusboarding.test;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

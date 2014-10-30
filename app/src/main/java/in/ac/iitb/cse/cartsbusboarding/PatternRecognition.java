@@ -12,7 +12,14 @@ public class PatternRecognition {
         this.accEngine = accEngine;
     }
 
-    public boolean checkPattern() {
-        return true;
+    public boolean hasBoardedBus() {
+        //if machine.accuracy > threshold
+        Machine machine = new Machine();
+        if(machine.foundStairPattern()){
+            return true;
+        }
+        //else if gsm distance > walking distance
+
+        return false;
     }
 }

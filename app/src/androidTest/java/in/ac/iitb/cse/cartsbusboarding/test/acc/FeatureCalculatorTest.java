@@ -50,6 +50,7 @@ public class FeatureCalculatorTest extends ActivityUnitTestCase<MainActivity> {
 
     /**
      * Set the private currentBuffer to some simple value in featureCalculator
+     *
      * @return the value which was just set to currentBuffer
      * @throws NoSuchFieldException
      * @throws IllegalAccessException
@@ -58,16 +59,22 @@ public class FeatureCalculatorTest extends ActivityUnitTestCase<MainActivity> {
         Queue<AccData> newValue = new LinkedList<AccData>();
         AccData temp;
 
-        temp= new AccData();
-        temp.setX(1); temp.setY(1); temp.setZ(1);
+        temp = new AccData();
+        temp.setX(1);
+        temp.setY(1);
+        temp.setZ(1);
         newValue.add(temp);
 
-        temp= new AccData();
-        temp.setX(2); temp.setY(2); temp.setZ(2);
+        temp = new AccData();
+        temp.setX(2);
+        temp.setY(2);
+        temp.setZ(2);
         newValue.add(temp);
 
-        temp= new AccData();
-        temp.setX(3); temp.setY(3); temp.setZ(3);
+        temp = new AccData();
+        temp.setX(3);
+        temp.setY(3);
+        temp.setZ(3);
         newValue.add(temp);
 
         //featureCalculator = new FeatureCalculator(accEngine);
@@ -92,9 +99,8 @@ public class FeatureCalculatorTest extends ActivityUnitTestCase<MainActivity> {
     }
 
 /*
-Test Private Functions
-
-Don't ask why? We just like to live dangerously !
+ * Test Private Functions
+ * Don't ask why? We just like to live dangerously !
  */
 
     /**

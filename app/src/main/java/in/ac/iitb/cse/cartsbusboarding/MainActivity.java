@@ -87,6 +87,7 @@ public class MainActivity extends ActionBarActivity {
             double std = featureCalculator.getStd();
             double dcComp = featureCalculator.getDCComponent();
             double energy = featureCalculator.getEnergy();
+            double entropy = featureCalculator.getEntropy();
 
             String format = "%.5f";
             twData.setText(Html.fromHtml(
@@ -100,6 +101,9 @@ public class MainActivity extends ActionBarActivity {
                                     + " m/s<sup><small> 2 </small></sup>"
                                     + "<br/>"
                             + "Energy: " + String.format(format,energy)
+                                    + " m/s<sup><small> 2 </small></sup>"
+                                    + "<br/>"
+                            + "Entropy: " + String.format(format,entropy)
                                     + " m/s<sup><small> 2 </small></sup>")
             );
         }

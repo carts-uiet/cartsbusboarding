@@ -63,6 +63,15 @@ public class FeatureCalculator {
 
 
     /**
+     * Get the entropy value of data in mainBuffer
+     *
+     * @return entropy value
+     */
+    public double getEntropy() {
+        return calculateEntropy(applyFFT(bufferArrayAbsAcc()));
+    }
+
+    /**
      * Stores the absolute acceleration(x,y,z) of current buffer
      * values in a double array
      * synchronized to sync threads(both access mainBuffer)
@@ -121,6 +130,19 @@ public class FeatureCalculator {
             sum += input_value*input_value;
         }
         return sum/(input.length);
+    }
+
+    /**
+     * Calculates entropy i.e. mean of difference in result of fft
+     * @param input
+     * @return entropy value
+     */
+    private double calculateEntropy(double input[]){
+        double diff = 0;
+        for (int i = 0; i < input.length-1; i++) {
+            diff += (input[i] - input[i+1]);
+        }
+        return diff/(input.length);
     }
 
     /**

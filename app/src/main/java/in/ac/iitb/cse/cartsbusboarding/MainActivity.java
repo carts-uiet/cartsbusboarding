@@ -93,6 +93,8 @@ public class MainActivity extends ActionBarActivity {
                             + "Std: " + String.format(format,std)
                                     + " m/s<sup><small> 2 </small></sup>" )
             );
+            Log.e(_ClassName, "Feature dc comp- " + featureCalculator.getDCComponent());
+            Log.e(_ClassName, "Feature energy- " + featureCalculator.getEnergy());
         }
     }
 

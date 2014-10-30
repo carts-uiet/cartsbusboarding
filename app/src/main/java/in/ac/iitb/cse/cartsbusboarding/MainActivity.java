@@ -85,16 +85,23 @@ public class MainActivity extends ActionBarActivity {
             FeatureCalculator featureCalculator = new FeatureCalculator(accEngine);
             double mean = featureCalculator.getMean();
             double std = featureCalculator.getStd();
+            double dcComp = featureCalculator.getDCComponent();
+            double energy = featureCalculator.getEnergy();
+
             String format = "%.5f";
             twData.setText(Html.fromHtml(
                             "Mean: " + String.format(format,mean)
                                     + " m/s<sup><small> 2 </small></sup>"
                                     + "<br/>"
                             + "Std: " + String.format(format,std)
-                                    + " m/s<sup><small> 2 </small></sup>" )
+                                    + " m/s<sup><small> 2 </small></sup>"
+                                    + "<br/>"
+                            + "DC Comp: " + String.format(format,dcComp)
+                                    + " m/s<sup><small> 2 </small></sup>"
+                                    + "<br/>"
+                            + "Energy: " + String.format(format,energy)
+                                    + " m/s<sup><small> 2 </small></sup>")
             );
-            Log.e(_ClassName, "Feature dc comp- " + featureCalculator.getDCComponent());
-            Log.e(_ClassName, "Feature energy- " + featureCalculator.getEnergy());
         }
     }
 

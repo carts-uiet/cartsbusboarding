@@ -1,5 +1,7 @@
 package in.ac.iitb.cse.cartsbusboarding.acc;
 
+import android.util.Log;
+
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
@@ -7,6 +9,7 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 
+import java.util.Arrays;
 import java.util.Queue;
 
 /**
@@ -46,7 +49,7 @@ public class FeatureCalculator {
      * @return DC component i.e. mean of resulting values of fft transform
      */
     public double getDCComponent() {
-        return calculateDCComponent(bufferArrayAbsAcc());
+        return calculateDCComponent(applyFFT(bufferArrayAbsAcc()));
     }
 
     /**
@@ -55,7 +58,7 @@ public class FeatureCalculator {
      * @return energy value
      */
     public double getEnergy() {
-        return calculateEnergy(bufferArrayAbsAcc());
+        return calculateEnergy(applyFFT(bufferArrayAbsAcc()));
     }
 
 
@@ -113,6 +116,7 @@ public class FeatureCalculator {
      */
     private double calculateEnergy(double input[]){
         double sum = 0;
+//        input[0] = 0;
         for ( double input_value : input){
             sum += input_value*input_value;
         }
@@ -125,11 +129,29 @@ public class FeatureCalculator {
      * @return absolute values after applying fft
      */
     private double[] applyFFT(double input[]){
-        double[] tempInput = new double[input.length];
 
+        //fft works on data length = some power of two
+        int fftLength;
+        int length = input.length;  //initialized with input's length
+        int power = 0;
+        while (true){
+            int powOfTwo = (int)Math.pow(2,power);  //maximum no. of values to be applied fft on
+
+            if( powOfTwo == length){
+                fftLength = powOfTwo;
+                break;
+            }
+            if(powOfTwo > length ){
+                fftLength = (int) Math.pow(2, (power-1));
+                break;
+            }
+            power++;
+        }
+
+        double[] tempInput = Arrays.copyOf(input, fftLength);
         FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
         //apply fft on input
-        Complex[] complexTransInput = fft.transform(input, TransformType.FORWARD);
+        Complex[] complexTransInput = fft.transform(tempInput, TransformType.FORWARD);
 
         for (int i = 0; i < complexTransInput.length; i++) {
             double real = (complexTransInput[i].getReal());

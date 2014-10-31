@@ -11,6 +11,14 @@ public class AccData {
     public float y;
     public float z;
 
+    public AccData() { }
+
+    public AccData(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
     @Override
     public String toString() {
         String base = "(";

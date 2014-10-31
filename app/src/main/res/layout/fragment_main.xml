@@ -29,7 +29,7 @@
         android:gravity="center"
         android:onClick="textViewClicked"
         android:paddingBottom="40dp"
-        android:paddingTop="80dp"
+        android:paddingTop="40dp"
         android:text="GSM Data"
         android:textColor="@color/holo_orange_light"
         android:textSize="20sp"
@@ -46,12 +46,9 @@
         android:gravity="center"
         android:isScrollContainer="true"
         android:onClick="textViewClicked"
-        android:paddingBottom="80dp"
-        android:paddingTop="80dp"
         android:text="Acceleration Data"
         android:textColor="@color/holo_orange_light"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:maxLines="5" />
+        android:textStyle="bold"/>
 
 </RelativeLayout>

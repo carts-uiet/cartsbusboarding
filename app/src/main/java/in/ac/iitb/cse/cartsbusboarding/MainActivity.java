@@ -91,20 +91,21 @@ public class MainActivity extends ActionBarActivity {
 
             String format = "%.5f";
             twData.setText(Html.fromHtml(
-                            "Mean: " + String.format(format,mean)
+                            "TIME DOMAIN FEATURES:"
+                                +"<br/>"
+                            +"Mean: " + String.format(format,mean)
                                     + " m/s<sup><small> 2 </small></sup>"
                                     + "<br/>"
                             + "Std: " + String.format(format,std)
                                     + " m/s<sup><small> 2 </small></sup>"
-                                    + "<br/>"
+                                    + "<br/><br/>"
+                            +"FREQUENCY DOMAIN FEATURES:"
+                                    +"<br/>"
                             + "DC Comp: " + String.format(format,dcComp)
-                                    + " m/s<sup><small> 2 </small></sup>"
                                     + "<br/>"
                             + "Energy: " + String.format(format,energy)
-                                    + " m/s<sup><small> 2 </small></sup>"
                                     + "<br/>"
-                            + "Entropy: " + String.format(format,entropy)
-                                    + " m/s<sup><small> 2 </small></sup>")
+                            + "Entropy: " + String.format(format,entropy))
             );
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.test.ActivityUnitTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 
 import java.lang.reflect.Field;
@@ -89,6 +90,11 @@ public class FeatureCalculatorTest extends ActivityUnitTestCase<MainActivity> {
         assertEquals(1.7320508075688774, std);
     }
 
+    public void testDCComponent() throws Exception {
+        Queue<AccData> newValue = setBuffer();
+        double dcComp = featureCalculator.getDCComponent();
+        assertEquals(5.196152422706632 , dcComp);
+    }
 /*
  * Test Private Functions
  * Don't ask why? We just like to live dangerously !

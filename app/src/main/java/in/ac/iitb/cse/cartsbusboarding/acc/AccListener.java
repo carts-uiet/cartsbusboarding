@@ -42,10 +42,7 @@ public class AccListener implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() != Sensor.TYPE_ACCELEROMETER) return;
-        data = new AccData();
-        data.x = sensorEvent.values[0];
-        data.y = sensorEvent.values[1];
-        data.z = sensorEvent.values[2];
+        data = new AccData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
 
         //If update is called before returning buffer, it will send an empty buffer to calling method
         if (mustClearBufferNow) {

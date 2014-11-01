@@ -59,22 +59,13 @@ public class FeatureCalculatorTest extends ActivityUnitTestCase<MainActivity> {
         Queue<AccData> newValue = new LinkedList<AccData>();
         AccData temp;
 
-        temp = new AccData();
-        temp.setX(1);
-        temp.setY(1);
-        temp.setZ(1);
+        temp = new AccData(1,1,1);
         newValue.add(temp);
 
-        temp = new AccData();
-        temp.setX(2);
-        temp.setY(2);
-        temp.setZ(2);
+        temp = new AccData(2,2,2);
         newValue.add(temp);
 
-        temp = new AccData();
-        temp.setX(3);
-        temp.setY(3);
-        temp.setZ(3);
+        temp = new AccData(3,3,3);
         newValue.add(temp);
 
         //featureCalculator = new FeatureCalculator(accEngine);

@@ -1,5 +1,7 @@
 package in.ac.iitb.cse.cartsbusboarding.acc;
 
+import android.util.Log;
+
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
@@ -121,11 +123,12 @@ public class FeatureCalculator {
      */
     private double calculateEnergy(double input[]){
         double sum = 0;
+//        TODO: why consider first element it is only mean of other elements
 //        input[0] = 0;
         for ( double input_value : input){
             sum += input_value*input_value;
         }
-        return sum/(input.length);
+        return (sum/(input.length));
     }
 
     /**

@@ -83,6 +83,7 @@ public class FeatureCalculatorTest extends ActivityUnitTestCase<MainActivity> {
         assertEquals(3.4641016151377544, mean);
     }
 
+
     @SmallTest
     public void testGetStd() throws Exception {
         Queue<AccData> newValue = setBuffer();
@@ -90,11 +91,22 @@ public class FeatureCalculatorTest extends ActivityUnitTestCase<MainActivity> {
         assertEquals(1.7320508075688774, std);
     }
 
-    public void testDCComponent() throws Exception {
+    @SmallTest
+    public void testGetDCComponent() throws Exception {
         Queue<AccData> newValue = setBuffer();
+        Log.e("dcComp Test",""+newValue.peek());
         double dcComp = featureCalculator.getDCComponent();
-        assertEquals(5.196152422706632 , dcComp);
+        Log.e("dcComp Test",""+dcComp);
+   assertEquals(5.196152422706632 , dcComp);
     }
+
+    @SmallTest
+    public void testGetEnergy() throws Exception {
+        Queue<AccData> newValue = setBuffer();
+        double energy = featureCalculator.getEnergy();
+        assertEquals((double)15, energy);
+    }
+
 /*
  * Test Private Functions
  * Don't ask why? We just like to live dangerously !

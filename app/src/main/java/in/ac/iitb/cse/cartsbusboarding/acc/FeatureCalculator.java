@@ -123,12 +123,13 @@ public class FeatureCalculator {
      */
     private double calculateEnergy(double input[]){
         double sum = 0;
-//        TODO: why consider first element it is only mean of other elements
-//        input[0] = 0;
+        //First element is the DC component
+        input[0] = 0;
         for ( double input_value : input){
             sum += input_value*input_value;
         }
-        return (sum/(input.length));
+        //TODO: returns NaN if input has only one element
+        return (sum/(input.length-1));
     }
 
     /**

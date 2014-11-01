@@ -94,17 +94,15 @@ public class FeatureCalculatorTest extends ActivityUnitTestCase<MainActivity> {
     @SmallTest
     public void testGetDCComponent() throws Exception {
         Queue<AccData> newValue = setBuffer();
-        Log.e("dcComp Test",""+newValue.peek());
         double dcComp = featureCalculator.getDCComponent();
-        Log.e("dcComp Test",""+dcComp);
-   assertEquals(5.196152422706632 , dcComp);
+        assertEquals(5.196152422706632 , dcComp);
     }
 
     @SmallTest
     public void testGetEnergy() throws Exception {
         Queue<AccData> newValue = setBuffer();
         double energy = featureCalculator.getEnergy();
-        assertEquals((double)15, energy);
+        assertEquals(2.9999999999999996, energy);
     }
 
 /*

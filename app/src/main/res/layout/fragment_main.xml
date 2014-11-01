@@ -51,4 +51,12 @@
         android:textSize="20sp"
         android:textStyle="bold"/>
 
+    <!-- XXX: View Mask to handle clicks anywhere on screen -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true"
+        android:onClick="textViewClicked"
+        />
+
 </RelativeLayout>

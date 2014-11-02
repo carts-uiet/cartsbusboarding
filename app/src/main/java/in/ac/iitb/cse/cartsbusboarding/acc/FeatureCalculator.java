@@ -139,10 +139,25 @@ public class FeatureCalculator {
      */
     private double calculateEntropy(double input[]){
         double diff = 0;
-        for (int i = 0; i < input.length-1; i++) {
-            diff += (input[i] - input[i+1]);
+
+        //Here,if there is no or only one value in input, difference returned is zero
+        if(input.length == 0){
+            return 0;
         }
-        return diff/(input.length);
+        if(input.length == 1){
+            return input[0];
+        }
+        //TODO: not sure what to return
+        if(input.length == 2){
+            return input[1];
+        }
+
+        //Ignored first element because it is the DC component
+        for (int i = 1; i < input.length-1; i++) {
+            diff += (input[i+1] - input[i]);
+            Log.e("diff",""+diff);
+        }
+        return diff/(input.length-1);
     }
 
     /**

@@ -14,7 +14,7 @@ public class PatternRecognition {
 
     public boolean hasBoardedBus() {
         //if machine.accuracy > threshold
-        Machine machine = new Machine();
+        Machine machine = new Machine(accEngine);
         if(machine.foundStairPattern()){
             return true;
         }

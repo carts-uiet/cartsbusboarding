@@ -89,23 +89,30 @@ public class MainActivity extends ActionBarActivity {
             double energy = featureCalculator.getEnergy();
             double entropy = featureCalculator.getEntropy();
 
+            //XXX: PR uses its own featureCalc
+            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
+            boolean hasIt = patternRecognition.hasBoardedBus();
+            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
+
             String format = "%.5f";
             twData.setText(Html.fromHtml(
-                            "TIME DOMAIN FEATURES:"
-                                +"<br/>"
-                            +"Mean: " + String.format(format,mean)
+                            "HasBoarded: " + hasIt
+                                    + "<br/>"
+                                    + "TIME DOMAIN FEATURES:"
+                                    + "<br/>"
+                                    + "Mean: " + String.format(format,mean)
                                     + " m/s<sup><small> 2 </small></sup>"
                                     + "<br/>"
-                            + "Std: " + String.format(format,std)
+                                    + "Std: " + String.format(format,std)
                                     + " m/s<sup><small> 2 </small></sup>"
                                     + "<br/><br/>"
-                            +"FREQUENCY DOMAIN FEATURES:"
-                                    +"<br/>"
-                            + "DC Comp: " + String.format(format,dcComp)
+                                    + "FREQUENCY DOMAIN FEATURES:"
                                     + "<br/>"
-                            + "Energy: " + String.format(format,energy)
+                                    + "DC Comp: " + String.format(format,dcComp)
                                     + "<br/>"
-                            + "Entropy: " + String.format(format,entropy))
+                                    + "Energy: " + String.format(format,energy)
+                                    + "<br/>"
+                                    + "Entropy: " + String.format(format,entropy))
             );
         }
     }

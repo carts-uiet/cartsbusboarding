@@ -70,6 +70,9 @@ public class AccEngine {
         new Thread(engineFillerThread).start();
     }
 
+    public Context getContext() {
+        return mContext;
+    }
     /**
      * Return most recent acceleration value
      *

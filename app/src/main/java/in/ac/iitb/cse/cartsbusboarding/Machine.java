@@ -105,6 +105,7 @@ public class Machine {
 
 
         String output_strings = "";
+        output_strings += "1 ";     //To make it look like train file
         int index = 1;
         for(double feature_value : features){
             output_strings += index+":"+feature_value+" ";

@@ -191,6 +191,50 @@ public class FeatureCalculator {
     }
 
 
+
+    /**
+     * Calculates energy
+     * @param data whose energy is to be calculated
+     * @return energy of data provided
+     */
+    public double getEnergy(ArrayList<AccData> data) {
+        return calculateEnergy(applyFFT(bufferArrayAbsAcc(data)));
+    }
+
+    /**
+     * finds energy for windows of currentBuffer
+     * @param windowSize
+     * @return array of energy on currentBuffer data divided into windows
+     */
+    public double[] getEnergy(int windowSize) {
+        ArrayList data = new ArrayList(currentBuffer);
+        int noOfWindows = data.size()/windowSize;
+        double[] windowEnergy = new double[noOfWindows+1];
+        int index = 0;
+        int startIndex = 0;
+        int endIndex = 0;
+
+        /*Loop will only read upto windows in multiples of windowSize(Last window with values less
+          than windowSize is delt in next if condition)
+        */
+        Log.d("ENERGY ARRAY: ","");
+        while(endIndex < (noOfWindows*windowSize) ) {
+            startIndex = endIndex;
+            endIndex += windowSize;
+            ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
+            windowEnergy[index++] = getEnergy(temp);
+            Log.d("energy"+(index-1),""+windowEnergy[index-1]);
+        }
+        if (endIndex < data.size()){
+            startIndex = endIndex;
+            ArrayList<AccData> temp= new ArrayList(data.subList(startIndex, data.size()));
+            windowEnergy[index] = getEnergy(temp);
+            Log.d("energy"+(index),""+windowEnergy[index]);
+        }
+
+        return windowEnergy;
+    }
+
     /**
      * Get the entropy value of data in mainBuffer
      *

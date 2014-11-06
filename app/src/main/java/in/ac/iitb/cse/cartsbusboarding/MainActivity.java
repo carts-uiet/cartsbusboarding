@@ -92,6 +92,7 @@ public class MainActivity extends ActionBarActivity {
             featureCalculator.getMean(20);
             featureCalculator.getStd(20);
             featureCalculator.getDCComponent(20);
+            featureCalculator.getEnergy(20);
             //XXX: PR uses its own featureCalc
             PatternRecognition patternRecognition = new PatternRecognition(accEngine);
             boolean hasIt = patternRecognition.hasBoardedBus();

@@ -34,34 +34,16 @@ public class FeatureCalculator {
     }
 
     /**
-     * Overloaded function: Calculates means for windows of currentBuffer
+     * Calculates mean
      * @param data whose mean is to be calculated
-     * @return
+     * @return mean of data provided
      */
     public double getMean(ArrayList<AccData> data) {
         return calculateMean(bufferArrayAbsAcc(data));
     }
 
     /**
-     * Get the Standard Deviation of data in mainBuffer
-     *
-     * @return StD from mainBuffer
-     */
-    public double getStd() {
-        return calculateStd(bufferArrayAbsAcc());
-    }
-
-    /**
-     * Overloaded function: Calculates std for windows of currentBuffer
-     * @param data whose std is to be calculated
-     * @return
-     */
-    public double getStd(ArrayList<AccData> data) {
-        return calculateStd(bufferArrayAbsAcc(data));
-    }
-
-    /**
-     *Calculates mean on windows of currentBuffer
+     * Calculates mean on windows of currentBuffer
      * @param windowSize
      * @return array of means on currentBuffer data divided into windows
      */
@@ -95,7 +77,26 @@ public class FeatureCalculator {
     }
 
     /**
-     *Calculates std on windows of currentBuffer
+     * Get the Standard Deviation of data in mainBuffer
+     *
+     * @return StD from mainBuffer
+     */
+    public double getStd() {
+        return calculateStd(bufferArrayAbsAcc());
+    }
+
+    /**
+     * Calculates Standard Deviation
+     * @param data whose std is to be calculated
+     * @return std of data provided
+     */
+    public double getStd(ArrayList<AccData> data) {
+        return calculateStd(bufferArrayAbsAcc(data));
+    }
+
+
+    /**
+     *Calculates Standard Deviation on windows of currentBuffer
      * @param windowSize
      * @return array of std on currentBuffer data divided into windows
      */
@@ -131,10 +132,53 @@ public class FeatureCalculator {
     /**
      * Get the DC component of data in mainBuffer
      *
-     * @return DC component i.e. mean of resulting values of fft transform
+     * @return dc comp.from mainBuffer
      */
     public double getDCComponent() {
         return calculateDCComponent(applyFFT(bufferArrayAbsAcc()));
+    }
+
+    /**
+     * Calculates dc comp.
+     * @param data whose dc comp. is to be calculated
+     * @return dc comp of data provided
+     */
+    public double getDCComponent(ArrayList<AccData> data) {
+        return calculateDCComponent(applyFFT(bufferArrayAbsAcc(data)));
+    }
+
+    /**
+     * finds dcComponent for windows of currentBuffer
+     * @param windowSize
+     * @return array of dcComp on currentBuffer data divided into windows
+     */
+    public double[] getDCComponent(int windowSize) {
+        ArrayList data = new ArrayList(currentBuffer);
+        int noOfWindows = data.size()/windowSize;
+        double[] windowdc = new double[noOfWindows+1];
+        int index = 0;
+        int startIndex = 0;
+        int endIndex = 0;
+
+        /*Loop will only read upto windows in multiples of windowSize(Last window with values less
+          than windowSize is delt in next if condition)
+        */
+        Log.d("DC Comp. ARRAY: ","");
+        while(endIndex < (noOfWindows*windowSize) ) {
+            startIndex = endIndex;
+            endIndex += windowSize;
+            ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
+            windowdc[index++] = getDCComponent(temp);
+            Log.d("dc comp"+(index-1),""+windowdc[index-1]);
+        }
+        if (endIndex < data.size()){
+            startIndex = endIndex;
+            ArrayList<AccData> temp= new ArrayList(data.subList(startIndex, data.size()));
+            windowdc[index] = getDCComponent(temp);
+            Log.d("dc comp"+(index),""+windowdc[index]);
+        }
+
+        return windowdc;
     }
 
     /**

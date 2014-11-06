@@ -348,7 +348,6 @@ public class FeatureCalculator {
         //Ignored first element because it is the DC component
         for (int i = 1; i < input.length-1; i++) {
             diff += (input[i+1] - input[i]);
-            Log.e("diff",""+diff);
         }
         return diff/(input.length-1);
     }

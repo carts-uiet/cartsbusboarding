@@ -4,15 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import javax.crypto.Mac;
 
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.acc.FeatureCalculator;
@@ -74,13 +71,13 @@ public class Machine {
                 HashMap<Integer, Double> tmp = featureData.featuresData.get(i);
 
                 prob.x[i] = new svm_node[tmp.keySet().size()];
-                int indx = 0;
+                int index = 0;
                 for (Integer id : tmp.keySet()) {
                     svm_node node = new svm_node();
                     node.index = id;
                     node.value = tmp.get(id);
-                    prob.x[i][indx] = node;
-                    indx++;
+                    prob.x[i][index] = node;
+                    index++;
                 }
 
                 prob.y[i] = featureData.label.get(i);
@@ -96,20 +93,24 @@ public class Machine {
 
     String getTestData() {
         FeatureCalculator mFeatureCalculator = new FeatureCalculator(mAccEngine);
-        double[] features = new double[]{
-                mFeatureCalculator.getMean(),
-                mFeatureCalculator.getStd(),
-                mFeatureCalculator.getDCComponent(),
-                mFeatureCalculator.getEnergy()
+        int windowSize = 20;
+        double[][] features = new double[][]{
+                mFeatureCalculator.getMean(windowSize),
+                mFeatureCalculator.getStd(windowSize),
+                mFeatureCalculator.getDCComponent(windowSize),
+                mFeatureCalculator.getEnergy(windowSize)
         };
 
-
         String output_strings = "";
-        output_strings += "1 ";     //To make it look like train file
-        int index = 1;
-        for(double feature_value : features){
-            output_strings += index+":"+feature_value+" ";
-            index++;
+        int noOfReadings = features[0].length;
+        for (int colIndex = 0; colIndex < noOfReadings; colIndex++)  {
+            output_strings += "1 ";     //To make it look like train file
+            for (int rowIndex = 0; rowIndex < features.length; rowIndex++) {
+                double feature_value = features[rowIndex][colIndex];
+                output_strings += (rowIndex+1)+":"+feature_value+" ";
+            }
+            Log.d(_Classname,output_strings);
+            output_strings += "\n";
         }
         //XXX: This is just one line!
         return output_strings;
@@ -127,22 +128,25 @@ public class Machine {
 
         int dataSize = data.featuresData.size();
         double[] idx = new double[dataSize];
+        String print_idx = "";
         for (int i=0; i< dataSize; ++i) {
 //            HashMap<Integer, Double> tmp = new HashMap<Integer, Double>();
             HashMap<Integer, Double> tmp = data.featuresData.get(i);
             int numFeatures = tmp.keySet().size();
             svm_node[] x = new svm_node[numFeatures];
-            int featureIndx = 0;
+            int featureIndex = 0;
             for (Integer feature : tmp.keySet()) {
-                x[featureIndx] = new svm_node();
-                x[featureIndx].index = feature;
-                x[featureIndx].value = tmp.get(feature);
-                featureIndx++;
+                x[featureIndex] = new svm_node();
+                x[featureIndex].index = feature;
+                Log.d(_Classname+" feature value",""+tmp.get(feature));
+                x[featureIndex].value = tmp.get(feature);
+                featureIndex++;
             }
             idx[i] = svm_predict(model, x);
+            print_idx += idx[i] + " ";
         }
 
-        Log.d(_Classname, "Predection: " + idx);
+        Log.d(_Classname, "Prediction: " + print_idx);
         return idx;
     }
 

@@ -34,8 +34,8 @@ public class FeatureCalculator {
     }
 
     /**
-     * Overloaded function
-     * @param data array whose mean is to be calculated
+     * Overloaded function: Calculates means for windows of currentBuffer
+     * @param data whose mean is to be calculated
      * @return
      */
     public double getMean(ArrayList<AccData> data) {
@@ -49,6 +49,15 @@ public class FeatureCalculator {
      */
     public double getStd() {
         return calculateStd(bufferArrayAbsAcc());
+    }
+
+    /**
+     * Overloaded function: Calculates std for windows of currentBuffer
+     * @param data whose std is to be calculated
+     * @return
+     */
+    public double getStd(ArrayList<AccData> data) {
+        return calculateStd(bufferArrayAbsAcc(data));
     }
 
     /**
@@ -73,16 +82,50 @@ public class FeatureCalculator {
             endIndex += windowSize;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
             windowMeans[index++] = getMean(temp);
-            Log.d("",""+windowMeans[index-1]);
+            Log.d("mean"+(index-1),""+windowMeans[index-1]);
         }
         if (endIndex < data.size()){
             startIndex = endIndex;
             ArrayList<AccData> temp= new ArrayList(data.subList(startIndex, data.size()));
             windowMeans[index] = getMean(temp);
-            Log.d("",""+windowMeans[index]);
+            Log.d("mean"+(index),""+windowMeans[index]);
         }
 
         return windowMeans;
+    }
+
+    /**
+     *Calculates std on windows of currentBuffer
+     * @param windowSize
+     * @return array of std on currentBuffer data divided into windows
+     */
+    public double[] getStd(int windowSize) {
+        ArrayList data = new ArrayList(currentBuffer);
+        int noOfWindows = data.size()/windowSize;
+        double[] windowStd = new double[noOfWindows+1];
+        int index = 0;
+        int startIndex = 0;
+        int endIndex = 0;
+
+        /*Loop will only read upto windows in multiples of windowSize(Last window with values less
+          than windowSize is delt in next if condition)
+        */
+        Log.d("STD ARRAY: ","");
+        while(endIndex < (noOfWindows*windowSize) ) {
+            startIndex = endIndex;
+            endIndex += windowSize;
+            ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
+            windowStd[index++] = getStd(temp);
+            Log.d("std"+(index-1),""+windowStd[index-1]);
+        }
+        if (endIndex < data.size()){
+            startIndex = endIndex;
+            ArrayList<AccData> temp= new ArrayList(data.subList(startIndex, data.size()));
+            windowStd[index] = getStd(temp);
+            Log.d("std"+(index),""+windowStd[index]);
+        }
+
+        return windowStd;
     }
 
     /**

@@ -90,6 +90,7 @@ public class MainActivity extends ActionBarActivity {
             double entropy = featureCalculator.getEntropy();
 
             featureCalculator.getMean(20);
+            featureCalculator.getStd(20);
             //XXX: PR uses its own featureCalc
             PatternRecognition patternRecognition = new PatternRecognition(accEngine);
             boolean hasIt = patternRecognition.hasBoardedBus();

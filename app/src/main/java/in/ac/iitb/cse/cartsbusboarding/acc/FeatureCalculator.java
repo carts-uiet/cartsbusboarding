@@ -9,6 +9,7 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
 
@@ -33,12 +34,55 @@ public class FeatureCalculator {
     }
 
     /**
+     * Overloaded function
+     * @param data array whose mean is to be calculated
+     * @return
+     */
+    public double getMean(ArrayList<AccData> data) {
+        return calculateMean(bufferArrayAbsAcc(data));
+    }
+
+    /**
      * Get the Standard Deviation of data in mainBuffer
      *
      * @return StD from mainBuffer
      */
     public double getStd() {
         return calculateStd(bufferArrayAbsAcc());
+    }
+
+    /**
+     *Calculates mean on windows of currentBuffer
+     * @param windowSize
+     * @return array of means on currentBuffer data divided into windows
+     */
+    public double[] getMean(int windowSize) {
+        ArrayList data = new ArrayList(currentBuffer);
+        int noOfWindows = data.size()/windowSize;
+        double[] windowMeans = new double[noOfWindows+1];
+        int index = 0;
+        int startIndex = 0;
+        int endIndex = 0;
+
+        /*Loop will only read upto windows in multiples of windowSize(Last window with values less
+          than windowSize is delt in next if condition)
+        */
+        Log.d("MEAN ARRAY: ","");
+        while(endIndex < (noOfWindows*windowSize) ) {
+            startIndex = endIndex;
+            endIndex += windowSize;
+            ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
+            windowMeans[index++] = getMean(temp);
+            Log.d("",""+windowMeans[index-1]);
+        }
+        if (endIndex < data.size()){
+            startIndex = endIndex;
+            ArrayList<AccData> temp= new ArrayList(data.subList(startIndex, data.size()));
+            windowMeans[index] = getMean(temp);
+            Log.d("",""+windowMeans[index]);
+        }
+
+        return windowMeans;
     }
 
     /**
@@ -89,6 +133,24 @@ public class FeatureCalculator {
         return bufferAbsAcc;
     }
 
+    /**
+     * Overloaded function on which operations are to be performed
+     * @param data is array on which o
+     * @return
+     */
+    public synchronized double[] bufferArrayAbsAcc(ArrayList<AccData> data){
+        double bufferAbsAcc[] = new double[data.size()];
+
+        int index = 0;
+        for (AccData currData : data) {
+            bufferAbsAcc[index++] = Math.sqrt(
+                    Math.pow(currData.getX(), 2)
+                            + Math.pow(currData.getY(), 2)
+                            + Math.pow(currData.getZ(), 2)
+            );
+        }
+        return bufferAbsAcc;
+    }
 
 /* Generic Functions */
 

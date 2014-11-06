@@ -50,6 +50,10 @@ public class Machine {
         return false;
     }
 
+    /**
+     * train data is prepared from the file passed and trained using svm machine
+     * @return svm_model after training the data
+     */
     private svm_model trainMachine() {
         svm_parameter parameter = new svm_parameter();
         parameter.kernel_type = svm_parameter.LINEAR;
@@ -91,7 +95,11 @@ public class Machine {
         return null;
     }
 
-    String getTestData() {
+    /**
+     * Prepares test data by applying features on windows of data in buffer
+     * @return string of features applied on data in windows
+     */
+    private String getTestData() {
         FeatureCalculator mFeatureCalculator = new FeatureCalculator(mAccEngine);
         int windowSize = 20;
         double[][] features = new double[][]{
@@ -123,14 +131,13 @@ public class Machine {
     double[] testMachine() {
         svm_model model = trainMachine();
 
-//        TODO:Create test file from buffered data
+        //creating test data from string returned by getTestData
         MyReadData data = readData(new BufferedReader(new StringReader(getTestData())));
 
         int dataSize = data.featuresData.size();
         double[] idx = new double[dataSize];
         String print_idx = "";
         for (int i=0; i< dataSize; ++i) {
-//            HashMap<Integer, Double> tmp = new HashMap<Integer, Double>();
             HashMap<Integer, Double> tmp = data.featuresData.get(i);
             int numFeatures = tmp.keySet().size();
             svm_node[] x = new svm_node[numFeatures];
@@ -150,9 +157,12 @@ public class Machine {
         return idx;
     }
 
+    /**
+     * Separates features and label into different Hash Maps(both in class structure MyReadData)
+     * @param reader from where data is to be obtained
+     * @return separated data as class structure MyReadData
+     */
     private MyReadData readData(BufferedReader reader) {
-        /** TODO */
-
         HashSet<Integer> features = new HashSet<Integer>();
         MyReadData data = new MyReadData();
 
@@ -182,6 +192,9 @@ public class Machine {
         return data;
     }
 
+    /**
+     * Structure to hold features and labels in separate Hash Maps
+     */
     class MyReadData {
         HashMap<Integer, HashMap<Integer, Double>> featuresData;
         HashMap<Integer, Integer> label;

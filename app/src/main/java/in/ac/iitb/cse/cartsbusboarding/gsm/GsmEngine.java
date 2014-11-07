@@ -8,6 +8,8 @@ import android.location.Location;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.util.Calendar;
+
 /**
  * Created by chaudhary on 10/23/14.
  */
@@ -48,6 +50,12 @@ public class GsmEngine {
         return data;
     }
 
+    public boolean hasSpeed(){
+        return mGsmService.hasSpeed();
+    }
+    public float getSpeed(){
+        return mGsmService.getSpeed();
+    }
     /**
      * Get distance b/w two points namely source and destination
      * @param src
@@ -67,6 +75,29 @@ public class GsmEngine {
 
         float distance = locationA.distanceTo(locationB);
         return ((double) distance);
+    }
+
+    /**
+     *
+     * @param time (in ms)
+     * @return
+     */
+    public double getSpeed(long time){
+        GsmData source = mGsmService.getData();
+        long start_time = Calendar.getInstance().getTimeInMillis();
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        long end_time = Calendar.getInstance().getTimeInMillis();
+        GsmData dest = mGsmService.getData();
+        //Temporary logs
+        Log.e("Time: ",""+(end_time-start_time));
+        Log.e("Source",""+source.toString());
+        Log.e("Destination",""+dest.toString());
+        double dist= getDistance(source, dest);
+        return (dist/time);
     }
 
 }

@@ -31,6 +31,12 @@ public class GsmService extends Service {
         return dataRead;
     }
 
+    public boolean hasSpeed(){
+        return gsmListener.hasSpeed();
+    }
+    public float getSpeed(){
+        return gsmListener.getSpeed();
+    }
     @Override
     public IBinder onBind(Intent intent) {
         // Return the communication channel to the service.

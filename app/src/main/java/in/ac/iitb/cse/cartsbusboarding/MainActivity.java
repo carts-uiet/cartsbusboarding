@@ -72,10 +72,19 @@ public class MainActivity extends ActionBarActivity {
     public void textViewClicked(View v) {
         GsmData gsmData = gsmEngine.getData();
         Log.i(_ClassName, "Received: " + gsmData);
+
+        String format = "%.5f";
         if (gsmData != null) {
             Log.i(_ClassName, "Data- " + gsmData.toString());
             TextView twData = (TextView) findViewById(R.id.section_data_gsm);
-            twData.setText(gsmData.toString());
+            twData.setText(Html.fromHtml("Lat/Long: "+gsmData.toString()
+                                            +"<br/>"
+                                            +"Has Speed: "+gsmEngine.hasSpeed()
+                                            +"<br/>"
+                                            +"Speed: "+gsmEngine.getSpeed()
+                                            +"<br/>"
+//                                            +"speed(getDisT): "+ String.format(format, gsmEngine.getSpeed(2000)) )
+            ));
         }
 
         AccData accData = accEngine.getCurrentData();
@@ -98,7 +107,6 @@ public class MainActivity extends ActionBarActivity {
             boolean hasIt = patternRecognition.hasBoardedBus();
             Log.i(_ClassName, "HasBoardedBus: "+hasIt);
 
-            String format = "%.5f";
             twData.setText(Html.fromHtml(
                             "HasBoarded: " + hasIt
                                     + "<br/>"

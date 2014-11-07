@@ -89,7 +89,16 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void run() {
                         TextView twData = (TextView) findViewById(R.id.section_data_gsm);
-                        twData.setText(gsmData.toString());
+                        twData.setText(Html.fromHtml(
+                                        "Lat/Long: "+gsmData.toString()
+                                                +"<br/>"
+                                                +"Has Speed: "+gsmEngine.hasSpeed()
+                                                +"<br/>"
+                                                +"Speed: "+gsmEngine.getSpeed()
+                                                +"<br/>"
+//                                            +"speed(getDisT): "+ String.format(format, gsmEngine.getSpeed(2000)) )
+                                )
+                        );
                     }
                 });
             }

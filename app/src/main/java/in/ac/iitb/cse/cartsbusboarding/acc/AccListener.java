@@ -5,14 +5,20 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
+import in.ac.iitb.cse.cartsbusboarding.R;
+
 /**
- * Created by chaudhary on 10/17/14.
+ * Main Listener that receives the accelerometer data
  */
 public class AccListener implements SensorEventListener {
+    private final String _Classname = AccListener.class.getSimpleName();
     private final SensorManager sensorManager;
     private final Sensor sensor;
     /**
@@ -30,14 +36,19 @@ public class AccListener implements SensorEventListener {
     private Context mContext;
 
     AccListener(Context context) {
-//        TODO: look out for a way to create it's object in listner itself
         mContext = context;
         sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
+        if (sensorList.size() < 1) {
+            Toast.makeText(mContext, R.string.accelerometer_not_found, Toast.LENGTH_LONG).show();
+        }
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         //this.sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         this.sensorManager.registerListener(this, sensor, getSensorSpeed());
         localBuffer = new LinkedList();
         clearBuffer();
+        Log.v(_Classname, "SensorList: " + sensorList.toString());
+        Log.v(_Classname, "Sensor MinDelay: " + sensor.getMinDelay() + " microseconds");
     }
 
     @Override

@@ -34,7 +34,8 @@ public class AccListener implements SensorEventListener {
         mContext = context;
         sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        this.sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        //this.sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        this.sensorManager.registerListener(this, sensor, getSensorSpeed());
         localBuffer = new LinkedList();
         clearBuffer();
     }
@@ -84,6 +85,20 @@ public class AccListener implements SensorEventListener {
     private void clearBuffer() {
         localBuffer.clear();
         mustClearBufferNow = false;
+    }
+
+    /**
+     * Defines the current sensor speed used to register the listener
+     * <p>Possible ways:
+     * <li>int SENSOR_DELAY_FASTEST get sensor data as fast as possible</li>
+     * <li>int SENSOR_DELAY_GAME rate suitable for games</li>
+     * <li>int SENSOR_DELAY_NORMAL rate (default) suitable for screen orientation changes</li>
+     * <li>int SENSOR_DELAY_UI rate suitable for the user interface</li>
+     * </p>
+     * @return integer
+     */
+    public int getSensorSpeed() {
+        return SensorManager.SENSOR_DELAY_GAME;
     }
 }
 

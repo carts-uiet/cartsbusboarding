@@ -2,8 +2,6 @@ package in.ac.iitb.cse.cartsbusboarding.acc;
 
 import android.app.Service;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -11,19 +9,19 @@ import android.util.Log;
 import java.util.Queue;
 
 public class AccService extends Service {
+    private final String _Classname = AccService.class.getSimpleName();
     // This is the object that receives interactions from clients. See
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
     private AccListener accListener;
-    private SensorManager sensorManager;
-    private Sensor sensor;
 
     @Override
     public void onCreate() {
         super.onCreate();
         /** Context needed to create sensor manager in listener */
         accListener = new AccListener(this.getApplicationContext());
-        Log.e("Service", "Acc");
+        Log.v(_Classname, "Started ! ! !");
+        Log.i(_Classname, "SensorSpeed: "+accListener.getSensorSpeed());
     }
 
     /* Getter */

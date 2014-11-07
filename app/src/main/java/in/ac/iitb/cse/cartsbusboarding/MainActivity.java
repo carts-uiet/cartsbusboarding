@@ -1,5 +1,6 @@
 package in.ac.iitb.cse.cartsbusboarding;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -65,59 +66,87 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void init_acc() {
-        Log.e("Main", "Acc");
         accEngine = new AccEngine(this.getApplicationContext());
     }
 
     public void textViewClicked(View v) {
-        GsmData gsmData = gsmEngine.getData();
-        Log.i(_ClassName, "Received: " + gsmData);
-        if (gsmData != null) {
-            Log.i(_ClassName, "Data- " + gsmData.toString());
-            TextView twData = (TextView) findViewById(R.id.section_data_gsm);
-            twData.setText(gsmData.toString());
+        new GsmDisplayTask().execute();
+        new AccDisplayTask().execute();
+    }
+    private class GsmDisplayTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
         }
 
-        AccData accData = accEngine.getCurrentData();
-        if (accData != null) {
-            Log.i(_ClassName, "Data- " + accData);
-            TextView twData = (TextView) findViewById(R.id.section_data_acc);
-            FeatureCalculator featureCalculator = new FeatureCalculator(accEngine);
-            double mean = featureCalculator.getMean();
-            double std = featureCalculator.getStd();
-            double dcComp = featureCalculator.getDCComponent();
-            double energy = featureCalculator.getEnergy();
-            double entropy = featureCalculator.getEntropy();
+        @Override
+        protected Void doInBackground(Void... voids) {
+            final GsmData gsmData = gsmEngine.getData();
+            Log.i(_ClassName, "Received: " + gsmData);
+            if (gsmData != null) {
+                Log.i(_ClassName, "Data- " + gsmData.toString());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView twData = (TextView) findViewById(R.id.section_data_gsm);
+                        twData.setText(gsmData.toString());
+                    }
+                });
+            }
+            return null;
+        }
+    }
 
-            featureCalculator.getMean(20);
-            featureCalculator.getStd(20);
-            featureCalculator.getDCComponent(20);
-            featureCalculator.getEnergy(20);
-            //XXX: PR uses its own featureCalc
-            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
-            boolean hasIt = patternRecognition.hasBoardedBus();
-            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
+    private class AccDisplayTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            AccData accData = accEngine.getCurrentData();
+            if (accData != null) {
+                Log.i(_ClassName, "Data- " + accData);
+                FeatureCalculator featureCalculator = new FeatureCalculator(accEngine);
+                final double mean = featureCalculator.getMean();
+                final double std = featureCalculator.getStd();
+                final double dcComp = featureCalculator.getDCComponent();
+                final double energy = featureCalculator.getEnergy();
+                final double entropy = featureCalculator.getEntropy();
 
-            String format = "%.5f";
-            twData.setText(Html.fromHtml(
-                            "HasBoarded: " + hasIt
-                                    + "<br/>"
-                                    + "TIME DOMAIN FEATURES:"
-                                    + "<br/>"
-                                    + "Mean: " + String.format(format,mean)
-                                    + " m/s<sup><small> 2 </small></sup>"
-                                    + "<br/>"
-                                    + "Std: " + String.format(format,std)
-                                    + " m/s<sup><small> 2 </small></sup>"
-                                    + "<br/><br/>"
-                                    + "FREQUENCY DOMAIN FEATURES:"
-                                    + "<br/>"
-                                    + "DC Comp: " + String.format(format,dcComp)
-                                    + "<br/>"
-                                    + "Energy: " + String.format(format,energy)
-                                    + "<br/>"
-                                    + "Entropy: " + String.format(format,entropy))
-            );
+//            featureCalculator.getMean(20);
+//            featureCalculator.getStd(20);
+//            featureCalculator.getDCComponent(20);
+//            featureCalculator.getEnergy(20);
+                //XXX: PR uses its own featureCalc
+//            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
+//            boolean hasIt = patternRecognition.hasBoardedBus();
+//            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String format = "%.5f";
+                        TextView twData = (TextView) findViewById(R.id.section_data_acc);
+                        twData.setText(Html.fromHtml(
+//                                        "HasBoarded: " + hasIt +
+                                        "<br/>"
+                                                + "TIME DOMAIN FEATURES:"
+                                                + "<br/>"
+                                                + "Mean: " + String.format(format, mean)
+                                                + " m/s<sup><small> 2 </small></sup>"
+                                                + "<br/>"
+                                                + "Std: " + String.format(format, std)
+                                                + " m/s<sup><small> 2 </small></sup>"
+                                                + "<br/><br/>"
+                                                + "FREQUENCY DOMAIN FEATURES:"
+                                                + "<br/>"
+                                                + "DC Comp: " + String.format(format, dcComp)
+                                                + "<br/>"
+                                                + "Energy: " + String.format(format, energy)
+                                                + "<br/>"
+                                                + "Entropy: " + String.format(format, entropy))
+                        );
+                    }
+                });
+            }
+            return null;
         }
     }
 

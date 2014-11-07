@@ -8,9 +8,8 @@ import android.hardware.SensorManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import in.ac.iitb.cse.cartsbusboarding.R;
 
@@ -28,7 +27,7 @@ public class AccListener implements SensorEventListener {
     /**
      * localBuffer contains acceleration values and is cleared externally
      */
-    private Queue<AccData> localBuffer;
+    private ConcurrentLinkedQueue<AccData> localBuffer;
     /**
      * Flag indicates that we need to empty the buffer after returning it
      */
@@ -45,7 +44,7 @@ public class AccListener implements SensorEventListener {
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         //this.sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         this.sensorManager.registerListener(this, sensor, getSensorSpeed());
-        localBuffer = new LinkedList();
+        localBuffer = new ConcurrentLinkedQueue();
         clearBuffer();
         Log.v(_Classname, "SensorList: " + sensorList.toString());
         Log.v(_Classname, "Sensor MinDelay: " + sensor.getMinDelay() + " microseconds");
@@ -60,7 +59,8 @@ public class AccListener implements SensorEventListener {
         if (mustClearBufferNow) {
             clearBuffer();
         }
-        localBuffer.add(data);
+        localBuffer.offer(data);
+        //localBuffer.add(data);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class AccListener implements SensorEventListener {
      *
      * @return Queue of AccData values
      */
-    public Queue<AccData> getDataList() {
+    public ConcurrentLinkedQueue<AccData> getDataList() {
         mustClearBufferNow = true;
         //XXX: Returning a reference, which might be modified here and outside, while clear is called
         return localBuffer;

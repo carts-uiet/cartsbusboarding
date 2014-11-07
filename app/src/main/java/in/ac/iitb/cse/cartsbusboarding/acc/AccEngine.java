@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by chaudhary on 10/23/14.
@@ -21,7 +22,7 @@ public class AccEngine {
     private AccData data;
     private AccService mAccService;
     private EngineFillerThread engineFillerThread;
-    private Queue<AccData> mainBuffer;
+    private ConcurrentLinkedQueue<AccData> mainBuffer;
     private ServiceConnection mServiceConnection;
 
     /**
@@ -36,7 +37,7 @@ public class AccEngine {
         initServiceConnection();
         /** Started from here bcoz it will work only after service has started */
         startEngineFiller();
-        mainBuffer = new LinkedList();
+        mainBuffer = new ConcurrentLinkedQueue<AccData>();
     }
 
     /**
@@ -50,7 +51,7 @@ public class AccEngine {
                 try {
                     mAccService = ((AccService.LocalBinder) service).getService();
                 } catch (Throwable t) {
-                    Log.e("AccEngine", "mServiceConnection.onServiceConnected() -> " + t);
+                    Log.e(_ClassName, "mServiceConnection.onServiceConnected() -> " + t);
                 }
             }// onServiceConnected()
 
@@ -80,7 +81,6 @@ public class AccEngine {
      */
     public AccData getCurrentData() {
         data = mAccService.getCurrentData();
-        Log.e("data", "x" + data.getX() + ",y" + data.getY() + ",z" + data.getZ());
         return data;
     }
 
@@ -103,19 +103,22 @@ public class AccEngine {
             while (true) {
                 if (mAccService == null)
                     continue;
-                Queue<AccData> localDataQueue = mAccService.getDataList();    //Clears localBuffer of Listener
+//                mAccService.getDataList();    //Clears localBuffer of Listener
+                ConcurrentLinkedQueue<AccData> localDataQueue = new ConcurrentLinkedQueue<AccData>(mAccService.getDataList());
                 // If mainBuffer is not of the desired size
                 while (!(localDataQueue.isEmpty())) {
                     if (mainBuffer.size() < bufferSize) {
                         Log.i(_ClassName, "New Value: " + localDataQueue.peek());
-                        mainBuffer.add(localDataQueue.remove());
+                        //mainBuffer.add(localDataQueue.remove());
+                        mainBuffer.offer(localDataQueue.remove());
                     } else {
                         // If mainBuffer is full
                         mainBuffer.remove();
-                        mainBuffer.add(localDataQueue.remove());
+                        //mainBuffer.add(localDataQueue.remove());
+                        mainBuffer.offer(localDataQueue.remove());
                     }
                 }//end while
-                Log.d(_ClassName, "Thread Data: " + mainBuffer.size());
+                //Log.d(_ClassName, "Thread Data: " + mainBuffer.size());
                 try {
                     Thread.sleep(listenerPollingTime);
                 } catch (InterruptedException e) {

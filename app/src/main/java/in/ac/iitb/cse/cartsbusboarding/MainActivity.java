@@ -94,7 +94,7 @@ public class MainActivity extends ActionBarActivity {
                                                 +"<br/>"
                                                 +"Has Speed: "+gsmEngine.hasSpeed()
                                                 +"<br/>"
-                                                +"Speed: "+gsmEngine.getSpeed()
+                                                +"My get Speed: "+(int)gsmEngine.myGetSpeed()
                                                 +"<br/>"
 //                                            +"speed(getDisT): "+ String.format(format, gsmEngine.getSpeed(2000)) )
                                 )

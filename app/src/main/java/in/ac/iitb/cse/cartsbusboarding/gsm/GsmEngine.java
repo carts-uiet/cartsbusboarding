@@ -18,11 +18,14 @@ public class GsmEngine {
     private GsmService mGsmService;
     private GsmData data;
     private ServiceConnection mServiceConnection;
+    private GsmData saved_source, saved_destination;
+    private long saved_startTime, saved_endTime;
 
     public GsmEngine(Context context) {
         mContext = context;
         mContext.startService(new Intent(mContext, GsmService.class));
 
+        saved_source = saved_destination = null;
         initServiceConnection();
     }
 
@@ -92,12 +95,32 @@ public class GsmEngine {
         }
         long end_time = Calendar.getInstance().getTimeInMillis();
         GsmData dest = mGsmService.getData();
-        //Temporary logs
-        Log.e("Time: ",""+(end_time-start_time));
-        Log.e("Source",""+source.toString());
-        Log.e("Destination",""+dest.toString());
+
         double dist= getDistance(source, dest);
+
+        // Temporary logs
+        Log.e("Time: ",""+(end_time-start_time));
+        Log.e("Source",""+saved_source.toString());
+        Log.e("Destination",""+saved_destination.toString());
         return (dist/time);
     }
 
+    public double myGetSpeed(){
+        if(saved_destination == null){
+            saved_source = mGsmService.getData();
+            saved_startTime = Calendar.getInstance().getTimeInMillis();
+        }else{
+            saved_source = saved_destination;
+            saved_startTime = saved_endTime;
+        }
+        saved_destination = mGsmService.getData();
+        saved_endTime = Calendar.getInstance().getTimeInMillis();
+        double dist= getDistance(saved_source, saved_destination);
+
+        // Temporary logs
+        Log.e("Source",""+saved_source.toString());
+        Log.e("Destination",""+saved_destination.toString());
+        long time = saved_endTime - saved_startTime;
+        return (dist/time);
+    }
 }

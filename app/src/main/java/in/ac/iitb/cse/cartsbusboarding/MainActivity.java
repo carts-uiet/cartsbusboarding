@@ -1,5 +1,7 @@
 package in.ac.iitb.cse.cartsbusboarding;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +25,7 @@ import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.acc.FeatureCalculator;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
+import in.ac.iitb.cse.cartsbusboarding.gsm.GsmListener;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -72,6 +75,18 @@ public class MainActivity extends ActionBarActivity {
     public void textViewClicked(View v) {
         new GsmDisplayTask().execute();
         new AccDisplayTask().execute();
+        /* Hack begins */
+        LocationManager gpsMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        GsmListener gpsListener = new GsmListener();
+        gpsMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+        final GsmData gpsData = gpsListener.getData();
+        float gpsSpeed = -1;
+        if (gpsData!=null && gpsData.location != null) {
+            TextView twData = (TextView) findViewById(R.id.section_data_gsm);
+            gpsSpeed = gpsData.location.getSpeed();
+            twData.setText(twData.getText() + "GPS Speed:" + gpsSpeed);
+        }
+        /* Hack ends */
     }
     private class GsmDisplayTask extends AsyncTask<Void, Void, Void> {
         @Override
@@ -92,7 +107,7 @@ public class MainActivity extends ActionBarActivity {
                         twData.setText(Html.fromHtml(
                                         "Lat/Long: "+gsmData.toString()
                                                 +"<br/>"
-                                                +"Has Speed: "+gsmEngine.hasSpeed()
+                                                +"GSM Speed: "+gsmEngine.getSpeed()
                                                 +"<br/>"
                                                 +"My get Speed: "+(int)gsmEngine.myGetSpeed()
                                                 +"<br/>"

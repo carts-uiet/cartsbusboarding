@@ -108,7 +108,7 @@ public class AccEngine {
                 // If mainBuffer is not of the desired size
                 while (!(localDataQueue.isEmpty())) {
                     if (mainBuffer.size() < bufferSize) {
-                        Log.i(_ClassName, "New Value: " + localDataQueue.peek());
+                        Log.d(_ClassName, "New Value: " + localDataQueue.peek());
                         //mainBuffer.add(localDataQueue.remove());
                         mainBuffer.offer(localDataQueue.remove());
                     } else {

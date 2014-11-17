@@ -128,6 +128,7 @@ public class MainActivity extends ActionBarActivity {
 //            boolean hasIt = patternRecognition.hasBoardedBus();
 //            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
 
+                final PatternRecognition patternRecognition = new PatternRecognition(accEngine);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -136,6 +137,8 @@ public class MainActivity extends ActionBarActivity {
                         twData.setText(Html.fromHtml(
 //                                        "HasBoarded: " + hasIt +
                                         "<br/>"
+                                                + "hasBoarded: " + patternRecognition.hasBoardedBus()
+                                                + "<br/>"
                                                 + "TIME DOMAIN FEATURES:"
                                                 + "<br/>"
                                                 + "Mean: " + String.format(format, mean)

@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class AccEngine {
     private static final String _ClassName = AccEngine.class.getSimpleName();
-    private static final int bufferSize = 60;
+    private static final int bufferSize = 1000;
     private static final long listenerPollingTime = 500;
     private final Context mContext;
     private AccData data;

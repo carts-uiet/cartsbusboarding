@@ -60,9 +60,8 @@ public class Machine {
 
         //TODO: pass train filename
         try {
-            InputStream istream = mContext.getAssets().open("SPECTF_expert.train");
+            InputStream istream = mContext.getAssets().open("train_data_expert.train");
             MyReadData featureData = readData(new BufferedReader(new InputStreamReader(istream)));
-
 
             //Train the SVM model
             svm_problem prob = new svm_problem();
@@ -129,10 +128,18 @@ public class Machine {
      * @return idx values predicted
      */
     double[] testMachine() {
+        //XXX Train machine should be called only once
         svm_model model = trainMachine();
 
         //creating test data from string returned by getTestData
-        MyReadData data = readData(new BufferedReader(new StringReader(getTestData())));
+//        MyReadData data = readData(new BufferedReader(new StringReader(getTestData())));
+        InputStream istream = null;
+        try {
+            istream = mContext.getAssets().open("train_data_expert.train");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        MyReadData data = readData(new BufferedReader(new InputStreamReader(istream)));
 
         int dataSize = data.featuresData.size();
         double[] idx = new double[dataSize];
@@ -145,7 +152,7 @@ public class Machine {
             for (Integer feature : tmp.keySet()) {
                 x[featureIndex] = new svm_node();
                 x[featureIndex].index = feature;
-                Log.d(_Classname+" feature value",""+tmp.get(feature));
+//                Log.d(_Classname+" feature value",""+tmp.get(feature));
                 x[featureIndex].value = tmp.get(feature);
                 featureIndex++;
             }
@@ -153,7 +160,7 @@ public class Machine {
             print_idx += idx[i] + " ";
         }
 
-        Log.d(_Classname, "Prediction: " + print_idx);
+        Log.i(_Classname, "Prediction: " + print_idx);
         return idx;
     }
 

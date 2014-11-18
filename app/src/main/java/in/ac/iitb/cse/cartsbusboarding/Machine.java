@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -155,14 +156,7 @@ public class Machine {
         svm_model model = trainMachine();
 
         //creating test data from string returned by getTestData
-//        MyReadData data = readData(new BufferedReader(new StringReader(getTestData())));
-        InputStream istream = null;
-        try {
-            istream = mContext.getAssets().open("train_data_expert.train");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        MyReadData data = readData(new BufferedReader(new InputStreamReader(istream)));
+        MyReadData data = readData(new BufferedReader(new StringReader(getTestData())));
 
         int dataSize = data.featuresData.size();
         double[] idx = new double[dataSize];

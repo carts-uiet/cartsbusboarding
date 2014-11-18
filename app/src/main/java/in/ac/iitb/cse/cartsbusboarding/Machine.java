@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -51,28 +50,34 @@ public class Machine {
     }
 
     /**
+     * Set the parameter values for training
+     * @return
+     */
+    private svm_parameter getParameters() {
+        svm_parameter parameter = new svm_parameter();
+        parameter.svm_type = svm_parameter.C_SVC;
+        parameter.kernel_type = svm_parameter.RBF; //XXX: Select right kernel type
+        parameter.degree = 3;
+        parameter.gamma = 0.25;
+        parameter.nu = 0.5;
+        parameter.cache_size = 100;
+        parameter.C = 1;
+        parameter.eps = 1e-3;
+        parameter.p = 0.1;
+        parameter.shrinking = 1;
+        parameter.probability = 0;
+        parameter.nr_weight = 0;
+        parameter.weight_label = null;
+        parameter.weight = null;
+        return parameter;
+    }
+
+    /**
      * train data is prepared from the file passed and trained using svm machine
      * @return svm_model after training the data
      */
     private svm_model trainMachine() {
-        svm_parameter parameter = new svm_parameter();
-        /*
-        svm_type c_svc
-kernel_type rbf
-gamma 0.25
-nr_class 2
-total_sv 75
-rho -0.73128
-label 1 2
-nr_sv 60 15
-SV
-optimization finished, #iter = 140
-nu = 0.384615
-obj = -20.484600, rho = -0.731280
-nSV = 75, nBSV = 15
-Total nSV = 75
-         */
-        parameter.kernel_type = svm_parameter.LINEAR;
+        svm_parameter parameter = getParameters();
 
         //TODO: pass train filename
         try {
@@ -210,7 +215,6 @@ Total nSV = 75
                     double featureValue = Double.parseDouble(fields[1]);
                     features.add(featureId);
                     data.featuresData.get(lineNum).put(featureId, featureValue);
-                    Log.e("my read data",""+data.featuresData.get(lineNum).put(featureId, featureValue));
                 }
                 lineNum++;
             }

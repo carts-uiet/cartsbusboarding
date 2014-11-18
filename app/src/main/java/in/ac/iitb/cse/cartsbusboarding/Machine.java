@@ -28,11 +28,17 @@ public class Machine {
     final String _Classname = this.getClass().getSimpleName();
     AccEngine mAccEngine;
     Context mContext;
+    svm_model model;
 
 
+    /**
+     *
+     * @param accEngine needed to get the features
+     */
     public Machine(AccEngine accEngine){
         mAccEngine = accEngine;
         mContext = accEngine.getContext();
+        model = trainMachine();
     }
     /**
      * Checks if staircase pattern found in acc buffer data
@@ -152,8 +158,7 @@ public class Machine {
      * @return idx values predicted
      */
     double[] testMachine() {
-        //XXX Train machine should be called only once
-        svm_model model = trainMachine();
+        //Train machine should be called only once
 
         //creating test data from string returned by getTestData
         MyReadData data = readData(new BufferedReader(new StringReader(getTestData())));

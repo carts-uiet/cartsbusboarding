@@ -56,6 +56,22 @@ public class Machine {
      */
     private svm_model trainMachine() {
         svm_parameter parameter = new svm_parameter();
+        /*
+        svm_type c_svc
+kernel_type rbf
+gamma 0.25
+nr_class 2
+total_sv 75
+rho -0.73128
+label 1 2
+nr_sv 60 15
+SV
+optimization finished, #iter = 140
+nu = 0.384615
+obj = -20.484600, rho = -0.731280
+nSV = 75, nBSV = 15
+Total nSV = 75
+         */
         parameter.kernel_type = svm_parameter.LINEAR;
 
         //TODO: pass train filename
@@ -79,14 +95,16 @@ public class Machine {
                     svm_node node = new svm_node();
                     node.index = id;
                     node.value = tmp.get(id);
+//                    Log.e("train index:value",node.index+":"+node.value);
                     prob.x[i][index] = node;
                     index++;
                 }
-
+                //Log.e("train idx",""+featureData.label.get(i));
                 prob.y[i] = featureData.label.get(i);
             }
 
             svm_model model = svm_train(prob, parameter);
+            Log.wtf(_Classname, "Model: "+model.toString());
             return model;
         } catch (IOException e) {
             e.printStackTrace();
@@ -154,8 +172,12 @@ public class Machine {
                 x[featureIndex].index = feature;
 //                Log.d(_Classname+" feature value",""+tmp.get(feature));
                 x[featureIndex].value = tmp.get(feature);
+                //Log.e("train index:value",x[featureIndex].index+":"+x[featureIndex].value);
+
                 featureIndex++;
             }
+            //Log.e("train idx",""+data.label.get(i));
+
             idx[i] = svm_predict(model, x);
             print_idx += idx[i] + " ";
         }
@@ -188,6 +210,7 @@ public class Machine {
                     double featureValue = Double.parseDouble(fields[1]);
                     features.add(featureId);
                     data.featuresData.get(lineNum).put(featureId, featureValue);
+                    Log.e("my read data",""+data.featuresData.get(lineNum).put(featureId, featureValue));
                 }
                 lineNum++;
             }

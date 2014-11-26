@@ -68,6 +68,18 @@ public class MainActivity extends ActionBarActivity {
         init_acc();
     }
 
+
+    /**
+     * Setup different activity elements to show correct values onCreate
+     */
+    void setup_display() {
+        Button pollingButton = (Button) findViewById(R.id.button_polling);
+        if (isMyServiceRunning(PollingService.class)) {
+            pollingButton.setText("Stop Polling");
+        } else {
+            pollingButton.setText("Start Polling");
+        }
+    }
     private void init_gsm() {
         gsmEngine = new GsmEngine(this.getApplicationContext());
     }
@@ -103,12 +115,14 @@ public class MainActivity extends ActionBarActivity {
             Intent serviceIntent = new Intent(this, PollingService.class);
             startService(serviceIntent);
         }
-
+        //Maybe call setup_display here!
     }
 
     public void textViewClicked(View v) {
         new GsmDisplayTask().execute();
         new AccDisplayTask().execute();
+        /* Setup Display called here to make sure that the button text is right */
+        setup_display();
         /* Hack begins */
         LocationManager gpsMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         GsmListener gpsListener = new GsmListener();
@@ -287,6 +301,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            //This is called once the fragments have been loaded
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }

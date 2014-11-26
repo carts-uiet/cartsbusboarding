@@ -33,8 +33,13 @@ import in.ac.iitb.cse.cartsbusboarding.gsm.GsmListener;
 public class MainActivity extends ActionBarActivity {
 
     public static final String _ClassName = MainActivity.class.getSimpleName();
+    /**
+     * No need to pass Engine to classes outside acc/gsm packages
+     * Still leaving the classes(acc/gsm module) where it's passed as it is,
+     * to maintain abstraction from MainActivity
+     */
     public static AccEngine accEngine;
-    public GsmEngine gsmEngine;
+    public static GsmEngine gsmEngine;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a

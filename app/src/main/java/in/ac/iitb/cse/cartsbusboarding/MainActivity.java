@@ -1,6 +1,8 @@
 package in.ac.iitb.cse.cartsbusboarding;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,11 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
@@ -35,9 +34,8 @@ import in.ac.iitb.cse.cartsbusboarding.gsm.GsmListener;
 public class MainActivity extends ActionBarActivity {
 
     public static final String _ClassName = MainActivity.class.getSimpleName();
-    public AccEngine accEngine;
+    public static AccEngine accEngine;
     public GsmEngine gsmEngine;
-    static Timer pollingTaskTimer;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -78,46 +76,32 @@ public class MainActivity extends ActionBarActivity {
         accEngine = new AccEngine(this.getApplicationContext());
     }
 
+    /**
+     * You can use this generic function to check whether or not a service is
+     * available in ActivityManager's RunningServiceInfo list
+     *
+     * @param serviceClass Any service_name.class that you need to check
+     * @return boolean depending on whether service in ActivityManager or not
+     */
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void pollingButtonClicked(View v) {
         Button pollingButton = (Button) findViewById(R.id.button_polling);
-        if (pollingTaskTimer == null ) {
-            pollingButton.setText("Stop Polling");
-            pollingTaskTimer = new Timer();
-            TimerTask doAsynchronousTask = new TimerTask() {
-                boolean showedStartToast = false;
-                @Override
-                public boolean cancel() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "Polling Stopped", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    return super.cancel();
-                }
-
-                @Override
-                public void run() {
-                    if (!showedStartToast) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), "Polling Started", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        showedStartToast = true;
-                    }
-                    Log.i(_ClassName, "pollingTaskTimed started");
-                    PollingTask pollingTaskTimed = new PollingTask();
-                    pollingTaskTimed.execute();
-                    // PerformBackgroundTask this class is the class that extends AsynchTask
-                }
-            };
-            pollingTaskTimer.schedule(doAsynchronousTask, 0, 5000); //execute in every 5000 ms
-        } else {
+        if (isMyServiceRunning(PollingService.class)) {
             pollingButton.setText("Start Polling");
-            pollingTaskTimer.cancel();
-            pollingTaskTimer = null; //XXX
+            stopService(new Intent(this, PollingService.class));
+        } else {
+            pollingButton.setText("Stop Polling");
+            Intent serviceIntent = new Intent(this, PollingService.class);
+            startService(serviceIntent);
         }
 
     }

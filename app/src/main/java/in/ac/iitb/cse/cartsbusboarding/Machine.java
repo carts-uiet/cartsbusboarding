@@ -28,8 +28,7 @@ public class Machine {
     final String _Classname = this.getClass().getSimpleName();
     AccEngine mAccEngine;
     Context mContext;
-    svm_model model;
-
+    private static svm_model model_instance = null;
 
     /**
      *
@@ -38,7 +37,8 @@ public class Machine {
     public Machine(AccEngine accEngine){
         mAccEngine = accEngine;
         mContext = accEngine.getContext();
-        model = trainMachine();
+        if (model_instance == null)
+            model_instance = trainMachine();
     }
     /**
      * Checks if staircase pattern found in acc buffer data
@@ -195,7 +195,7 @@ public class Machine {
             }
             //Log.e("train idx",""+data.label.get(i));
 
-            idx[i] = svm_predict(model, x);
+            idx[i] = svm_predict(model_instance, x);
             print_idx += idx[i] + " ";
         }
 

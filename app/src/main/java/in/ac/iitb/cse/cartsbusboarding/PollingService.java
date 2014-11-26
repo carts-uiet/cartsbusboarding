@@ -13,6 +13,7 @@ import java.util.TimerTask;
 
 public class PollingService extends Service {
     public final String _ClassName = this.getClass().getSimpleName();
+    public final int POLLING_DELAY = 5000; //TODO: Get from preferences
     Timer pollingTaskTimer;
 
     public PollingService() {
@@ -35,7 +36,7 @@ public class PollingService extends Service {
                 // PerformBackgroundTask this class is the class that extends AsynchTask
             }
         };
-        pollingTaskTimer.schedule(doAsynchronousTask, 0, 5000); //execute in every 5000 ms
+        pollingTaskTimer.schedule(doAsynchronousTask, 0, POLLING_DELAY); //execute in every 5000 ms
     }
 
     public class PollingTask extends AsyncTask<Void, Void, Void> {

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -67,7 +66,6 @@ public class MainActivity extends ActionBarActivity {
         init_gsm();
         init_acc();
     }
-
 
     /**
      * Setup different activity elements to show correct values onCreate
@@ -222,34 +220,6 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
             }
-            return null;
-        }
-    }
-
-    private class PollingTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            //XXX: PR uses its own featureCalc
-//            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
-//            boolean hasIt = patternRecognition.hasBoardedBus();
-//            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
-
-            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
-            if (patternRecognition.getAvg() != 2.0) {
-                /* Vibrate */
-                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vibe.vibrate(100);
-            }
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                }
-            });
             return null;
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,9 +17,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
@@ -32,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
     public static final String _ClassName = MainActivity.class.getSimpleName();
     public AccEngine accEngine;
     public GsmEngine gsmEngine;
+    static Timer pollingTaskTimer;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -70,6 +76,50 @@ public class MainActivity extends ActionBarActivity {
 
     private void init_acc() {
         accEngine = new AccEngine(this.getApplicationContext());
+    }
+
+    public void pollingButtonClicked(View v) {
+        Button pollingButton = (Button) findViewById(R.id.button_polling);
+        if (pollingTaskTimer == null ) {
+            pollingButton.setText("Stop Polling");
+            pollingTaskTimer = new Timer();
+            TimerTask doAsynchronousTask = new TimerTask() {
+                boolean showedStartToast = false;
+                @Override
+                public boolean cancel() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Polling Stopped", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return super.cancel();
+                }
+
+                @Override
+                public void run() {
+                    if (!showedStartToast) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Polling Started", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        showedStartToast = true;
+                    }
+                    Log.i(_ClassName, "pollingTaskTimed started");
+                    PollingTask pollingTaskTimed = new PollingTask();
+                    pollingTaskTimed.execute();
+                    // PerformBackgroundTask this class is the class that extends AsynchTask
+                }
+            };
+            pollingTaskTimer.schedule(doAsynchronousTask, 0, 5000); //execute in every 5000 ms
+        } else {
+            pollingButton.setText("Start Polling");
+            pollingTaskTimer.cancel();
+            pollingTaskTimer = null; //XXX
+        }
+
     }
 
     public void textViewClicked(View v) {
@@ -178,8 +228,36 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private class PollingTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //XXX: PR uses its own featureCalc
+//            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
+//            boolean hasIt = patternRecognition.hasBoardedBus();
+//            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
+
+            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
+            if (patternRecognition.getAvg() != 2.0) {
+                /* Vibrate */
+                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                vibe.vibrate(100);
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                }
+            });
+            return null;
+        }
+    }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;

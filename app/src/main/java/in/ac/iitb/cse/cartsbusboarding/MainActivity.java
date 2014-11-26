@@ -152,7 +152,8 @@ public class MainActivity extends ActionBarActivity {
                         twData.setText(Html.fromHtml(
 //                                        "HasBoarded: " + hasIt +
                                         "<br/>"
-                                                + "hasBoarded: " + patternRecognition.hasBoardedBus()
+//                                                + "hasBoarded: " + patternRecognition.hasBoardedBus()
+                                                + "Average IDX: " + patternRecognition.getAvg()
                                                 + "<br/>"
                                                 + "TIME DOMAIN FEATURES:"
                                                 + "<br/>"

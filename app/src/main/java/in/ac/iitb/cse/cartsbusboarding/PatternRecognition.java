@@ -22,4 +22,9 @@ public class PatternRecognition {
 
         return false;
     }
+
+    public double getAvg() {
+        Machine machine = new Machine(accEngine);
+        return machine.getAvgIdx();
+    }
 }

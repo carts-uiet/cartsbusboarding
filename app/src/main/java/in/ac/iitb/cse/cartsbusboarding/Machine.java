@@ -57,6 +57,19 @@ public class Machine {
     }
 
     /**
+     * @return the average idx values
+     */
+    public double getAvgIdx() {
+        double[] idx = testMachine();
+        double avg = 0;
+        for(double idxVal : idx) {
+            avg += idxVal;
+        }
+        avg /= idx.length;
+        return avg;
+    }
+
+    /**
      * Set the parameter values for training
      * @return
      */

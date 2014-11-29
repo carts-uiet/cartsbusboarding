@@ -3,6 +3,8 @@
     package="in.ac.iitb.cse.cartsbusboarding" >
 
     <!-- PERMISSIONS -->
+    <!-- To vibrate on shake -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- GsmEngine -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

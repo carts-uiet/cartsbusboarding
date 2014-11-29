@@ -62,11 +62,14 @@ public class Machine {
     public double getAvgIdx() {
         double[] idx = testMachine();
         double avg = 0;
+        int count1=0, count2=0;
         for(double idxVal : idx) {
+            if (idxVal == 1.0)  count1++;
+            if (idxVal == 2.0)  count2++;
             avg += idxVal;
         }
         avg /= idx.length;
-        Log.i(_ClassName, "Avg IDX: "+avg);
+        Log.i(_ClassName, "Avg IDX: "+avg+" with "+count1+" 1s & "+count2+" 2s");
         return avg;
     }
 

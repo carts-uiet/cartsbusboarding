@@ -25,7 +25,7 @@ import static libsvm.svm.svm_train;
  * Applies machine learning
  */
 public class Machine {
-    final String _Classname = this.getClass().getSimpleName();
+    final String _ClassName = this.getClass().getSimpleName();
     AccEngine mAccEngine;
     Context mContext;
     private static svm_model model_instance = null;
@@ -66,6 +66,7 @@ public class Machine {
             avg += idxVal;
         }
         avg /= idx.length;
+        Log.i(_ClassName, "Avg IDX: "+avg);
         return avg;
     }
 
@@ -129,7 +130,7 @@ public class Machine {
             }
 
             svm_model model = svm_train(prob, parameter);
-            Log.wtf(_Classname, "Model: "+model.toString());
+            Log.wtf(_ClassName, "Model: "+model.toString());
             return model;
         } catch (IOException e) {
             e.printStackTrace();
@@ -159,7 +160,7 @@ public class Machine {
                 double feature_value = features[rowIndex][colIndex];
                 output_strings += (rowIndex+1)+":"+feature_value+" ";
             }
-            Log.d(_Classname,output_strings);
+            Log.d(_ClassName,output_strings);
             output_strings += "\n";
         }
         //XXX: This is just one line!
@@ -187,7 +188,7 @@ public class Machine {
             for (Integer feature : tmp.keySet()) {
                 x[featureIndex] = new svm_node();
                 x[featureIndex].index = feature;
-//                Log.d(_Classname+" feature value",""+tmp.get(feature));
+//                Log.d(_ClassName+" feature value",""+tmp.get(feature));
                 x[featureIndex].value = tmp.get(feature);
                 //Log.e("train index:value",x[featureIndex].index+":"+x[featureIndex].value);
 
@@ -199,7 +200,7 @@ public class Machine {
             print_idx += idx[i] + " ";
         }
 
-        Log.i(_Classname, "Prediction: " + print_idx);
+        Log.i(_ClassName, "Prediction: " + print_idx);
         return idx;
     }
 

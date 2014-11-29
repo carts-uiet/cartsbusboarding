@@ -5,24 +5,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PollingService extends Service {
     public final String _ClassName = this.getClass().getSimpleName();
-    public int prefPollingDelay; //TODO: Get from preferences
+    public int prefPollingDelay;
     private boolean prefVibrate;
     private double prefAccuracy;
+    private Handler handler;
+    Context mContext;
     Timer pollingTaskTimer;
+
+    @Override
+    public void onDestroy() {
+        pollingTaskTimer.cancel();
+        super.onDestroy();
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        handler = new Handler();
+        mContext = this;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         // Display a notification about us starting.
         prefVibrate = preferences.getBoolean(SettingsActivity.KEY_ENABLE_VIBE,
@@ -44,7 +56,12 @@ public class PollingService extends Service {
             @Override
             public void run() {
                 if (!showedStartToast) {
-//                    Toast.makeText(getApplicationContext(), "Polling Started", Toast.LENGTH_SHORT).show();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mContext, "Polling Started", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     showedStartToast = true;
                 }
                 Log.i(_ClassName, "pollingTaskTimed started");
@@ -70,13 +87,19 @@ public class PollingService extends Service {
 //            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
 
             PatternRecognition patternRecognition = new PatternRecognition(MainActivity.accEngine);
-            double avg = patternRecognition.getAvg();
+            final double avg = patternRecognition.getAvg();
             if (avg <= prefAccuracy) {
                 /* Vibrate */
                 if (prefVibrate) {
                     Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     vibe.vibrate(100);
                 }
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext, "Average: "+avg, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             return null;
         }

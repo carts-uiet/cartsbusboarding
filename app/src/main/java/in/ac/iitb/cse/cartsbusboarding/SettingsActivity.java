@@ -43,6 +43,8 @@ public class SettingsActivity extends PreferenceActivity {
     public static final boolean KEY_ENABLE_VIBE_DEFAULT = true;
     public static final String KEY_SYNC_FREQ = "sync_frequency";
     public static final int KEY_SYNC_FREQ_DEFAULT = 5000;
+    public static final String KEY_ACCURACY = "accuracy";
+    public static final float KEY_ACCURACY_DEFAULT = 1.800f;
 
 
     @Override
@@ -254,6 +256,7 @@ public class SettingsActivity extends PreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+            bindPreferenceSummaryToValue(findPreference("accuracy"));
         }
     }
 }

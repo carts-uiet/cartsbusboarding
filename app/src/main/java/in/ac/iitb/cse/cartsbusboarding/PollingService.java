@@ -3,9 +3,11 @@ package in.ac.iitb.cse.cartsbusboarding;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.Timer;
@@ -13,10 +15,25 @@ import java.util.TimerTask;
 
 public class PollingService extends Service {
     public final String _ClassName = this.getClass().getSimpleName();
-    public final int POLLING_DELAY = 5000; //TODO: Get from preferences
+    public int prefPollingDelay; //TODO: Get from preferences
+    private boolean prefVibrate;
+    private double prefAccuracy;
     Timer pollingTaskTimer;
 
-    public PollingService() {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // Display a notification about us starting.
+        prefVibrate = preferences.getBoolean(SettingsActivity.KEY_ENABLE_VIBE,
+                                                SettingsActivity.KEY_ENABLE_VIBE_DEFAULT);
+        String prefStringAccuracy = preferences.getString(SettingsActivity.KEY_ACCURACY,
+                                                    ""+SettingsActivity.KEY_ACCURACY_DEFAULT);
+        prefAccuracy = Float.parseFloat(prefStringAccuracy);
+        String prefStringPollingDelay = preferences.getString(SettingsActivity.KEY_SYNC_FREQ,
+                                                    ""+SettingsActivity.KEY_SYNC_FREQ_DEFAULT);
+        prefPollingDelay = Integer.parseInt(prefStringPollingDelay);
+        Log.i(_ClassName, "Prefs: " + prefVibrate + prefPollingDelay + prefAccuracy);
         startPollingTimer();
     }
 
@@ -36,7 +53,7 @@ public class PollingService extends Service {
                 // PerformBackgroundTask this class is the class that extends AsynchTask
             }
         };
-        pollingTaskTimer.schedule(doAsynchronousTask, 0, POLLING_DELAY); //execute in every 5000 ms
+        pollingTaskTimer.schedule(doAsynchronousTask, 0, prefPollingDelay); //execute in every 5000 ms
     }
 
     public class PollingTask extends AsyncTask<Void, Void, Void> {
@@ -53,10 +70,13 @@ public class PollingService extends Service {
 //            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
 
             PatternRecognition patternRecognition = new PatternRecognition(MainActivity.accEngine);
-            if (patternRecognition.getAvg() != 2.0) {
+            double avg = patternRecognition.getAvg();
+            if (avg <= prefAccuracy) {
                 /* Vibrate */
-                Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vibe.vibrate(100);
+                if (prefVibrate) {
+                    Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    vibe.vibrate(100);
+                }
             }
             return null;
         }

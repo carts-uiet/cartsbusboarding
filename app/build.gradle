@@ -29,4 +29,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'org.apache.commons:commons-math3:3.0'
     compile 'tw.edu.ntu.csie:libsvm:3.17'
+    compile 'com.android.support:support-v4:21.0.0'
 }

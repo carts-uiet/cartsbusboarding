@@ -49,6 +49,8 @@ import in.ac.iitb.cse.cartsbusboarding.tasks.GsmDisplayTask;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 import in.ac.iitb.cse.cartsbusboarding.utils.MainFragment;
 
+import static in.ac.iitb.cse.cartsbusboarding.utils.Util.isMyServiceRunning;
+
 public class MainActivity extends AppCompatActivity implements AccDisplayController {
 
     private static final String TAG = LogUtils.makeLogTag(MainActivity.class);
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
      */
     void setup_display() {
         Button pollingButton = (Button) findViewById(R.id.button_polling);
-        if (isMyServiceRunning(PollingService.class)) {
+        if (isMyServiceRunning(this, PollingService.class)) {
             pollingButton.setText("Stop Polling");
         } else {
             pollingButton.setText("Start Polling");
@@ -116,26 +118,10 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         accEngine = new AccEngine(this.getApplicationContext());
     }
 
-    /**
-     * You can use this generic function to check whether or not a service is
-     * available in ActivityManager's RunningServiceInfo list
-     *
-     * @param serviceClass Any service_name.class that you need to check
-     * @return boolean depending on whether service in ActivityManager or not
-     */
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public void pollingButtonClicked(View v) {
         Button pollingButton = (Button) findViewById(R.id.button_polling);
-        if (isMyServiceRunning(PollingService.class)) {
+        if (isMyServiceRunning(this, PollingService.class)) {
             pollingButton.setText("Start Polling");
             stopService(new Intent(this, PollingService.class));
         } else {

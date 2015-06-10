@@ -39,7 +39,7 @@
             android:onClick="textViewClicked"
             android:paddingBottom="40dp"
             android:paddingTop="40dp"
-            android:text="GSM Data"
+            android:text="@string/placeholder_gsm_data"
             android:textColor="@color/holo_orange_light"
             android:textSize="20sp"
             android:textStyle="bold"/>
@@ -55,7 +55,7 @@
             android:gravity="center"
             android:isScrollContainer="true"
             android:onClick="textViewClicked"
-            android:text="Acceleration Data"
+            android:text="@string/placeholder_acc_data"
             android:textColor="@color/holo_orange_light"
             android:textSize="20sp"
             android:textStyle="bold"/>

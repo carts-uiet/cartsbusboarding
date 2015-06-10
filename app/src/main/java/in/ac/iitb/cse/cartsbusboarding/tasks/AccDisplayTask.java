@@ -47,8 +47,9 @@ public class AccDisplayTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        mController.displayAcc(mAccDisplayData);
+        if (mAccDisplayData != null) {
+            mController.displayAcc(mAccDisplayData);
+        }
     }
-
 
 }

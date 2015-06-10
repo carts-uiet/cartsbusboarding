@@ -61,6 +61,9 @@ public class PollingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        initialize_dagger_graph_to_inject_dependency();
+
         handler = new Handler();
         mContext = this;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -75,6 +78,10 @@ public class PollingService extends Service {
         prefPollingDelay = Integer.parseInt(prefStringPollingDelay);
         LOGI(TAG, "Prefs: " + prefVibrate + prefPollingDelay + prefAccuracy);
         startPollingTimer();
+    }
+
+    private void initialize_dagger_graph_to_inject_dependency() {
+        ((MainApplication) getApplication()).component().inject(this);
     }
 
     private void startPollingTimer() {

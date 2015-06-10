@@ -9,4 +9,5 @@ import javax.inject.Singleton;
 public interface MainApplicationComponent {
     void inject(MainApplication application);
     void inject(MainActivity demoActivity);
+    void inject(PollingService pollingService);
 }

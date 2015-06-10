@@ -27,12 +27,15 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
 import java.util.Queue;
 
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGI;
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGV;
+
 public class AccService extends Service {
-    private static final String TAG = AccService.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(AccService.class);
     // This is the object that receives interactions from clients. See
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
@@ -43,8 +46,8 @@ public class AccService extends Service {
         super.onCreate();
         /** Context needed to create sensor manager in listener */
         accListener = new AccListener(this.getApplicationContext());
-        Log.v(TAG, "Started ! ! !");
-        Log.i(TAG, "SensorSpeed: " + accListener.getSensorSpeed());
+        LOGV(TAG, "Started ! ! !");
+        LOGI(TAG, "SensorSpeed: " + accListener.getSensorSpeed());
     }
 
     /* Getter */

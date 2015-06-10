@@ -29,12 +29,15 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.Location;
 import android.os.IBinder;
-import android.util.Log;
 import in.ac.iitb.cse.cartsbusboarding.common.Engine;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
 import java.util.Calendar;
 
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGE;
+
 public class GsmEngine implements Engine {
+    public static final String TAG = LogUtils.makeLogTag(GsmEngine.class);
     private final Context mContext;
     private GsmService mGsmService;
     private GsmData data;
@@ -57,7 +60,7 @@ public class GsmEngine implements Engine {
                 try {
                     mGsmService = ((GsmService.LocalBinder) service).getService();
                 } catch (Throwable t) {
-                    Log.e("GsmEngine", "mServiceConnection.onServiceConnected() -> " + t);
+                    LOGE(TAG, "mServiceConnection.onServiceConnected() -> " + t);
                 }
             }// onServiceConnected()
 
@@ -123,9 +126,9 @@ public class GsmEngine implements Engine {
         double dist = getDistance(source, dest);
 
         // Temporary logs
-        Log.e("Time: ", "" + (end_time - start_time));
-        Log.e("Source", "" + saved_source.toString());
-        Log.e("Destination", "" + saved_destination.toString());
+        LOGE(TAG, "Time: " + (end_time - start_time));
+        LOGE(TAG, "Source" + saved_source.toString());
+        LOGE(TAG, "Destination" + saved_destination.toString());
         return (dist / time);
     }
 
@@ -142,8 +145,8 @@ public class GsmEngine implements Engine {
         double dist = getDistance(saved_source, saved_destination);
 
         // Temporary logs
-        Log.e("Source", "" + saved_source.toString());
-        Log.e("Destination", "" + saved_destination.toString());
+        LOGE(TAG, "Source" + saved_source.toString());
+        LOGE(TAG, "Destination" + saved_destination.toString());
         long time = saved_endTime - saved_startTime;
         return (dist / time);
     }

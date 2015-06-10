@@ -1,14 +1,16 @@
 package in.ac.iitb.cse.cartsbusboarding.tasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import in.ac.iitb.cse.cartsbusboarding.controllers.AccDisplayController;
 import in.ac.iitb.cse.cartsbusboarding.data.GsmDisplayData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
+
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGI;
 
 public class GsmDisplayTask extends AsyncTask<Void, Void, Void> {
-    private static final String TAG = GsmDisplayTask.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(GsmDisplayTask.class);
     private GsmEngine mGsmEngine;
     private AccDisplayController mController;
     private GsmDisplayData mGsmDisplayData;
@@ -21,9 +23,9 @@ public class GsmDisplayTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         final GsmData gsmData = mGsmEngine.getCurrentData();
-        Log.i(TAG, "Received: " + gsmData);
+        LOGI(TAG, "Received: " + gsmData);
         if (gsmData != null) {
-            Log.i(TAG, "Data- " + gsmData.toString());
+            LOGI(TAG, "Data- " + gsmData.toString());
             mGsmDisplayData = new GsmDisplayData(
                     mGsmEngine.getSpeed(),
                     mGsmEngine.myGetSpeed(),

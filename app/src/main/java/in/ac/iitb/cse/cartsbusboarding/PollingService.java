@@ -32,14 +32,16 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGI;
+
 public class PollingService extends Service {
-    private static final String TAG = PollingService.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(PollingService.class);
     public int prefPollingDelay;
     Context mContext;
     Timer pollingTaskTimer;
@@ -68,7 +70,7 @@ public class PollingService extends Service {
         String prefStringPollingDelay = preferences.getString(SettingsActivity.KEY_SYNC_FREQ,
                 "" + SettingsActivity.KEY_SYNC_FREQ_DEFAULT);
         prefPollingDelay = Integer.parseInt(prefStringPollingDelay);
-        Log.i(TAG, "Prefs: " + prefVibrate + prefPollingDelay + prefAccuracy);
+        LOGI(TAG, "Prefs: " + prefVibrate + prefPollingDelay + prefAccuracy);
         startPollingTimer();
     }
 
@@ -88,7 +90,7 @@ public class PollingService extends Service {
                     });
                     showedStartToast = true;
                 }
-                Log.i(TAG, "pollingTaskTimed started");
+                LOGI(TAG, "pollingTaskTimed started");
                 PollingTask pollingTaskTimed = new PollingTask();
                 pollingTaskTimed.execute();
                 // PerformBackgroundTask this class is the class that extends AsynchTask

@@ -24,9 +24,9 @@
 package in.ac.iitb.cse.cartsbusboarding;
 
 import android.content.Context;
-import android.util.Log;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.acc.FeatureCalculator;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 import libsvm.svm_model;
 import libsvm.svm_node;
 import libsvm.svm_parameter;
@@ -36,6 +36,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.*;
 import static libsvm.svm.svm_predict;
 import static libsvm.svm.svm_train;
 
@@ -43,7 +44,7 @@ import static libsvm.svm.svm_train;
  * Applies machine learning
  */
 public class Machine {
-    private static final String TAG = Machine.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(Machine.class);
     private static svm_model model_instance = null;
     AccEngine mAccEngine;
     Context mContext;
@@ -88,7 +89,7 @@ public class Machine {
             avg += idxVal;
         }
         avg /= idx.length;
-        Log.i(TAG, "Avg IDX: " + avg + " with " + count1 + " 1s & " + count2 + " 2s");
+        LOGI(TAG, "Avg IDX: " + avg + " with " + count1 + " 1s & " + count2 + " 2s");
         return avg;
     }
 
@@ -152,7 +153,7 @@ public class Machine {
             }
 
             svm_model model = svm_train(prob, parameter);
-            Log.wtf(TAG, "Model: " + model.toString());
+            LOGW(TAG, "Model: " + model.toString());
             return model;
         } catch (IOException e) {
             e.printStackTrace();
@@ -182,7 +183,7 @@ public class Machine {
                 double feature_value = features[rowIndex][colIndex];
                 output_strings += (rowIndex + 1) + ":" + feature_value + " ";
             }
-            Log.d(TAG, output_strings);
+            LOGD(TAG, output_strings);
             output_strings += "\n";
         }
         //XXX: This is just one line!
@@ -210,19 +211,19 @@ public class Machine {
             for (Integer feature : tmp.keySet()) {
                 x[featureIndex] = new svm_node();
                 x[featureIndex].index = feature;
-//                Log.d(TAG+" feature value",""+tmp.get(feature));
+//                LOGD(TAG+" feature value",""+tmp.get(feature));
                 x[featureIndex].value = tmp.get(feature);
-                //Log.e("train index:value",x[featureIndex].index+":"+x[featureIndex].value);
+                //LOGE("train index:value",x[featureIndex].index+":"+x[featureIndex].value);
 
                 featureIndex++;
             }
-            //Log.e("train idx",""+data.label.get(i));
+            //LOGE("train idx",""+data.label.get(i));
 
             idx[i] = svm_predict(model_instance, x);
             print_idx += idx[i] + " ";
         }
 
-        Log.i(TAG, "Prediction: " + print_idx);
+        LOGI(TAG, "Prediction: " + print_idx);
         return idx;
     }
 

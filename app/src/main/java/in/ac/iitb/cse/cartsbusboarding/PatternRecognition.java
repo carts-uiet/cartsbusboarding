@@ -24,9 +24,10 @@
 package in.ac.iitb.cse.cartsbusboarding;
 
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
 public class PatternRecognition {
-    public static final String TAG = PatternRecognition.class.getClass().getSimpleName();
+    public static final String TAG = LogUtils.makeLogTag(PatternRecognition.class);
     private AccEngine accEngine;
 
     public PatternRecognition(AccEngine accEngine) {

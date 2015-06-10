@@ -28,18 +28,20 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.widget.Toast;
 import in.ac.iitb.cse.cartsbusboarding.R;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGV;
 
 /**
  * Main Listener that receives the accelerometer data
  */
 public class AccListener implements SensorEventListener {
-    private static final String TAG = AccListener.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(AccListener.class);
     private final SensorManager sensorManager;
     private final Sensor sensor;
     /**
@@ -68,8 +70,8 @@ public class AccListener implements SensorEventListener {
         this.sensorManager.registerListener(this, sensor, getSensorSpeed());
         localBuffer = new ConcurrentLinkedQueue();
         clearBuffer();
-        Log.v(TAG, "SensorList: " + sensorList.toString());
-        Log.v(TAG, "Sensor MinDelay: " + sensor.getMinDelay() + " microseconds");
+        LOGV(TAG, "SensorList: " + sensorList.toString());
+        LOGV(TAG, "Sensor MinDelay: " + sensor.getMinDelay() + " microseconds");
     }
 
     @Override

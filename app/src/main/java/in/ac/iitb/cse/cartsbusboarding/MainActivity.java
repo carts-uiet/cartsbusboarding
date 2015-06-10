@@ -46,11 +46,12 @@ import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmListener;
 import in.ac.iitb.cse.cartsbusboarding.tasks.AccDisplayTask;
 import in.ac.iitb.cse.cartsbusboarding.tasks.GsmDisplayTask;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 import in.ac.iitb.cse.cartsbusboarding.utils.MainFragment;
 
 public class MainActivity extends AppCompatActivity implements AccDisplayController {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(MainActivity.class);
     /**
      * No need to pass Engine to classes outside acc/gsm packages
      * Still leaving the classes(acc/gsm module) where it's passed as it is,

@@ -28,15 +28,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.util.Log;
 import in.ac.iitb.cse.cartsbusboarding.common.Engine;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGE;
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGV;
+
 public class AccEngine implements Engine {
-    private static final String TAG = AccEngine.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(AccEngine.class);
     private static final int bufferSize = 1000;
     private static final long listenerPollingTime = 500;
     private final Context mContext;
@@ -54,7 +57,7 @@ public class AccEngine implements Engine {
     public AccEngine(Context context) {
         mContext = context;
         mContext.startService(new Intent(mContext, AccService.class));
-        Log.e("Engine", "Acc");
+        LOGE(TAG, "AccEngine starting");
         initServiceConnection();
         /** Started from here bcoz it will work only after service has started */
         startEngineFiller();
@@ -72,7 +75,7 @@ public class AccEngine implements Engine {
                 try {
                     mAccService = ((AccService.LocalBinder) service).getService();
                 } catch (Throwable t) {
-                    Log.e(TAG, "mServiceConnection.onServiceConnected() -> " + t);
+                    LOGE(TAG, "mServiceConnection.onServiceConnected() -> " + t);
                 }
             }// onServiceConnected()
 
@@ -131,7 +134,7 @@ public class AccEngine implements Engine {
                 // If mainBuffer is not of the desired size
                 while (!(localDataQueue.isEmpty())) {
                     if (mainBuffer.size() < bufferSize) {
-                        Log.d(TAG, "New Value: " + localDataQueue.peek());
+                        LOGV(TAG, "New Value: " + localDataQueue.peek());
                         //mainBuffer.add(localDataQueue.remove());
                         mainBuffer.offer(localDataQueue.remove());
                     } else {

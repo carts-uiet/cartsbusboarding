@@ -1,16 +1,18 @@
 package in.ac.iitb.cse.cartsbusboarding.tasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import in.ac.iitb.cse.cartsbusboarding.PatternRecognition;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.acc.FeatureCalculator;
 import in.ac.iitb.cse.cartsbusboarding.controllers.AccDisplayController;
 import in.ac.iitb.cse.cartsbusboarding.data.AccDisplayData;
+import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
+
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGI;
 
 public class AccDisplayTask extends AsyncTask<Void, Void, Void> {
-    private static final String TAG = AccDisplayTask.class.getSimpleName();
+    private static final String TAG = LogUtils.makeLogTag(AccDisplayTask.class);
     private AccEngine mAccEngine;
     private AccDisplayController mController;
     private AccDisplayData mAccDisplayData;
@@ -24,7 +26,7 @@ public class AccDisplayTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         AccData accData = mAccEngine.getCurrentData();
         if (accData != null) {
-            Log.i(TAG, "Data- " + accData);
+            LOGI(TAG, "Data- " + accData);
             FeatureCalculator featureCalculator = new FeatureCalculator(mAccEngine);
             PatternRecognition patternRecognition = new PatternRecognition(mAccEngine);
 

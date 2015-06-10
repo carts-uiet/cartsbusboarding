@@ -29,12 +29,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
+import in.ac.iitb.cse.cartsbusboarding.common.Engine;
 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class AccEngine {
+public class AccEngine implements Engine {
     private static final String TAG = AccEngine.class.getSimpleName();
     private static final int bufferSize = 1000;
     private static final long listenerPollingTime = 500;
@@ -94,11 +95,13 @@ public class AccEngine {
     public Context getContext() {
         return mContext;
     }
+
     /**
      * Return most recent acceleration value
      *
      * @return most recent acceleration value as AccData
      */
+    @Override
     public AccData getCurrentData() {
         data = mAccService.getCurrentData();
         return data;

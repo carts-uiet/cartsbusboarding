@@ -30,13 +30,11 @@ import android.content.ServiceConnection;
 import android.location.Location;
 import android.os.IBinder;
 import android.util.Log;
+import in.ac.iitb.cse.cartsbusboarding.common.Engine;
 
 import java.util.Calendar;
 
-/**
- * Created by chaudhary on 10/23/14.
- */
-public class GsmEngine {
+public class GsmEngine implements Engine {
     private final Context mContext;
     private GsmService mGsmService;
     private GsmData data;
@@ -71,6 +69,7 @@ public class GsmEngine {
         mContext.bindService(new Intent(mContext, GsmService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    @Override
     public GsmData getCurrentData() {
         data = mGsmService.getCurrentData();
         return data;

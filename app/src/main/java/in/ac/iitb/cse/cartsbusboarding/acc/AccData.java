@@ -23,18 +23,17 @@
 
 package in.ac.iitb.cse.cartsbusboarding.acc;
 
-/**
- * Created by chaudhary on 10/23/14.
- */
-public class AccData {
+import in.ac.iitb.cse.cartsbusboarding.common.Data;
+import lombok.Getter;
+
+@Getter
+public class AccData implements Data {
     /*
      * Data Encapsulation
      */
-    public float x;
-    public float y;
-    public float z;
-
-    public AccData() { }
+    private float x;
+    private float y;
+    private float z;
 
     public AccData(float x, float y, float z) {
         this.x = x;
@@ -51,29 +50,4 @@ public class AccData {
         base += ")";
         return base;
     }
-
-    public float getX() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public float getZ() {
-        return z;
-    }
-
-    public void setZ(float z) {
-        this.z = z;
-    }
-
 }

@@ -27,9 +27,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 
-/**
- * Created by chaudhary on 10/17/14.
- */
 public class GsmListener implements LocationListener {
     private GsmData data;
 
@@ -47,11 +44,7 @@ public class GsmListener implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        data = new GsmData();
-        data.location = location;
-        data.gsmLat = location.getLatitude();
-        data.gsmLong = location.getLongitude();
-        data.gsmAccuracy = location.getAccuracy();
+        data = new GsmData(location);
     }
 
     public GsmData getCurrentData() {
@@ -59,9 +52,9 @@ public class GsmListener implements LocationListener {
     }
 
     public boolean hasSpeed(){
-        return data.location.hasSpeed();
+        return data.getLocation().hasSpeed();
     }
     public float getSpeed(){
-        return data.location.getSpeed();
+        return data.getLocation().getSpeed();
     }
 }

@@ -24,21 +24,25 @@
 package in.ac.iitb.cse.cartsbusboarding.gsm;
 
 import android.location.Location;
+import in.ac.iitb.cse.cartsbusboarding.common.Data;
+import lombok.Getter;
 
-/**
- * Created by chaudhary on 10/23/14.
- */
-public class GsmData {
-    /*
-     * Data Encapsulation
-     */
-    public Location location;
+@Getter
+public class GsmData implements Data {
+    private Location location;
     /** Get the latitude, in degrees. */
-    public double gsmLat;
+    private double gsmLat;
     /** Get the longitude, in degrees. */
-    public double gsmLong;
+    private double gsmLong;
     /** Get the estimated accuracy of this location, in meters. */
-    public float gsmAccuracy;
+    private float gsmAccuracy;
+
+    public GsmData(Location location) {
+        this.location = location;
+        this.gsmLat = location.getLatitude();
+        this.gsmLong = location.getLongitude();
+        this.gsmAccuracy = location.getAccuracy();
+    }
 
     @Override
     public String toString() {
@@ -49,18 +53,4 @@ public class GsmData {
         base += ")";
         return base;
     }
-
-    /* Getters */
-    public double getGsmLat() {
-        return gsmLat;
-    }
-
-    public double getGsmLong() {
-        return gsmLong;
-    }
-
-    public float getGsmAccuracy() {
-        return gsmAccuracy;
-    }
-
 }

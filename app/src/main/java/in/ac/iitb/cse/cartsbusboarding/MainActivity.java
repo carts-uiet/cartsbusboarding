@@ -150,9 +150,9 @@ public class MainActivity extends ActionBarActivity {
         gpsMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
         final GsmData gpsData = gpsListener.getCurrentData();
         float gpsSpeed = -1;
-        if (gpsData!=null && gpsData.location != null) {
+        if (gpsData!=null && gpsData.getLocation() != null) {
             TextView twData = (TextView) findViewById(R.id.section_data_gsm);
-            gpsSpeed = gpsData.location.getSpeed();
+            gpsSpeed = gpsData.getLocation().getSpeed();
             twData.setText(twData.getText() + "GPS Speed:" + gpsSpeed);
         }
         /* Hack ends */

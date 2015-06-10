@@ -32,6 +32,7 @@ import libsvm.svm_node;
 import libsvm.svm_parameter;
 import libsvm.svm_problem;
 
+import javax.inject.Inject;
 import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,16 +47,17 @@ import static libsvm.svm.svm_train;
 public class Machine {
     private static final String TAG = LogUtils.makeLogTag(Machine.class);
     private static svm_model model_instance = null;
-    AccEngine mAccEngine;
-    Context mContext;
+    @Inject AccEngine mAccEngine;
+    @Inject Context mContext;
 
     /**
      *
      * @param accEngine needed to get the features
      */
-    public Machine(AccEngine accEngine) {
+    @Inject
+    public Machine(AccEngine accEngine, Context context) {
         mAccEngine = accEngine;
-        mContext = accEngine.getContext();
+        mContext = context;
         if (model_instance == null)
             model_instance = trainMachine();
     }

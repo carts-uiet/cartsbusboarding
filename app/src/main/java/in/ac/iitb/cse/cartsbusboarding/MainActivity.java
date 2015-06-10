@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         gsmRefreshLayout.setRefreshing(true);
         new GsmDisplayTask(gsmEngine, MainActivity.this).execute();
         accRefreshLayout.setRefreshing(true);
-        new AccDisplayTask(accEngine, MainActivity.this).execute();
+        new AccDisplayTask(accEngine, MainActivity.this, this.getApplicationContext()).execute();
         /* Setup Display called here to make sure that the button text is right */
         setup_display();
         /* Hack begins */

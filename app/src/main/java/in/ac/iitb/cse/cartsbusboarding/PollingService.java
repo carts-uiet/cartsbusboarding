@@ -121,7 +121,7 @@ public class PollingService extends Service {
 //            boolean hasIt = patternRecognition.hasBoardedBus();
 //            Log.i(TAG, "HasBoardedBus: "+hasIt);
 
-            PatternRecognition patternRecognition = new PatternRecognition(mAccEngine);
+            PatternRecognition patternRecognition = new PatternRecognition(mAccEngine, PollingService.this.getApplicationContext());
             final double avg = patternRecognition.getAvg();
             if (avg <= prefAccuracy) {
                 /* Vibrate */

@@ -43,7 +43,7 @@ public class AccEngine implements Engine {
     private static final String TAG = LogUtils.makeLogTag(AccEngine.class);
     private static final int bufferSize = 1000;
     private static final long listenerPollingTime = 500;
-    @Inject final Context mContext;
+    @Inject Context mContext;
     private AccData data;
     private AccService mAccService;
     private EngineFillerThread engineFillerThread;
@@ -95,10 +95,6 @@ public class AccEngine implements Engine {
     private void startEngineFiller() {
         engineFillerThread = new EngineFillerThread();
         new Thread(engineFillerThread).start();
-    }
-
-    public Context getContext() {
-        return mContext;
     }
 
     /**

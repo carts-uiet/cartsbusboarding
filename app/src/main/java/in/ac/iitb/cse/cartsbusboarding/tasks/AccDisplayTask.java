@@ -1,5 +1,6 @@
 package in.ac.iitb.cse.cartsbusboarding.tasks;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import in.ac.iitb.cse.cartsbusboarding.PatternRecognition;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
@@ -18,11 +19,13 @@ public class AccDisplayTask extends AsyncTask<Void, Void, Void> {
     @Inject AccEngine mAccEngine;
     @Inject AccDisplayController mController;
     private AccDisplayData mAccDisplayData;
+    private Context mContext;
 
     @Inject
-    public AccDisplayTask(AccEngine accEngine, AccDisplayController controller) {
+    public AccDisplayTask(AccEngine accEngine, AccDisplayController controller, Context context) {
         this.mAccEngine = accEngine;
         this.mController = controller;
+        mContext = context;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class AccDisplayTask extends AsyncTask<Void, Void, Void> {
         if (accData != null) {
             LOGI(TAG, "Data- " + accData);
             FeatureCalculator featureCalculator = new FeatureCalculator(mAccEngine);
-            PatternRecognition patternRecognition = new PatternRecognition(mAccEngine);
+            PatternRecognition patternRecognition = new PatternRecognition(mAccEngine, mContext);
 
             // boolean hasIt = patternRecognition.hasBoardedBus();
             // Log.i(TAG, "HasBoardedBus: "+hasIt);

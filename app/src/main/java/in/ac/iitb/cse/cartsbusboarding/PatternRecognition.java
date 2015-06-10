@@ -23,20 +23,26 @@
 
 package in.ac.iitb.cse.cartsbusboarding;
 
+import android.content.Context;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
+import javax.inject.Inject;
+
 public class PatternRecognition {
     public static final String TAG = LogUtils.makeLogTag(PatternRecognition.class);
-    private AccEngine accEngine;
+    @Inject AccEngine accEngine;
+    @Inject Context context;
 
-    public PatternRecognition(AccEngine accEngine) {
+    @Inject
+    public PatternRecognition(AccEngine accEngine, Context context) {
         this.accEngine = accEngine;
+        this.context = context;
     }
 
     public boolean hasBoardedBus() {
         //if machine.accuracy > threshold
-        Machine machine = new Machine(accEngine);
+        Machine machine = new Machine(accEngine, context);
         if (machine.foundStairPattern()) {
             return true;
         }
@@ -46,7 +52,7 @@ public class PatternRecognition {
     }
 
     public double getAvg() {
-        Machine machine = new Machine(accEngine);
+        Machine machine = new Machine(accEngine, context);
         return machine.getAvgIdx();
     }
 }

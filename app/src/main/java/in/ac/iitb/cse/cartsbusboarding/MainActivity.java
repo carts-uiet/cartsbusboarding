@@ -39,16 +39,17 @@ import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.TextView;
-import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
-import in.ac.iitb.cse.cartsbusboarding.acc.FeatureCalculator;
+import in.ac.iitb.cse.cartsbusboarding.controllers.AccDisplayController;
+import in.ac.iitb.cse.cartsbusboarding.data.AccDisplayData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmListener;
+import in.ac.iitb.cse.cartsbusboarding.tasks.AccDisplayTask;
 
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AccDisplayController {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     /**
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void textViewClicked(View v) {
         new GsmDisplayTask().execute();
-        new AccDisplayTask().execute();
+        new AccDisplayTask(accEngine, MainActivity.this).execute();
         /* Setup Display called here to make sure that the button text is right */
         setup_display();
         /* Hack begins */
@@ -247,61 +248,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class AccDisplayTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            AccData accData = accEngine.getCurrentData();
-            if (accData != null) {
-                Log.i(TAG, "Data- " + accData);
-                FeatureCalculator featureCalculator = new FeatureCalculator(accEngine);
-                final double mean = featureCalculator.getMean();
-                final double std = featureCalculator.getStd();
-                final double dcComp = featureCalculator.getDCComponent();
-                final double energy = featureCalculator.getEnergy();
-                final double entropy = featureCalculator.getEntropy();
 
-//            featureCalculator.getMean(20);
-//            featureCalculator.getStd(20);
-//            featureCalculator.getDCComponent(20);
-//            featureCalculator.getEnergy(20);
-                //XXX: PR uses its own featureCalc
-//            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
-//            boolean hasIt = patternRecognition.hasBoardedBus();
-//            Log.i(TAG, "HasBoardedBus: "+hasIt);
+    @Override
+    public void displayAcc(AccDisplayData data) {
+        String format = "%.5f";
+        TextView twData = (TextView) findViewById(R.id.section_data_acc);
 
-                final PatternRecognition patternRecognition = new PatternRecognition(accEngine);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String format = "%.5f";
-                        TextView twData = (TextView) findViewById(R.id.section_data_acc);
-                        twData.setText(Html.fromHtml(
-//                                        "HasBoarded: " + hasIt +
-                                        "<br/>"
-//                                                + "hasBoarded: " + patternRecognition.hasBoardedBus()
-                                                + "Average IDX: " + patternRecognition.getAvg()
-                                                + "<br/>"
-                                                + "TIME DOMAIN FEATURES:"
-                                                + "<br/>"
-                                                + "Mean: " + String.format(format, mean)
-                                                + " m/s<sup><small> 2 </small></sup>"
-                                                + "<br/>"
-                                                + "Std: " + String.format(format, std)
-                                                + " m/s<sup><small> 2 </small></sup>"
-                                                + "<br/><br/>"
-                                                + "FREQUENCY DOMAIN FEATURES:"
-                                                + "<br/>"
-                                                + "DC Comp: " + String.format(format, dcComp)
-                                                + "<br/>"
-                                                + "Energy: " + String.format(format, energy)
-                                                + "<br/>"
-                                                + "Entropy: " + String.format(format, entropy))
-                        );
-                    }
-                });
-            }
-            return null;
-        }
+        twData.setText(Html.fromHtml("<br/>"
+                        + "Average IDX: " + data.getAvg()
+                        + "<br/>"
+                        + "TIME DOMAIN FEATURES:"
+                        + "<br/>"
+                        + "Mean: " + String.format(format, data.getMean())
+                        + " m/s<sup><small> 2 </small></sup>"
+                        + "<br/>"
+                        + "Std: " + String.format(format, data.getStd())
+                        + " m/s<sup><small> 2 </small></sup>"
+                        + "<br/><br/>"
+                        + "FREQUENCY DOMAIN FEATURES:"
+                        + "<br/>"
+                        + "DC Comp: " + String.format(format, data.getDcComp())
+                        + "<br/>"
+                        + "Energy: " + String.format(format, data.getEnergy())
+                        + "<br/>"
+                        + "Entropy: " + String.format(format, data.getEntropy()))
+        );
     }
 
     /**

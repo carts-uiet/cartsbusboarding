@@ -41,11 +41,11 @@ import java.util.TimerTask;
 public class PollingService extends Service {
     private static final String TAG = PollingService.class.getSimpleName();
     public int prefPollingDelay;
+    Context mContext;
+    Timer pollingTaskTimer;
     private boolean prefVibrate;
     private double prefAccuracy;
     private Handler handler;
-    Context mContext;
-    Timer pollingTaskTimer;
 
     @Override
     public void onDestroy() {
@@ -61,12 +61,12 @@ public class PollingService extends Service {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         // Display a notification about us starting.
         prefVibrate = preferences.getBoolean(SettingsActivity.KEY_ENABLE_VIBE,
-                                                SettingsActivity.KEY_ENABLE_VIBE_DEFAULT);
+                SettingsActivity.KEY_ENABLE_VIBE_DEFAULT);
         String prefStringAccuracy = preferences.getString(SettingsActivity.KEY_ACCURACY,
-                                                    ""+SettingsActivity.KEY_ACCURACY_DEFAULT);
+                "" + SettingsActivity.KEY_ACCURACY_DEFAULT);
         prefAccuracy = Float.parseFloat(prefStringAccuracy);
         String prefStringPollingDelay = preferences.getString(SettingsActivity.KEY_SYNC_FREQ,
-                                                    ""+SettingsActivity.KEY_SYNC_FREQ_DEFAULT);
+                "" + SettingsActivity.KEY_SYNC_FREQ_DEFAULT);
         prefPollingDelay = Integer.parseInt(prefStringPollingDelay);
         Log.i(TAG, "Prefs: " + prefVibrate + prefPollingDelay + prefAccuracy);
         startPollingTimer();
@@ -76,6 +76,7 @@ public class PollingService extends Service {
         pollingTaskTimer = new Timer();
         TimerTask doAsynchronousTask = new TimerTask() {
             boolean showedStartToast = false;
+
             @Override
             public void run() {
                 if (!showedStartToast) {
@@ -94,6 +95,12 @@ public class PollingService extends Service {
             }
         };
         pollingTaskTimer.schedule(doAsynchronousTask, 0, prefPollingDelay); //execute in every 5000 ms
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     public class PollingTask extends AsyncTask<Void, Void, Void> {
@@ -120,18 +127,11 @@ public class PollingService extends Service {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mContext, "Average: "+avg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Average: " + avg, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
             return null;
         }
-    }
-
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

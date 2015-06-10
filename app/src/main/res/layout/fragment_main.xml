@@ -1,71 +1,71 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/dark_grey"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity$PlaceholderFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/dark_grey"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                tools:context=".MainActivity$PlaceholderFragment">
 
     <TextView
-        android:id="@+id/section_label"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="CARTS"
-        android:textColor="@color/holo_orange_dark"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+            android:id="@+id/section_label"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="CARTS"
+            android:textColor="@color/holo_orange_dark"
+            android:textSize="40sp"
+            android:textStyle="bold"/>
 
     <Button
-        android:id="@+id/button_polling"
-        android:layout_toEndOf="@+id/section_label"
-        android:layout_toRightOf="@+id/section_label"
-        android:text="Start Polling"
-        android:onClick="pollingButtonClicked"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content" />
+            android:id="@+id/button_polling"
+            android:layout_toEndOf="@+id/section_label"
+            android:layout_toRightOf="@+id/section_label"
+            android:text="Start Polling"
+            android:onClick="pollingButtonClicked"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/section_data_gsm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/section_label"
-        android:clickable="true"
-        android:gravity="center"
-        android:onClick="textViewClicked"
-        android:paddingBottom="40dp"
-        android:paddingTop="40dp"
-        android:text="GSM Data"
-        android:textColor="@color/holo_orange_light"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+            android:id="@+id/section_data_gsm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/section_label"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="textViewClicked"
+            android:paddingBottom="40dp"
+            android:paddingTop="40dp"
+            android:text="GSM Data"
+            android:textColor="@color/holo_orange_light"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/section_data_acc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/section_data_gsm"
-        android:clickable="true"
-        android:gravity="center"
-        android:isScrollContainer="true"
-        android:onClick="textViewClicked"
-        android:text="Acceleration Data"
-        android:textColor="@color/holo_orange_light"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+            android:id="@+id/section_data_acc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/section_data_gsm"
+            android:clickable="true"
+            android:gravity="center"
+            android:isScrollContainer="true"
+            android:onClick="textViewClicked"
+            android:text="Acceleration Data"
+            android:textColor="@color/holo_orange_light"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
     <!-- XXX: View Mask to handle clicks anywhere on screen -->
     <View
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:clickable="true"
-        android:onClick="textViewClicked"
-        android:layout_alignTop="@+id/section_data_gsm" />
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true"
+            android:onClick="textViewClicked"
+            android:layout_alignTop="@+id/section_data_gsm"/>
 
 </RelativeLayout>

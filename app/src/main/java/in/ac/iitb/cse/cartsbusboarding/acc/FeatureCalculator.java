@@ -1,30 +1,29 @@
 /**
- *   CartsBusBoarding - Bus Boarding Event detection project by
- *                      CARTS in IITB & UIET, Panjab University
- *
- *   Copyright (c) 2014 Shubham Chaudhary <me@shubhamchaudhary.in>
- *   Copyright (c) 2014 Tanjot Kaur <tanjot28@gmail.com>
- *
- *   This file is part of CartsBusBoarding.
- *
- *   CartsBusBoarding is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
- *
- *   CartsBusBoarding is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with CartsBusBoarding.  If not, see <http://www.gnu.org/licenses/>.
+ * CartsBusBoarding - Bus Boarding Event detection project by
+ * CARTS in IITB & UIET, Panjab University
+ * <p/>
+ * Copyright (c) 2014 Shubham Chaudhary <me@shubhamchaudhary.in>
+ * Copyright (c) 2014 Tanjot Kaur <tanjot28@gmail.com>
+ * <p/>
+ * This file is part of CartsBusBoarding.
+ * <p/>
+ * CartsBusBoarding is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p/>
+ * CartsBusBoarding is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p/>
+ * You should have received a copy of the GNU General Public License
+ * along with CartsBusBoarding.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package in.ac.iitb.cse.cartsbusboarding.acc;
 
 import android.util.Log;
-
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
@@ -36,9 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
 
-/**
- * Created by chaudhary on 10/30/14.
- */
 public class FeatureCalculator {
     Queue<AccData> currentBuffer;
 
@@ -58,6 +54,7 @@ public class FeatureCalculator {
 
     /**
      * Calculates mean
+     *
      * @param data whose mean is to be calculated
      * @return mean of data provided
      */
@@ -67,13 +64,14 @@ public class FeatureCalculator {
 
     /**
      * Calculates mean on windows of currentBuffer
+     *
      * @param windowSize
      * @return array of means on currentBuffer data divided into windows
      */
     public double[] getMean(int windowSize) {
         ArrayList data = new ArrayList(currentBuffer);
-        int noOfWindows = data.size()/windowSize;
-        double[] windowMeans = new double[noOfWindows+1];
+        int noOfWindows = data.size() / windowSize;
+        double[] windowMeans = new double[noOfWindows + 1];
         int index = 0;
         int startIndex = 0;
         int endIndex = 0;
@@ -81,19 +79,19 @@ public class FeatureCalculator {
         /*Loop will only read upto windows in multiples of windowSize(Last window with values less
           than windowSize is delt in next if condition)
         */
-        Log.d("MEAN ARRAY: ","");
-        while(endIndex < (noOfWindows*windowSize) ) {
+        Log.d("MEAN ARRAY: ", "");
+        while (endIndex < (noOfWindows * windowSize)) {
             startIndex = endIndex;
             endIndex += windowSize;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
             windowMeans[index++] = getMean(temp);
-            Log.d("mean"+(index-1),""+windowMeans[index-1]);
+            Log.d("mean" + (index - 1), "" + windowMeans[index - 1]);
         }
-        if (endIndex < data.size()){
+        if (endIndex < data.size()) {
             startIndex = endIndex;
-            ArrayList<AccData> temp= new ArrayList(data.subList(startIndex, data.size()));
+            ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, data.size()));
             windowMeans[index] = getMean(temp);
-            Log.d("mean"+(index),""+windowMeans[index]);
+            Log.d("mean" + (index), "" + windowMeans[index]);
         }
 
         return windowMeans;
@@ -110,6 +108,7 @@ public class FeatureCalculator {
 
     /**
      * Calculates Standard Deviation
+     *
      * @param data whose std is to be calculated
      * @return std of data provided
      */
@@ -119,14 +118,15 @@ public class FeatureCalculator {
 
 
     /**
-     *Calculates Standard Deviation on windows of currentBuffer
+     * Calculates Standard Deviation on windows of currentBuffer
+     *
      * @param windowSize
      * @return array of std on currentBuffer data divided into windows
      */
     public double[] getStd(int windowSize) {
         ArrayList data = new ArrayList(currentBuffer);
-        int noOfWindows = data.size()/windowSize;
-        double[] windowStd = new double[noOfWindows+1];
+        int noOfWindows = data.size() / windowSize;
+        double[] windowStd = new double[noOfWindows + 1];
         int index = 0;
         int startIndex = 0;
         int endIndex = 0;
@@ -134,19 +134,19 @@ public class FeatureCalculator {
         /*Loop will only read upto windows in multiples of windowSize(Last window with values less
           than windowSize is delt in next if condition)
         */
-        Log.d("STD ARRAY: ","");
-        while(endIndex < (noOfWindows*windowSize) ) {
+        Log.d("STD ARRAY: ", "");
+        while (endIndex < (noOfWindows * windowSize)) {
             startIndex = endIndex;
             endIndex += windowSize;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
             windowStd[index++] = getStd(temp);
-            Log.d("std"+(index-1),""+windowStd[index-1]);
+            Log.d("std" + (index - 1), "" + windowStd[index - 1]);
         }
-        if (endIndex < data.size()){
+        if (endIndex < data.size()) {
             startIndex = endIndex;
-            ArrayList<AccData> temp= new ArrayList(data.subList(startIndex, data.size()));
+            ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, data.size()));
             windowStd[index] = getStd(temp);
-            Log.d("std"+(index),""+windowStd[index]);
+            Log.d("std" + (index), "" + windowStd[index]);
         }
 
         return windowStd;
@@ -163,6 +163,7 @@ public class FeatureCalculator {
 
     /**
      * Calculates dc comp.
+     *
      * @param data whose dc comp. is to be calculated
      * @return dc comp of data provided
      */
@@ -172,13 +173,14 @@ public class FeatureCalculator {
 
     /**
      * finds dcComponent for windows of currentBuffer
+     *
      * @param windowSize
      * @return array of dcComp on currentBuffer data divided into windows
      */
     public double[] getDCComponent(int windowSize) {
         ArrayList data = new ArrayList(currentBuffer);
-        int noOfWindows = data.size()/windowSize;
-        double[] windowdc = new double[noOfWindows+1];
+        int noOfWindows = data.size() / windowSize;
+        double[] windowdc = new double[noOfWindows + 1];
         int index = 0;
         int startIndex = 0;
         int endIndex = 0;
@@ -186,19 +188,19 @@ public class FeatureCalculator {
         /*Loop will only read upto windows in multiples of windowSize(Last window with values less
           than windowSize is delt in next if condition)
         */
-        Log.d("DC Comp. ARRAY: ","");
-        while(endIndex < (noOfWindows*windowSize) ) {
+        Log.d("DC Comp. ARRAY: ", "");
+        while (endIndex < (noOfWindows * windowSize)) {
             startIndex = endIndex;
             endIndex += windowSize;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
             windowdc[index++] = getDCComponent(temp);
-            Log.d("dc comp"+(index-1),""+windowdc[index-1]);
+            Log.d("dc comp" + (index - 1), "" + windowdc[index - 1]);
         }
-        if (endIndex < data.size()){
+        if (endIndex < data.size()) {
             startIndex = endIndex;
-            ArrayList<AccData> temp= new ArrayList(data.subList(startIndex, data.size()));
+            ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, data.size()));
             windowdc[index] = getDCComponent(temp);
-            Log.d("dc comp"+(index),""+windowdc[index]);
+            Log.d("dc comp" + (index), "" + windowdc[index]);
         }
 
         return windowdc;
@@ -214,9 +216,9 @@ public class FeatureCalculator {
     }
 
 
-
     /**
      * Calculates energy
+     *
      * @param data whose energy is to be calculated
      * @return energy of data provided
      */
@@ -226,13 +228,14 @@ public class FeatureCalculator {
 
     /**
      * finds energy for windows of currentBuffer
+     *
      * @param windowSize
      * @return array of energy on currentBuffer data divided into windows
      */
     public double[] getEnergy(int windowSize) {
         ArrayList data = new ArrayList(currentBuffer);
-        int noOfWindows = data.size()/windowSize;
-        double[] windowEnergy = new double[noOfWindows+1];
+        int noOfWindows = data.size() / windowSize;
+        double[] windowEnergy = new double[noOfWindows + 1];
         int index = 0;
         int startIndex = 0;
         int endIndex = 0;
@@ -240,19 +243,19 @@ public class FeatureCalculator {
         /*Loop will only read upto windows in multiples of windowSize(Last window with values less
           than windowSize is delt in next if condition)
         */
-        Log.d("ENERGY ARRAY: ","");
-        while(endIndex < (noOfWindows*windowSize) ) {
+        Log.d("ENERGY ARRAY: ", "");
+        while (endIndex < (noOfWindows * windowSize)) {
             startIndex = endIndex;
             endIndex += windowSize;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
             windowEnergy[index++] = getEnergy(temp);
-            Log.d("energy"+(index-1),""+windowEnergy[index-1]);
+            Log.d("energy" + (index - 1), "" + windowEnergy[index - 1]);
         }
-        if (endIndex < data.size()){
+        if (endIndex < data.size()) {
             startIndex = endIndex;
-            ArrayList<AccData> temp= new ArrayList(data.subList(startIndex, data.size()));
+            ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, data.size()));
             windowEnergy[index] = getEnergy(temp);
-            Log.d("energy"+(index),""+windowEnergy[index]);
+            Log.d("energy" + (index), "" + windowEnergy[index]);
         }
 
         return windowEnergy;
@@ -271,9 +274,10 @@ public class FeatureCalculator {
      * Stores the absolute acceleration(x,y,z) of current buffer
      * values in a double array
      * synchronized to sync threads(both access mainBuffer)
+     *
      * @return double array of absolute acc of data in buffer
      */
-    public synchronized double[] bufferArrayAbsAcc(){
+    public synchronized double[] bufferArrayAbsAcc() {
         double bufferAbsAcc[] = new double[currentBuffer.size()];
 
         int index = 0;
@@ -289,10 +293,11 @@ public class FeatureCalculator {
 
     /**
      * Overloaded function on which operations are to be performed
+     *
      * @param data is array on which o
      * @return
      */
-    public synchronized double[] bufferArrayAbsAcc(ArrayList<AccData> data){
+    public synchronized double[] bufferArrayAbsAcc(ArrayList<AccData> data) {
         double bufferAbsAcc[] = new double[data.size()];
 
         int index = 0;
@@ -310,6 +315,7 @@ public class FeatureCalculator {
 
     /**
      * Calculates mean of whatever data is given to this function
+     *
      * @return
      */
     private double calculateMean(double input[]) {
@@ -318,6 +324,7 @@ public class FeatureCalculator {
 
     /**
      * Calculates StDev of whatever data is given to this function
+     *
      * @return
      */
     private double calculateStd(double input[]) {
@@ -328,73 +335,76 @@ public class FeatureCalculator {
      * @param input
      * @return DC component i.e. the first component of fft transform output
      */
-    private double calculateDCComponent(double input[]){
+    private double calculateDCComponent(double input[]) {
         return input[0];
     }
 
     /**
      * Calculates energy of data array
+     *
      * @param input
      * @return energy value
      */
-    private double calculateEnergy(double input[]){
+    private double calculateEnergy(double input[]) {
         double sum = 0;
         //First element is the DC component
         input[0] = 0;
-        for ( double input_value : input){
-            sum += input_value*input_value;
+        for (double input_value : input) {
+            sum += input_value * input_value;
         }
         //TODO: returns NaN if input has only one element
-        return (sum/(input.length-1));
+        return (sum / (input.length - 1));
     }
 
     /**
      * Calculates entropy i.e. mean of difference in result of fft
+     *
      * @param input
      * @return entropy value
      */
-    private double calculateEntropy(double input[]){
+    private double calculateEntropy(double input[]) {
         double diff = 0;
 
         //Here,if there is no or only one value in input, difference returned is zero
-        if(input.length == 0){
+        if (input.length == 0) {
             return 0;
         }
-        if(input.length == 1){
+        if (input.length == 1) {
             return input[0];
         }
         //TODO: not sure what to return
-        if(input.length == 2){
+        if (input.length == 2) {
             return input[1];
         }
 
         //Ignored first element because it is the DC component
-        for (int i = 1; i < input.length-1; i++) {
-            diff += (input[i+1] - input[i]);
+        for (int i = 1; i < input.length - 1; i++) {
+            diff += (input[i + 1] - input[i]);
         }
-        return diff/(input.length-1);
+        return diff / (input.length - 1);
     }
 
     /**
      * Applies fft on data given
+     *
      * @param input
      * @return absolute values after applying fft
      */
-    private double[] applyFFT(double input[]){
+    private double[] applyFFT(double input[]) {
 
         //fft works on data length = some power of two
         int fftLength;
         int length = input.length;  //initialized with input's length
         int power = 0;
-        while (true){
-            int powOfTwo = (int)Math.pow(2,power);  //maximum no. of values to be applied fft on
+        while (true) {
+            int powOfTwo = (int) Math.pow(2, power);  //maximum no. of values to be applied fft on
 
-            if( powOfTwo == length){
+            if (powOfTwo == length) {
                 fftLength = powOfTwo;
                 break;
             }
-            if(powOfTwo > length ){
-                fftLength = (int) Math.pow(2, (power-1));
+            if (powOfTwo > length) {
+                fftLength = (int) Math.pow(2, (power - 1));
                 break;
             }
             power++;

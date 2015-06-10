@@ -44,20 +44,21 @@ import static libsvm.svm.svm_train;
  */
 public class Machine {
     private static final String TAG = Machine.class.getSimpleName();
+    private static svm_model model_instance = null;
     AccEngine mAccEngine;
     Context mContext;
-    private static svm_model model_instance = null;
 
     /**
      *
      * @param accEngine needed to get the features
      */
-    public Machine(AccEngine accEngine){
+    public Machine(AccEngine accEngine) {
         mAccEngine = accEngine;
         mContext = accEngine.getContext();
         if (model_instance == null)
             model_instance = trainMachine();
     }
+
     /**
      * Checks if staircase pattern found in acc buffer data
      *
@@ -67,7 +68,7 @@ public class Machine {
         double[] idx = testMachine();
         //Match if all values are equal
         double old = idx[0];
-        for(double idxVal : idx) {
+        for (double idxVal : idx) {
             if (idxVal != old)
                 return true;
         }
@@ -80,14 +81,14 @@ public class Machine {
     public double getAvgIdx() {
         double[] idx = testMachine();
         double avg = 0;
-        int count1=0, count2=0;
-        for(double idxVal : idx) {
-            if (idxVal == 1.0)  count1++;
-            if (idxVal == 2.0)  count2++;
+        int count1 = 0, count2 = 0;
+        for (double idxVal : idx) {
+            if (idxVal == 1.0) count1++;
+            if (idxVal == 2.0) count2++;
             avg += idxVal;
         }
         avg /= idx.length;
-        Log.i(TAG, "Avg IDX: "+avg+" with "+count1+" 1s & "+count2+" 2s");
+        Log.i(TAG, "Avg IDX: " + avg + " with " + count1 + " 1s & " + count2 + " 2s");
         return avg;
     }
 
@@ -151,7 +152,7 @@ public class Machine {
             }
 
             svm_model model = svm_train(prob, parameter);
-            Log.wtf(TAG, "Model: "+model.toString());
+            Log.wtf(TAG, "Model: " + model.toString());
             return model;
         } catch (IOException e) {
             e.printStackTrace();
@@ -175,13 +176,13 @@ public class Machine {
 
         String output_strings = "";
         int noOfReadings = features[0].length;
-        for (int colIndex = 0; colIndex < noOfReadings; colIndex++)  {
+        for (int colIndex = 0; colIndex < noOfReadings; colIndex++) {
             output_strings += "1 ";     //To make it look like train file
             for (int rowIndex = 0; rowIndex < features.length; rowIndex++) {
                 double feature_value = features[rowIndex][colIndex];
-                output_strings += (rowIndex+1)+":"+feature_value+" ";
+                output_strings += (rowIndex + 1) + ":" + feature_value + " ";
             }
-            Log.d(TAG,output_strings);
+            Log.d(TAG, output_strings);
             output_strings += "\n";
         }
         //XXX: This is just one line!
@@ -201,7 +202,7 @@ public class Machine {
         int dataSize = data.featuresData.size();
         double[] idx = new double[dataSize];
         String print_idx = "";
-        for (int i=0; i< dataSize; ++i) {
+        for (int i = 0; i < dataSize; ++i) {
             HashMap<Integer, Double> tmp = data.featuresData.get(i);
             int numFeatures = tmp.keySet().size();
             svm_node[] x = new svm_node[numFeatures];

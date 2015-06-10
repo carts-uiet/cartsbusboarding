@@ -75,12 +75,14 @@ public class GsmEngine implements Engine {
         return data;
     }
 
-    public boolean hasSpeed(){
+    public boolean hasSpeed() {
         return mGsmService.hasSpeed();
     }
-    public float getSpeed(){
+
+    public float getSpeed() {
         return mGsmService.getSpeed();
     }
+
     /**
      * Get distance b/w two points namely source and destination
      * @param src
@@ -107,7 +109,7 @@ public class GsmEngine implements Engine {
      * @param time (in ms)
      * @return
      */
-    public double getSpeed(long time){
+    public double getSpeed(long time) {
         GsmData source = mGsmService.getCurrentData();
         long start_time = Calendar.getInstance().getTimeInMillis();
         try {
@@ -118,31 +120,31 @@ public class GsmEngine implements Engine {
         long end_time = Calendar.getInstance().getTimeInMillis();
         GsmData dest = mGsmService.getCurrentData();
 
-        double dist= getDistance(source, dest);
+        double dist = getDistance(source, dest);
 
         // Temporary logs
-        Log.e("Time: ",""+(end_time-start_time));
-        Log.e("Source",""+saved_source.toString());
-        Log.e("Destination",""+saved_destination.toString());
-        return (dist/time);
+        Log.e("Time: ", "" + (end_time - start_time));
+        Log.e("Source", "" + saved_source.toString());
+        Log.e("Destination", "" + saved_destination.toString());
+        return (dist / time);
     }
 
-    public double myGetSpeed(){
-        if(saved_destination == null){
+    public double myGetSpeed() {
+        if (saved_destination == null) {
             saved_source = mGsmService.getCurrentData();
             saved_startTime = Calendar.getInstance().getTimeInMillis();
-        }else{
+        } else {
             saved_source = saved_destination;
             saved_startTime = saved_endTime;
         }
         saved_destination = mGsmService.getCurrentData();
         saved_endTime = Calendar.getInstance().getTimeInMillis();
-        double dist= getDistance(saved_source, saved_destination);
+        double dist = getDistance(saved_source, saved_destination);
 
         // Temporary logs
-        Log.e("Source",""+saved_source.toString());
-        Log.e("Destination",""+saved_destination.toString());
+        Log.e("Source", "" + saved_source.toString());
+        Log.e("Destination", "" + saved_destination.toString());
         long time = saved_endTime - saved_startTime;
-        return (dist/time);
+        return (dist / time);
     }
 }

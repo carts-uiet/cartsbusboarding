@@ -4,22 +4,22 @@
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
-        android:key="sync_frequency"
-        android:title="@string/pref_title_sync_frequency"
-        android:entries="@array/pref_sync_frequency_titles"
-        android:entryValues="@array/pref_sync_frequency_values"
-        android:defaultValue="5000"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null" />
+            android:key="sync_frequency"
+            android:title="@string/pref_title_sync_frequency"
+            android:entries="@array/pref_sync_frequency_titles"
+            android:entryValues="@array/pref_sync_frequency_values"
+            android:defaultValue="5000"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"/>
 
-     <ListPreference
-        android:key="accuracy"
-        android:title="@string/pref_title_accuracy"
-        android:entries="@array/pref_accuracy_values"
-        android:entryValues="@array/pref_accuracy_values"
-        android:defaultValue="1.8"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null" />
+    <ListPreference
+            android:key="accuracy"
+            android:title="@string/pref_title_accuracy"
+            android:entries="@array/pref_accuracy_values"
+            android:entryValues="@array/pref_accuracy_values"
+            android:defaultValue="1.8"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"/>
 
 
 </PreferenceScreen>

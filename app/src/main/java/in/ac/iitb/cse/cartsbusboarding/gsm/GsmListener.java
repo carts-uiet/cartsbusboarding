@@ -51,10 +51,11 @@ public class GsmListener implements LocationListener {
         return data;
     }
 
-    public boolean hasSpeed(){
+    public boolean hasSpeed() {
         return data.getLocation().hasSpeed();
     }
-    public float getSpeed(){
+
+    public float getSpeed() {
         return data.getLocation().getSpeed();
     }
 }

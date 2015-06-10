@@ -23,7 +23,6 @@
 
 package in.ac.iitb.cse.cartsbusboarding;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -49,6 +48,8 @@ import in.ac.iitb.cse.cartsbusboarding.tasks.GsmDisplayTask;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 import in.ac.iitb.cse.cartsbusboarding.utils.MainFragment;
 
+import javax.inject.Inject;
+
 import static in.ac.iitb.cse.cartsbusboarding.utils.Util.isMyServiceRunning;
 
 public class MainActivity extends AppCompatActivity implements AccDisplayController {
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
      * to maintain abstraction from MainActivity
      */
     public static AccEngine accEngine;
-    public static GsmEngine gsmEngine;
+    @Inject GsmEngine gsmEngine;
     private SwipeRefreshLayout accRefreshLayout;
     private SwipeRefreshLayout gsmRefreshLayout;
 
@@ -73,9 +74,12 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         supportFragmentManager.beginTransaction().add(android.R.id.content, fragment).commit();
 
         /* Our Stuff */
-        init_gsm();
         init_acc();
+        initialize_dagger_graph_to_inject_dependency();
+    }
 
+    private void initialize_dagger_graph_to_inject_dependency() {
+        ((MainApplication) getApplication()).component().inject(this);
     }
 
     @Override
@@ -108,10 +112,6 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         } else {
             pollingButton.setText("Start Polling");
         }
-    }
-
-    private void init_gsm() {
-        gsmEngine = new GsmEngine(this.getApplicationContext());
     }
 
     private void init_acc() {

@@ -7,14 +7,17 @@ import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
+import javax.inject.Inject;
+
 import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGI;
 
 public class GsmDisplayTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = LogUtils.makeLogTag(GsmDisplayTask.class);
-    private GsmEngine mGsmEngine;
-    private AccDisplayController mController;
+    @Inject GsmEngine mGsmEngine;
+    @Inject AccDisplayController mController;
     private GsmDisplayData mGsmDisplayData;
 
+    @Inject
     public GsmDisplayTask(GsmEngine gsmEngine, AccDisplayController controller) {
         this.mGsmEngine = gsmEngine;
         this.mController = controller;

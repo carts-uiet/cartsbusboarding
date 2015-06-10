@@ -36,11 +36,11 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <LinearLayout
-            android:id="@+id/main_swipe_refresh_layout"
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/gsm_swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.4"
             android:orientation="vertical"
             >
 
@@ -48,22 +48,27 @@
             android:id="@+id/section_data_gsm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
             android:clickable="true"
             android:gravity="center"
             android:onClick="textViewClicked"
-            android:paddingBottom="40dp"
-            android:paddingTop="40dp"
             android:text="@string/placeholder_gsm_data"
             android:textColor="@color/holo_orange_light"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/acc_swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:orientation="vertical"
+            >
+
     <TextView
             android:id="@+id/section_data_acc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
             android:clickable="true"
             android:gravity="center"
             android:isScrollContainer="true"
@@ -73,13 +78,5 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
 
-    </LinearLayout>
-    <!-- XXX: View Mask to handle clicks anywhere on screen ->
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:clickable="true"
-            android:onClick="textViewClicked"
-            android:layout_alignTop="@+id/section_data_gsm"/>
-    -->
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

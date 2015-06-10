@@ -11,5 +11,7 @@
 
     <string name="placeholder_gsm_data">Lat/Long: GSM Data:(29.1234567, 75.1234567, 1234.0)  \nGSM Speed: 123.0 \nMy get Speed: 123</string>
     <string name="placeholder_acc_data">Average IDX: 2.0\nTIME DOMAIN FEATURES:\nMean: 9.12345 m/s2\nStd: 0.12345 m/s2\n\nFREQUENCY DOMAIN FEATURES:\nDC Comp: 4976:12345\nEnergy: 6.12345</string>
+    <string name="no_acc_data">No Acceleration Data Available Yet!</string>
+    <string name="no_gsm_data">No GSM Data Available Yet!</string>
 
 </resources>

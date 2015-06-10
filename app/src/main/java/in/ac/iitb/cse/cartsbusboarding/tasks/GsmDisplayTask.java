@@ -38,9 +38,7 @@ public class GsmDisplayTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        if (mGsmDisplayData != null) {
-            mController.displayGsm(mGsmDisplayData);
-        }
+        mController.displayGsm(mGsmDisplayData);
     }
 
 }

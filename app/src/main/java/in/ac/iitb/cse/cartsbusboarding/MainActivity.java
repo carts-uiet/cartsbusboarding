@@ -191,43 +191,51 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
     @Override
     public void displayGsm(GsmDisplayData data) {
         TextView twData = (TextView) findViewById(R.id.section_data_gsm);
-        twData.setText(Html.fromHtml(
-                        "Lat/Long: " + data.getGsmData().toString()
-                                + "<br/>"
-                                + "GSM Speed: " + data.getSpeed()
-                                + "<br/>"
-                                + "My get Speed: " + (int) data.getMySpeed()
-                                + "<br/>"
-//                                            +"speed(getDisT): "+ String.format(format, gsmEngine.getSpeed(2000)) )
-                )
-        );
+        if (data == null) {
+            twData.setText(getString(R.string.no_gsm_data));
+        } else {
+            twData.setText(Html.fromHtml(
+                            "Lat/Long: " + data.getGsmData().toString()
+                                    + "<br/>"
+                                    + "GSM Speed: " + data.getSpeed()
+                                    + "<br/>"
+                                    + "My get Speed: " + (int) data.getMySpeed()
+                                    + "<br/>"
+//                                  +"speed(getDisT): "+ String.format(format, gsmEngine.getSpeed(2000)) )
+                    )
+            );
+        }
         gsmRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void displayAcc(AccDisplayData data) {
-        String format = "%.5f";
         TextView twData = (TextView) findViewById(R.id.section_data_acc);
+        if (data == null) {
+            twData.setText(getString(R.string.no_acc_data));
+        } else {
+            String format = "%.5f";
 
-        twData.setText(Html.fromHtml("<br/>"
-                        + "Average IDX: " + data.getAvg()
-                        + "<br/>"
-                        + "TIME DOMAIN FEATURES:"
-                        + "<br/>"
-                        + "Mean: " + String.format(format, data.getMean())
-                        + " m/s<sup><small> 2 </small></sup>"
-                        + "<br/>"
-                        + "Std: " + String.format(format, data.getStd())
-                        + " m/s<sup><small> 2 </small></sup>"
-                        + "<br/><br/>"
-                        + "FREQUENCY DOMAIN FEATURES:"
-                        + "<br/>"
-                        + "DC Comp: " + String.format(format, data.getDcComp())
-                        + "<br/>"
-                        + "Energy: " + String.format(format, data.getEnergy())
-                        + "<br/>"
-                        + "Entropy: " + String.format(format, data.getEntropy()))
-        );
+            twData.setText(Html.fromHtml("<br/>"
+                            + "Average IDX: " + data.getAvg()
+                            + "<br/>"
+                            + "TIME DOMAIN FEATURES:"
+                            + "<br/>"
+                            + "Mean: " + String.format(format, data.getMean())
+                            + " m/s<sup><small> 2 </small></sup>"
+                            + "<br/>"
+                            + "Std: " + String.format(format, data.getStd())
+                            + " m/s<sup><small> 2 </small></sup>"
+                            + "<br/><br/>"
+                            + "FREQUENCY DOMAIN FEATURES:"
+                            + "<br/>"
+                            + "DC Comp: " + String.format(format, data.getDcComp())
+                            + "<br/>"
+                            + "Energy: " + String.format(format, data.getEnergy())
+                            + "<br/>"
+                            + "Entropy: " + String.format(format, data.getEntropy()))
+            );
+        }
         accRefreshLayout.setRefreshing(false);
     }
 

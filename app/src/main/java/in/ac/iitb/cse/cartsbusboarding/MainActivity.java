@@ -32,6 +32,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.*;
@@ -59,6 +60,10 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
      */
     public static AccEngine accEngine;
     public static GsmEngine gsmEngine;
+    private SwipeRefreshLayout accRefreshLayout;
+    private SwipeRefreshLayout gsmRefreshLayout;
+
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -89,6 +94,27 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         /* Our Stuff */
         init_gsm();
         init_acc();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        setRefreshLayoutListeners();
+    }
+
+    private void setRefreshLayoutListeners() {
+        accRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.acc_swipe_refresh_layout);
+        gsmRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.gsm_swipe_refresh_layout);
+        SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                textViewClicked(null);
+            }
+        };
+        accRefreshLayout.setOnRefreshListener(refreshListener);
+        gsmRefreshLayout.setOnRefreshListener(refreshListener);
     }
 
     /**
@@ -142,7 +168,9 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
     }
 
     public void textViewClicked(View v) {
+        gsmRefreshLayout.setRefreshing(true);
         new GsmDisplayTask(gsmEngine, MainActivity.this).execute();
+        accRefreshLayout.setRefreshing(true);
         new AccDisplayTask(accEngine, MainActivity.this).execute();
         /* Setup Display called here to make sure that the button text is right */
         setup_display();
@@ -228,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
 //                                            +"speed(getDisT): "+ String.format(format, gsmEngine.getSpeed(2000)) )
                 )
         );
+        gsmRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -254,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
                         + "<br/>"
                         + "Entropy: " + String.format(format, data.getEntropy()))
         );
+        accRefreshLayout.setRefreshing(false);
     }
 
     /**

@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
      * Still leaving the classes(acc/gsm module) where it's passed as it is,
      * to maintain abstraction from MainActivity
      */
-    public static AccEngine accEngine;
+    @Inject AccEngine accEngine;
     @Inject GsmEngine gsmEngine;
     private SwipeRefreshLayout accRefreshLayout;
     private SwipeRefreshLayout gsmRefreshLayout;
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         supportFragmentManager.beginTransaction().add(android.R.id.content, fragment).commit();
 
         /* Our Stuff */
-        init_acc();
         initialize_dagger_graph_to_inject_dependency();
     }
 
@@ -112,10 +111,6 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         } else {
             pollingButton.setText("Start Polling");
         }
-    }
-
-    private void init_acc() {
-        accEngine = new AccEngine(this.getApplicationContext());
     }
 
 

@@ -9,14 +9,17 @@ import in.ac.iitb.cse.cartsbusboarding.controllers.AccDisplayController;
 import in.ac.iitb.cse.cartsbusboarding.data.AccDisplayData;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
+import javax.inject.Inject;
+
 import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGI;
 
 public class AccDisplayTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = LogUtils.makeLogTag(AccDisplayTask.class);
-    private AccEngine mAccEngine;
-    private AccDisplayController mController;
+    @Inject AccEngine mAccEngine;
+    @Inject AccDisplayController mController;
     private AccDisplayData mAccDisplayData;
 
+    @Inject
     public AccDisplayTask(AccEngine accEngine, AccDisplayController controller) {
         this.mAccEngine = accEngine;
         this.mController = controller;

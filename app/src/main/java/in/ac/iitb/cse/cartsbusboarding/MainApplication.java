@@ -8,7 +8,7 @@ public class MainApplication extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
-        component = DaggerMainApplication_Main_ApplicationComponent.builder()
+        component = DaggerMainApplicationComponent.builder()
                 .androidModule(new AndroidModule(this))
                 .build();
         component().inject(this);

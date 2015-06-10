@@ -31,6 +31,7 @@ import android.os.IBinder;
 import in.ac.iitb.cse.cartsbusboarding.common.Engine;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
+import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -42,7 +43,7 @@ public class AccEngine implements Engine {
     private static final String TAG = LogUtils.makeLogTag(AccEngine.class);
     private static final int bufferSize = 1000;
     private static final long listenerPollingTime = 500;
-    private final Context mContext;
+    @Inject final Context mContext;
     private AccData data;
     private AccService mAccService;
     private EngineFillerThread engineFillerThread;
@@ -54,6 +55,7 @@ public class AccEngine implements Engine {
      *
      * @param context needed to start the service
      */
+    @Inject
     public AccEngine(Context context) {
         mContext = context;
         mContext.startService(new Intent(mContext, AccService.class));

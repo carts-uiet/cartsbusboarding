@@ -33,8 +33,10 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
+import javax.inject.Inject;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,6 +45,7 @@ import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGI;
 public class PollingService extends Service {
     private static final String TAG = LogUtils.makeLogTag(PollingService.class);
     public int prefPollingDelay;
+    @Inject AccEngine mAccEngine;
     Context mContext;
     Timer pollingTaskTimer;
     private boolean prefVibrate;
@@ -114,11 +117,11 @@ public class PollingService extends Service {
         @Override
         protected Void doInBackground(Void... voids) {
             //XXX: PR uses its own featureCalc
-//            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
+//            PatternRecognition patternRecognition = new PatternRecognition(mAccEngine);
 //            boolean hasIt = patternRecognition.hasBoardedBus();
 //            Log.i(TAG, "HasBoardedBus: "+hasIt);
 
-            PatternRecognition patternRecognition = new PatternRecognition(MainActivity.accEngine);
+            PatternRecognition patternRecognition = new PatternRecognition(mAccEngine);
             final double avg = patternRecognition.getAvg();
             if (avg <= prefAccuracy) {
                 /* Vibrate */

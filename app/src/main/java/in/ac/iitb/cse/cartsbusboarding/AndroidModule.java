@@ -3,6 +3,7 @@ package in.ac.iitb.cse.cartsbusboarding;
 import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
+import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 import in.ac.iitb.cse.cartsbusboarding.utils.ForApplication;
 
@@ -32,9 +33,14 @@ public class AndroidModule {
 
     @Provides
     @Singleton
-    GsmEngine provideGsmEngine(){
+    GsmEngine provideGsmEngine() {
         return new GsmEngine(application);
     }
 
+    @Provides
+    @Singleton
+    AccEngine provideAccEngine() {
+        return new AccEngine(application);
+    }
 
 }

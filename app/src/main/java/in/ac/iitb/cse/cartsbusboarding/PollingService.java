@@ -94,7 +94,7 @@ public class PollingService extends Service {
                     showedStartToast = true;
                 }
                 LOGI(TAG, "pollingTaskTimed started");
-                PollingTask pollingTaskTimed = new PollingTask();
+                PollingTask pollingTaskTimed = new PollingTask(mAccEngine, mContext);
                 pollingTaskTimed.execute();
                 // PerformBackgroundTask this class is the class that extends AsynchTask
             }
@@ -109,6 +109,15 @@ public class PollingService extends Service {
     }
 
     public class PollingTask extends AsyncTask<Void, Void, Void> {
+
+        @Inject AccEngine accEngine;
+        @Inject Context context;
+
+        public PollingTask(AccEngine accEngine, Context context) {
+            this.accEngine = accEngine;
+            this.context = context;
+        }
+
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -121,7 +130,7 @@ public class PollingService extends Service {
 //            boolean hasIt = patternRecognition.hasBoardedBus();
 //            Log.i(TAG, "HasBoardedBus: "+hasIt);
 
-            PatternRecognition patternRecognition = new PatternRecognition(mAccEngine, PollingService.this.getApplicationContext());
+            PatternRecognition patternRecognition = new PatternRecognition(accEngine, context);
             final double avg = patternRecognition.getAvg();
             if (avg <= prefAccuracy) {
                 /* Vibrate */

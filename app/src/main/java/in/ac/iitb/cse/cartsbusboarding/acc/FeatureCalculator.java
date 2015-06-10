@@ -31,6 +31,7 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
@@ -41,6 +42,7 @@ public class FeatureCalculator {
     private static final String TAG = LogUtils.makeLogTag(FeatureCalculator.class);
     Queue<AccData> currentBuffer;
 
+    @Inject
     public FeatureCalculator(AccEngine accEngine) {
         currentBuffer = accEngine.getMainBuffer();
     }

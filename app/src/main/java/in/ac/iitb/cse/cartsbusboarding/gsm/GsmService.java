@@ -45,12 +45,12 @@ public class GsmService extends Service {
         gsmListener = new GsmListener();
 
         gsmMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gsmListener);
-        dataRead = gsmListener.getData();
+        dataRead = gsmListener.getCurrentData();
     }
 
     /* Getter */
-    public GsmData getData() {
-        dataRead = gsmListener.getData();
+    public GsmData getCurrentData() {
+        dataRead = gsmListener.getCurrentData();
         return dataRead;
     }
 

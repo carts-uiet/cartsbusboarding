@@ -54,7 +54,7 @@ public class GsmListener implements LocationListener {
         data.gsmAccuracy = location.getAccuracy();
     }
 
-    public GsmData getData() {
+    public GsmData getCurrentData() {
         return data;
     }
 

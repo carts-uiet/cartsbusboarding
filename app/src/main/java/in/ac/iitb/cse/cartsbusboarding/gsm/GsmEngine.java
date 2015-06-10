@@ -71,8 +71,8 @@ public class GsmEngine {
         mContext.bindService(new Intent(mContext, GsmService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
-    public GsmData getData() {
-        data = mGsmService.getData();
+    public GsmData getCurrentData() {
+        data = mGsmService.getCurrentData();
         return data;
     }
 
@@ -109,7 +109,7 @@ public class GsmEngine {
      * @return
      */
     public double getSpeed(long time){
-        GsmData source = mGsmService.getData();
+        GsmData source = mGsmService.getCurrentData();
         long start_time = Calendar.getInstance().getTimeInMillis();
         try {
             Thread.sleep(time);
@@ -117,7 +117,7 @@ public class GsmEngine {
             e.printStackTrace();
         }
         long end_time = Calendar.getInstance().getTimeInMillis();
-        GsmData dest = mGsmService.getData();
+        GsmData dest = mGsmService.getCurrentData();
 
         double dist= getDistance(source, dest);
 
@@ -130,13 +130,13 @@ public class GsmEngine {
 
     public double myGetSpeed(){
         if(saved_destination == null){
-            saved_source = mGsmService.getData();
+            saved_source = mGsmService.getCurrentData();
             saved_startTime = Calendar.getInstance().getTimeInMillis();
         }else{
             saved_source = saved_destination;
             saved_startTime = saved_endTime;
         }
-        saved_destination = mGsmService.getData();
+        saved_destination = mGsmService.getCurrentData();
         saved_endTime = Calendar.getInstance().getTimeInMillis();
         double dist= getDistance(saved_source, saved_destination);
 

@@ -148,7 +148,7 @@ public class MainActivity extends ActionBarActivity {
         LocationManager gpsMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         GsmListener gpsListener = new GsmListener();
         gpsMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
-        final GsmData gpsData = gpsListener.getData();
+        final GsmData gpsData = gpsListener.getCurrentData();
         float gpsSpeed = -1;
         if (gpsData!=null && gpsData.location != null) {
             TextView twData = (TextView) findViewById(R.id.section_data_gsm);
@@ -165,7 +165,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            final GsmData gsmData = gsmEngine.getData();
+            final GsmData gsmData = gsmEngine.getCurrentData();
             Log.i(TAG, "Received: " + gsmData);
             if (gsmData != null) {
                 Log.i(TAG, "Data- " + gsmData.toString());

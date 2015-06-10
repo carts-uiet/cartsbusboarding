@@ -27,7 +27,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,17 +34,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.TextView;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.controllers.AccDisplayController;
 import in.ac.iitb.cse.cartsbusboarding.data.AccDisplayData;
+import in.ac.iitb.cse.cartsbusboarding.data.GsmDisplayData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmListener;
 import in.ac.iitb.cse.cartsbusboarding.tasks.AccDisplayTask;
+import in.ac.iitb.cse.cartsbusboarding.tasks.GsmDisplayTask;
 
 import java.util.Locale;
 
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
     }
 
     public void textViewClicked(View v) {
-        new GsmDisplayTask().execute();
+        new GsmDisplayTask(gsmEngine, MainActivity.this).execute();
         new AccDisplayTask(accEngine, MainActivity.this).execute();
         /* Setup Display called here to make sure that the button text is right */
         setup_display();
@@ -215,39 +215,20 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         }
     }
 
-    private class GsmDisplayTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            final GsmData gsmData = gsmEngine.getCurrentData();
-            Log.i(TAG, "Received: " + gsmData);
-            if (gsmData != null) {
-                Log.i(TAG, "Data- " + gsmData.toString());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView twData = (TextView) findViewById(R.id.section_data_gsm);
-                        twData.setText(Html.fromHtml(
-                                        "Lat/Long: " + gsmData.toString()
-                                                + "<br/>"
-                                                + "GSM Speed: " + gsmEngine.getSpeed()
-                                                + "<br/>"
-                                                + "My get Speed: " + (int) gsmEngine.myGetSpeed()
-                                                + "<br/>"
+    @Override
+    public void displayGsm(GsmDisplayData data) {
+        TextView twData = (TextView) findViewById(R.id.section_data_gsm);
+        twData.setText(Html.fromHtml(
+                        "Lat/Long: " + data.getGsmData().toString()
+                                + "<br/>"
+                                + "GSM Speed: " + data.getSpeed()
+                                + "<br/>"
+                                + "My get Speed: " + (int) data.getMySpeed()
+                                + "<br/>"
 //                                            +"speed(getDisT): "+ String.format(format, gsmEngine.getSpeed(2000)) )
-                                )
-                        );
-                    }
-                });
-            }
-            return null;
-        }
+                )
+        );
     }
-
 
     @Override
     public void displayAcc(AccDisplayData data) {

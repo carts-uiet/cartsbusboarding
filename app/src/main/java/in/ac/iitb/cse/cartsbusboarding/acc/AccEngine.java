@@ -34,11 +34,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by chaudhary on 10/23/14.
- */
 public class AccEngine {
-    private static final String _ClassName = AccEngine.class.getSimpleName();
+    private static final String TAG = AccEngine.class.getSimpleName();
     private static final int bufferSize = 1000;
     private static final long listenerPollingTime = 500;
     private final Context mContext;
@@ -74,7 +71,7 @@ public class AccEngine {
                 try {
                     mAccService = ((AccService.LocalBinder) service).getService();
                 } catch (Throwable t) {
-                    Log.e(_ClassName, "mServiceConnection.onServiceConnected() -> " + t);
+                    Log.e(TAG, "mServiceConnection.onServiceConnected() -> " + t);
                 }
             }// onServiceConnected()
 
@@ -131,7 +128,7 @@ public class AccEngine {
                 // If mainBuffer is not of the desired size
                 while (!(localDataQueue.isEmpty())) {
                     if (mainBuffer.size() < bufferSize) {
-                        Log.d(_ClassName, "New Value: " + localDataQueue.peek());
+                        Log.d(TAG, "New Value: " + localDataQueue.peek());
                         //mainBuffer.add(localDataQueue.remove());
                         mainBuffer.offer(localDataQueue.remove());
                     } else {
@@ -141,7 +138,7 @@ public class AccEngine {
                         mainBuffer.offer(localDataQueue.remove());
                     }
                 }//end while
-                //Log.d(_ClassName, "Thread Data: " + mainBuffer.size());
+                //Log.d(TAG, "Thread Data: " + mainBuffer.size());
                 try {
                     Thread.sleep(listenerPollingTime);
                 } catch (InterruptedException e) {

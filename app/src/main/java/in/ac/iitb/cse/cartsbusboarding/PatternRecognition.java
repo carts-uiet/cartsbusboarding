@@ -25,11 +25,8 @@ package in.ac.iitb.cse.cartsbusboarding;
 
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 
-/**
- * Created by chaudhary on 10/30/14.
- */
 public class PatternRecognition {
-    public static final String _ClassName = PatternRecognition.class.getClass().getSimpleName();
+    public static final String TAG = PatternRecognition.class.getClass().getSimpleName();
     private AccEngine accEngine;
 
     public PatternRecognition(AccEngine accEngine) {

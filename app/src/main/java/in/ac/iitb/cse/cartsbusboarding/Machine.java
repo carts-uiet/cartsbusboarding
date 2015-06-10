@@ -25,21 +25,16 @@ package in.ac.iitb.cse.cartsbusboarding;
 
 import android.content.Context;
 import android.util.Log;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.HashSet;
-
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.acc.FeatureCalculator;
 import libsvm.svm_model;
 import libsvm.svm_node;
 import libsvm.svm_parameter;
 import libsvm.svm_problem;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import static libsvm.svm.svm_predict;
 import static libsvm.svm.svm_train;
@@ -48,7 +43,7 @@ import static libsvm.svm.svm_train;
  * Applies machine learning
  */
 public class Machine {
-    final String _ClassName = this.getClass().getSimpleName();
+    private static final String TAG = Machine.class.getSimpleName();
     AccEngine mAccEngine;
     Context mContext;
     private static svm_model model_instance = null;
@@ -92,7 +87,7 @@ public class Machine {
             avg += idxVal;
         }
         avg /= idx.length;
-        Log.i(_ClassName, "Avg IDX: "+avg+" with "+count1+" 1s & "+count2+" 2s");
+        Log.i(TAG, "Avg IDX: "+avg+" with "+count1+" 1s & "+count2+" 2s");
         return avg;
     }
 
@@ -156,7 +151,7 @@ public class Machine {
             }
 
             svm_model model = svm_train(prob, parameter);
-            Log.wtf(_ClassName, "Model: "+model.toString());
+            Log.wtf(TAG, "Model: "+model.toString());
             return model;
         } catch (IOException e) {
             e.printStackTrace();
@@ -186,7 +181,7 @@ public class Machine {
                 double feature_value = features[rowIndex][colIndex];
                 output_strings += (rowIndex+1)+":"+feature_value+" ";
             }
-            Log.d(_ClassName,output_strings);
+            Log.d(TAG,output_strings);
             output_strings += "\n";
         }
         //XXX: This is just one line!
@@ -214,7 +209,7 @@ public class Machine {
             for (Integer feature : tmp.keySet()) {
                 x[featureIndex] = new svm_node();
                 x[featureIndex].index = feature;
-//                Log.d(_ClassName+" feature value",""+tmp.get(feature));
+//                Log.d(TAG+" feature value",""+tmp.get(feature));
                 x[featureIndex].value = tmp.get(feature);
                 //Log.e("train index:value",x[featureIndex].index+":"+x[featureIndex].value);
 
@@ -226,7 +221,7 @@ public class Machine {
             print_idx += idx[i] + " ";
         }
 
-        Log.i(_ClassName, "Prediction: " + print_idx);
+        Log.i(TAG, "Prediction: " + print_idx);
         return idx;
     }
 

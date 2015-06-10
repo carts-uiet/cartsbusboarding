@@ -36,16 +36,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.Locale;
-
 import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.acc.FeatureCalculator;
@@ -53,9 +46,11 @@ import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmListener;
 
+import java.util.Locale;
+
 public class MainActivity extends ActionBarActivity {
 
-    public static final String _ClassName = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
     /**
      * No need to pass Engine to classes outside acc/gsm packages
      * Still leaving the classes(acc/gsm module) where it's passed as it is,
@@ -171,9 +166,9 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             final GsmData gsmData = gsmEngine.getData();
-            Log.i(_ClassName, "Received: " + gsmData);
+            Log.i(TAG, "Received: " + gsmData);
             if (gsmData != null) {
-                Log.i(_ClassName, "Data- " + gsmData.toString());
+                Log.i(TAG, "Data- " + gsmData.toString());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -200,7 +195,7 @@ public class MainActivity extends ActionBarActivity {
         protected Void doInBackground(Void... voids) {
             AccData accData = accEngine.getCurrentData();
             if (accData != null) {
-                Log.i(_ClassName, "Data- " + accData);
+                Log.i(TAG, "Data- " + accData);
                 FeatureCalculator featureCalculator = new FeatureCalculator(accEngine);
                 final double mean = featureCalculator.getMean();
                 final double std = featureCalculator.getStd();
@@ -215,7 +210,7 @@ public class MainActivity extends ActionBarActivity {
                 //XXX: PR uses its own featureCalc
 //            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
 //            boolean hasIt = patternRecognition.hasBoardedBus();
-//            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
+//            Log.i(TAG, "HasBoardedBus: "+hasIt);
 
                 final PatternRecognition patternRecognition = new PatternRecognition(accEngine);
                 runOnUiThread(new Runnable() {

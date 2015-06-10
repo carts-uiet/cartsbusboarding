@@ -39,7 +39,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PollingService extends Service {
-    public final String _ClassName = this.getClass().getSimpleName();
+    private static final String TAG = PollingService.class.getSimpleName();
     public int prefPollingDelay;
     private boolean prefVibrate;
     private double prefAccuracy;
@@ -68,7 +68,7 @@ public class PollingService extends Service {
         String prefStringPollingDelay = preferences.getString(SettingsActivity.KEY_SYNC_FREQ,
                                                     ""+SettingsActivity.KEY_SYNC_FREQ_DEFAULT);
         prefPollingDelay = Integer.parseInt(prefStringPollingDelay);
-        Log.i(_ClassName, "Prefs: " + prefVibrate + prefPollingDelay + prefAccuracy);
+        Log.i(TAG, "Prefs: " + prefVibrate + prefPollingDelay + prefAccuracy);
         startPollingTimer();
     }
 
@@ -87,7 +87,7 @@ public class PollingService extends Service {
                     });
                     showedStartToast = true;
                 }
-                Log.i(_ClassName, "pollingTaskTimed started");
+                Log.i(TAG, "pollingTaskTimed started");
                 PollingTask pollingTaskTimed = new PollingTask();
                 pollingTaskTimed.execute();
                 // PerformBackgroundTask this class is the class that extends AsynchTask
@@ -107,7 +107,7 @@ public class PollingService extends Service {
             //XXX: PR uses its own featureCalc
 //            PatternRecognition patternRecognition = new PatternRecognition(accEngine);
 //            boolean hasIt = patternRecognition.hasBoardedBus();
-//            Log.i(_ClassName, "HasBoardedBus: "+hasIt);
+//            Log.i(TAG, "HasBoardedBus: "+hasIt);
 
             PatternRecognition patternRecognition = new PatternRecognition(MainActivity.accEngine);
             final double avg = patternRecognition.getAvg();

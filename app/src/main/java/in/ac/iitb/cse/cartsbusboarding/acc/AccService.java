@@ -32,7 +32,7 @@ import android.util.Log;
 import java.util.Queue;
 
 public class AccService extends Service {
-    private final String _Classname = AccService.class.getSimpleName();
+    private static final String TAG = AccService.class.getSimpleName();
     // This is the object that receives interactions from clients. See
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
@@ -43,8 +43,8 @@ public class AccService extends Service {
         super.onCreate();
         /** Context needed to create sensor manager in listener */
         accListener = new AccListener(this.getApplicationContext());
-        Log.v(_Classname, "Started ! ! !");
-        Log.i(_Classname, "SensorSpeed: "+accListener.getSensorSpeed());
+        Log.v(TAG, "Started ! ! !");
+        Log.i(TAG, "SensorSpeed: "+accListener.getSensorSpeed());
     }
 
     /* Getter */

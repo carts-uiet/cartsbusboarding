@@ -24,22 +24,15 @@
 package in.ac.iitb.cse.cartsbusboarding.acc;
 
 import in.ac.iitb.cse.cartsbusboarding.common.Data;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
 public class AccData implements Data {
-    /*
-     * Data Encapsulation
-     */
     private float x;
     private float y;
     private float z;
-
-    public AccData(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
 
     @Override
     public String toString() {

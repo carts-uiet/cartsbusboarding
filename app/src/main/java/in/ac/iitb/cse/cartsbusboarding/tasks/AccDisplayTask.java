@@ -7,7 +7,7 @@ import in.ac.iitb.cse.cartsbusboarding.acc.AccData;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.acc.FeatureCalculator;
 import in.ac.iitb.cse.cartsbusboarding.controllers.AccDisplayController;
-import in.ac.iitb.cse.cartsbusboarding.data.AccDisplayData;
+import in.ac.iitb.cse.cartsbusboarding.models.AccDisplayData;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
 import javax.inject.Inject;

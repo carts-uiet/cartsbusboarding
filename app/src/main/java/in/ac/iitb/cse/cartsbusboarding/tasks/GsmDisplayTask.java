@@ -2,7 +2,7 @@ package in.ac.iitb.cse.cartsbusboarding.tasks;
 
 import android.os.AsyncTask;
 import in.ac.iitb.cse.cartsbusboarding.controllers.AccDisplayController;
-import in.ac.iitb.cse.cartsbusboarding.data.GsmDisplayData;
+import in.ac.iitb.cse.cartsbusboarding.models.GsmDisplayData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmEngine;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;

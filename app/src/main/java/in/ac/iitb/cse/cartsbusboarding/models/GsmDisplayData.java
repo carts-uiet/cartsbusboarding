@@ -1,4 +1,4 @@
-package in.ac.iitb.cse.cartsbusboarding.data;
+package in.ac.iitb.cse.cartsbusboarding.models;
 
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
 import lombok.AllArgsConstructor;

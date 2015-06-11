@@ -55,11 +55,6 @@ import static in.ac.iitb.cse.cartsbusboarding.utils.Util.isMyServiceRunning;
 public class MainActivity extends AppCompatActivity implements AccDisplayController {
 
     private static final String TAG = LogUtils.makeLogTag(MainActivity.class);
-    /**
-     * No need to pass Engine to classes outside acc/gsm packages
-     * Still leaving the classes(acc/gsm module) where it's passed as it is,
-     * to maintain abstraction from MainActivity
-     */
     @Inject AccEngine accEngine;
     @Inject GsmEngine gsmEngine;
     private SwipeRefreshLayout accRefreshLayout;
@@ -73,18 +68,16 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         MainFragment fragment = new MainFragment();
         supportFragmentManager.beginTransaction().add(android.R.id.content, fragment).commit();
 
-        /* Our Stuff */
-        initialize_dagger_graph_to_inject_dependency();
+        initializeDaggerGraphToInjectDependency();
     }
 
-    private void initialize_dagger_graph_to_inject_dependency() {
+    private void initializeDaggerGraphToInjectDependency() {
         ((MainApplication) getApplication()).component().inject(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         setRefreshLayoutListeners();
     }
 
@@ -101,10 +94,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         gsmRefreshLayout.setOnRefreshListener(refreshListener);
     }
 
-    /**
-     * Setup different activity elements to show correct values onCreate
-     */
-    void setup_display() {
+    void setupPollingButton() {
         Button pollingButton = (Button) findViewById(R.id.button_polling);
         if (isMyServiceRunning(this, PollingService.class)) {
             pollingButton.setText("Stop Polling");
@@ -124,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
             Intent serviceIntent = new Intent(this, PollingService.class);
             startService(serviceIntent);
         }
-        //Maybe call setup_display here!
+        //Maybe call setupPollingButton here!
     }
 
     public void textViewClicked(View v) {
@@ -132,41 +122,20 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         new GsmDisplayTask(gsmEngine, MainActivity.this).execute();
         accRefreshLayout.setRefreshing(true);
         new AccDisplayTask(accEngine, MainActivity.this, this.getApplicationContext()).execute();
-        /* Setup Display called here to make sure that the button text is right */
-        setup_display();
-        /* Hack begins */
+        setupPollingButton();
+
+        appendGpsData();
+    }
+
+    private void appendGpsData() {
         LocationManager gpsMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         GsmListener gpsListener = new GsmListener();
         gpsMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
         final GsmData gpsData = gpsListener.getCurrentData();
-        float gpsSpeed = -1;
         if (gpsData != null && gpsData.getLocation() != null) {
             TextView twData = (TextView) findViewById(R.id.section_data_gsm);
-            gpsSpeed = gpsData.getLocation().getSpeed();
-            twData.setText(twData.getText() + "GPS Speed:" + gpsSpeed);
+            twData.setText(twData.getText() + "GPS Speed:" + gpsData.getLocation().getSpeed());
         }
-        /* Hack ends */
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -220,4 +189,20 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         accRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

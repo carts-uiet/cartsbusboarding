@@ -62,7 +62,7 @@ public class PollingService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        initialize_dagger_graph_to_inject_dependency();
+        initializeDaggerGraphToInjectDependency();
 
         handler = new Handler();
         mContext = this;
@@ -80,7 +80,7 @@ public class PollingService extends Service {
         startPollingTimer();
     }
 
-    private void initialize_dagger_graph_to_inject_dependency() {
+    private void initializeDaggerGraphToInjectDependency() {
         ((MainApplication) getApplication()).component().inject(this);
     }
 

@@ -1,6 +1,7 @@
-package in.ac.iitb.cse.cartsbusboarding;
+package in.ac.iitb.cse.cartsbusboarding.ui;
 
 import dagger.Component;
+import in.ac.iitb.cse.cartsbusboarding.PollingService;
 
 import javax.inject.Singleton;
 

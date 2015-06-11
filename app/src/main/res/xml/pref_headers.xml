@@ -3,15 +3,15 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-            android:fragment="in.ac.iitb.cse.cartsbusboarding.SettingsActivity$GeneralPreferenceFragment"
+            android:fragment="in.ac.iitb.cse.cartsbusboarding.ui.SettingsActivity$GeneralPreferenceFragment"
             android:title="@string/pref_header_general"/>
 
     <header
-            android:fragment="in.ac.iitb.cse.cartsbusboarding.SettingsActivity$PollingPreferenceFragment"
+            android:fragment="in.ac.iitb.cse.cartsbusboarding.ui.SettingsActivity$PollingPreferenceFragment"
             android:title="@string/pref_header_polling"/>
 
     <header
-            android:fragment="in.ac.iitb.cse.cartsbusboarding.SettingsActivity$DataSyncPreferenceFragment"
+            android:fragment="in.ac.iitb.cse.cartsbusboarding.ui.SettingsActivity$DataSyncPreferenceFragment"
             android:title="@string/pref_header_data_sync"/>
 
 </preference-headers>

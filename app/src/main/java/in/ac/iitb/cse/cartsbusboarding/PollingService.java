@@ -34,6 +34,8 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
+import in.ac.iitb.cse.cartsbusboarding.ui.MainApplication;
+import in.ac.iitb.cse.cartsbusboarding.ui.SettingsActivity;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
 import javax.inject.Inject;

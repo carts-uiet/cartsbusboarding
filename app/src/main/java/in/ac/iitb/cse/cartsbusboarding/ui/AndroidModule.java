@@ -1,4 +1,4 @@
-package in.ac.iitb.cse.cartsbusboarding;
+package in.ac.iitb.cse.cartsbusboarding.ui;
 
 import android.content.Context;
 import dagger.Module;

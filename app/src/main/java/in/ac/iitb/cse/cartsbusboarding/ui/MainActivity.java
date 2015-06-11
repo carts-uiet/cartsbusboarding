@@ -21,7 +21,7 @@
  *   along with CartsBusBoarding.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.ac.iitb.cse.cartsbusboarding;
+package in.ac.iitb.cse.cartsbusboarding.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +36,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import in.ac.iitb.cse.cartsbusboarding.PollingService;
+import in.ac.iitb.cse.cartsbusboarding.R;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.controllers.AccDisplayController;
 import in.ac.iitb.cse.cartsbusboarding.data.AccDisplayData;
@@ -46,7 +48,6 @@ import in.ac.iitb.cse.cartsbusboarding.gsm.GsmListener;
 import in.ac.iitb.cse.cartsbusboarding.tasks.AccDisplayTask;
 import in.ac.iitb.cse.cartsbusboarding.tasks.GsmDisplayTask;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
-import in.ac.iitb.cse.cartsbusboarding.utils.MainFragment;
 
 import javax.inject.Inject;
 

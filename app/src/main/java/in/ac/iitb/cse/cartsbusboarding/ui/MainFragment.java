@@ -1,4 +1,4 @@
-package in.ac.iitb.cse.cartsbusboarding.utils;
+package in.ac.iitb.cse.cartsbusboarding.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

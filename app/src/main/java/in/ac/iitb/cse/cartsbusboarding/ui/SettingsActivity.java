@@ -21,7 +21,7 @@
  *   along with CartsBusBoarding.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.ac.iitb.cse.cartsbusboarding;
+package in.ac.iitb.cse.cartsbusboarding.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -33,6 +33,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.*;
 import android.text.TextUtils;
+import in.ac.iitb.cse.cartsbusboarding.R;
 
 import java.util.List;
 

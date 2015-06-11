@@ -40,11 +40,11 @@ import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGD;
 
 public class FeatureCalculator {
     private static final String TAG = LogUtils.makeLogTag(FeatureCalculator.class);
-    Queue<AccData> currentBuffer;
+    Queue<AccData> mCurrentBuffer;
 
     @Inject
     public FeatureCalculator(AccEngine accEngine) {
-        currentBuffer = accEngine.getMainBuffer();
+        mCurrentBuffer = accEngine.getMainBuffer();
     }
 
 
@@ -74,7 +74,7 @@ public class FeatureCalculator {
      * @return array of means on currentBuffer data divided into windows
      */
     public double[] getMean(int windowSize) {
-        ArrayList data = new ArrayList(currentBuffer);
+        ArrayList data = new ArrayList(mCurrentBuffer);
         int noOfWindows = data.size() / windowSize;
         double[] windowMeans = new double[noOfWindows + 1];
         int index = 0;
@@ -129,7 +129,7 @@ public class FeatureCalculator {
      * @return array of std on currentBuffer data divided into windows
      */
     public double[] getStd(int windowSize) {
-        ArrayList data = new ArrayList(currentBuffer);
+        ArrayList data = new ArrayList(mCurrentBuffer);
         int noOfWindows = data.size() / windowSize;
         double[] windowStd = new double[noOfWindows + 1];
         int index = 0;
@@ -183,7 +183,7 @@ public class FeatureCalculator {
      * @return array of dcComp on currentBuffer data divided into windows
      */
     public double[] getDCComponent(int windowSize) {
-        ArrayList data = new ArrayList(currentBuffer);
+        ArrayList data = new ArrayList(mCurrentBuffer);
         int noOfWindows = data.size() / windowSize;
         double[] windowdc = new double[noOfWindows + 1];
         int index = 0;
@@ -238,7 +238,7 @@ public class FeatureCalculator {
      * @return array of energy on currentBuffer data divided into windows
      */
     public double[] getEnergy(int windowSize) {
-        ArrayList data = new ArrayList(currentBuffer);
+        ArrayList data = new ArrayList(mCurrentBuffer);
         int noOfWindows = data.size() / windowSize;
         double[] windowEnergy = new double[noOfWindows + 1];
         int index = 0;
@@ -283,10 +283,10 @@ public class FeatureCalculator {
      * @return double array of absolute acc of data in buffer
      */
     public synchronized double[] bufferArrayAbsAcc() {
-        double bufferAbsAcc[] = new double[currentBuffer.size()];
+        double bufferAbsAcc[] = new double[mCurrentBuffer.size()];
 
         int index = 0;
-        for (AccData data : currentBuffer) {
+        for (AccData data : mCurrentBuffer) {
             bufferAbsAcc[index++] = Math.sqrt(
                     Math.pow(data.getX(), 2)
                             + Math.pow(data.getY(), 2)

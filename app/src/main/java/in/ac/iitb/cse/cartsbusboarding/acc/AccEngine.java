@@ -41,13 +41,13 @@ import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGV;
 
 public class AccEngine implements Engine {
     private static final String TAG = LogUtils.makeLogTag(AccEngine.class);
-    private static final int bufferSize = 1000;
-    private static final long listenerPollingTime = 500;
+    private static final int BUFFER_SIZE = 1000;
+    private static final long LISTENER_POLLING_TIME = 500;
     @Inject Context mContext;
-    private AccData data;
+    private AccData mData;
     private AccService mAccService;
     private EngineFillerThread engineFillerThread;
-    private ConcurrentLinkedQueue<AccData> mainBuffer;
+    private ConcurrentLinkedQueue<AccData> mMainBuffer;
     private ServiceConnection mServiceConnection;
 
     /**
@@ -63,7 +63,7 @@ public class AccEngine implements Engine {
         initServiceConnection();
         /** Started from here bcoz it will work only after service has started */
         startEngineFiller();
-        mainBuffer = new ConcurrentLinkedQueue<AccData>();
+        mMainBuffer = new ConcurrentLinkedQueue<AccData>();
     }
 
     /**
@@ -104,14 +104,14 @@ public class AccEngine implements Engine {
      */
     @Override
     public AccData getCurrentData() {
-        data = mAccService.getCurrentData();
-        return data;
+        mData = mAccService.getCurrentData();
+        return mData;
     }
 
 
     public Queue<AccData> getMainBuffer() {
         Queue<AccData> output = new LinkedList<AccData>();
-        for (AccData data : mainBuffer)
+        for (AccData data : mMainBuffer)
             output.add(data);
         return output;
     }
@@ -131,20 +131,20 @@ public class AccEngine implements Engine {
                 ConcurrentLinkedQueue<AccData> localDataQueue = new ConcurrentLinkedQueue<AccData>(mAccService.getDataList());
                 // If mainBuffer is not of the desired size
                 while (!(localDataQueue.isEmpty())) {
-                    if (mainBuffer.size() < bufferSize) {
+                    if (mMainBuffer.size() < BUFFER_SIZE) {
                         LOGV(TAG, "New Value: " + localDataQueue.peek());
-                        //mainBuffer.add(localDataQueue.remove());
-                        mainBuffer.offer(localDataQueue.remove());
+                        //mMainBuffer.add(localDataQueue.remove());
+                        mMainBuffer.offer(localDataQueue.remove());
                     } else {
                         // If mainBuffer is full
-                        mainBuffer.remove();
-                        //mainBuffer.add(localDataQueue.remove());
-                        mainBuffer.offer(localDataQueue.remove());
+                        mMainBuffer.remove();
+                        //mMainBuffer.add(localDataQueue.remove());
+                        mMainBuffer.offer(localDataQueue.remove());
                     }
                 }//end while
-                //Log.d(TAG, "Thread Data: " + mainBuffer.size());
+                //Log.d(TAG, "Thread Data: " + mMainBuffer.size());
                 try {
-                    Thread.sleep(listenerPollingTime);
+                    Thread.sleep(LISTENER_POLLING_TIME);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

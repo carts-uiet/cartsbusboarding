@@ -5,17 +5,17 @@ import in.ac.iitb.cse.cartsbusboarding.DaggerMainApplicationComponent;
 
 public class MainApplication extends Application {
 
-    private MainApplicationComponent component;
+    private MainApplicationComponent mComponent;
 
     @Override public void onCreate() {
         super.onCreate();
-        component = DaggerMainApplicationComponent.builder()
+        mComponent = DaggerMainApplicationComponent.builder()
                 .androidModule(new AndroidModule(this))
                 .build();
         component().inject(this);
     }
 
     public MainApplicationComponent component() {
-        return component;
+        return mComponent;
     }
 }

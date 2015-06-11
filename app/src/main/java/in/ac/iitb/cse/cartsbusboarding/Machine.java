@@ -46,7 +46,7 @@ import static libsvm.svm.svm_train;
  */
 public class Machine {
     private static final String TAG = LogUtils.makeLogTag(Machine.class);
-    private static svm_model model_instance = null;
+    private static svm_model mModelInstance = null;
     @Inject AccEngine mAccEngine;
     @Inject Context mContext;
 
@@ -58,8 +58,8 @@ public class Machine {
     public Machine(AccEngine accEngine, Context context) {
         mAccEngine = accEngine;
         mContext = context;
-        if (model_instance == null)
-            model_instance = trainMachine();
+        if (mModelInstance == null)
+            mModelInstance = trainMachine();
     }
 
     /**
@@ -221,7 +221,7 @@ public class Machine {
             }
             //LOGE("train idx",""+data.label.get(i));
 
-            idx[i] = svm_predict(model_instance, x);
+            idx[i] = svm_predict(mModelInstance, x);
             print_idx += idx[i] + " ";
         }
 

@@ -46,17 +46,17 @@ import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGI;
 
 public class PollingService extends Service {
     private static final String TAG = LogUtils.makeLogTag(PollingService.class);
-    public int prefPollingDelay;
+    public int mPrefPollingDelay;
     @Inject AccEngine mAccEngine;
     Context mContext;
-    Timer pollingTaskTimer;
-    private boolean prefVibrate;
-    private double prefAccuracy;
-    private Handler handler;
+    Timer mPollingTaskTimer;
+    private boolean mPrefVibrate;
+    private double mPrefAccuracy;
+    private Handler mHandler;
 
     @Override
     public void onDestroy() {
-        pollingTaskTimer.cancel();
+        mPollingTaskTimer.cancel();
         super.onDestroy();
     }
 
@@ -66,19 +66,19 @@ public class PollingService extends Service {
 
         initializeDaggerGraphToInjectDependency();
 
-        handler = new Handler();
+        mHandler = new Handler();
         mContext = this;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         // Display a notification about us starting.
-        prefVibrate = preferences.getBoolean(SettingsActivity.KEY_ENABLE_VIBE,
+        mPrefVibrate = preferences.getBoolean(SettingsActivity.KEY_ENABLE_VIBE,
                 SettingsActivity.KEY_ENABLE_VIBE_DEFAULT);
         String prefStringAccuracy = preferences.getString(SettingsActivity.KEY_ACCURACY,
                 "" + SettingsActivity.KEY_ACCURACY_DEFAULT);
-        prefAccuracy = Float.parseFloat(prefStringAccuracy);
+        mPrefAccuracy = Float.parseFloat(prefStringAccuracy);
         String prefStringPollingDelay = preferences.getString(SettingsActivity.KEY_SYNC_FREQ,
                 "" + SettingsActivity.KEY_SYNC_FREQ_DEFAULT);
-        prefPollingDelay = Integer.parseInt(prefStringPollingDelay);
-        LOGI(TAG, "Prefs: " + prefVibrate + prefPollingDelay + prefAccuracy);
+        mPrefPollingDelay = Integer.parseInt(prefStringPollingDelay);
+        LOGI(TAG, "Prefs: " + mPrefVibrate + mPrefPollingDelay + mPrefAccuracy);
         startPollingTimer();
     }
 
@@ -87,14 +87,14 @@ public class PollingService extends Service {
     }
 
     private void startPollingTimer() {
-        pollingTaskTimer = new Timer();
+        mPollingTaskTimer = new Timer();
         TimerTask doAsynchronousTask = new TimerTask() {
             boolean showedStartToast = false;
 
             @Override
             public void run() {
                 if (!showedStartToast) {
-                    handler.post(new Runnable() {
+                    mHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(mContext, "Polling Started", Toast.LENGTH_SHORT).show();
@@ -108,7 +108,7 @@ public class PollingService extends Service {
                 // PerformBackgroundTask this class is the class that extends AsynchTask
             }
         };
-        pollingTaskTimer.schedule(doAsynchronousTask, 0, prefPollingDelay); //execute in every 5000 ms
+        mPollingTaskTimer.schedule(doAsynchronousTask, 0, mPrefPollingDelay); //execute in every 5000 ms
     }
 
     @Override
@@ -141,13 +141,13 @@ public class PollingService extends Service {
 
             PatternRecognition patternRecognition = new PatternRecognition(accEngine, context);
             final double avg = patternRecognition.getAvg();
-            if (avg <= prefAccuracy) {
+            if (avg <= mPrefAccuracy) {
                 /* Vibrate */
-                if (prefVibrate) {
+                if (mPrefVibrate) {
                     Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     vibe.vibrate(100);
                 }
-                handler.post(new Runnable() {
+                mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(mContext, "Average: " + avg, Toast.LENGTH_SHORT).show();

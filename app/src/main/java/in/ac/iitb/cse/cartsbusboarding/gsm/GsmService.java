@@ -34,32 +34,32 @@ public class GsmService extends Service {
     // This is the object that receives interactions from clients. See
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
-    private LocationManager gsmMgr;
-    private GsmListener gsmListener;
-    private GsmData dataRead;
+    private LocationManager mGsmMgr;
+    private GsmListener mGsmListener;
+    private GsmData mDataRead;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        gsmMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        gsmListener = new GsmListener();
+        mGsmMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mGsmListener = new GsmListener();
 
-        gsmMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gsmListener);
-        dataRead = gsmListener.getCurrentData();
+        mGsmMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mGsmListener);
+        mDataRead = mGsmListener.getCurrentData();
     }
 
     /* Getter */
     public GsmData getCurrentData() {
-        dataRead = gsmListener.getCurrentData();
-        return dataRead;
+        mDataRead = mGsmListener.getCurrentData();
+        return mDataRead;
     }
 
     public boolean hasSpeed() {
-        return gsmListener.hasSpeed();
+        return mGsmListener.hasSpeed();
     }
 
     public float getSpeed() {
-        return gsmListener.getSpeed();
+        return mGsmListener.getSpeed();
     }
 
     @Override

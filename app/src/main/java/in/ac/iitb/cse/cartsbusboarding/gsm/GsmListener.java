@@ -28,7 +28,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 
 public class GsmListener implements LocationListener {
-    private GsmData data;
+    private GsmData mData;
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -44,18 +44,18 @@ public class GsmListener implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        data = new GsmData(location);
+        mData = new GsmData(location);
     }
 
     public GsmData getCurrentData() {
-        return data;
+        return mData;
     }
 
     public boolean hasSpeed() {
-        return data.getLocation().hasSpeed();
+        return mData.getLocation().hasSpeed();
     }
 
     public float getSpeed() {
-        return data.getLocation().getSpeed();
+        return mData.getLocation().getSpeed();
     }
 }

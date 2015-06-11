@@ -31,18 +31,18 @@ import javax.inject.Inject;
 
 public class PatternRecognition {
     public static final String TAG = LogUtils.makeLogTag(PatternRecognition.class);
-    @Inject AccEngine accEngine;
-    @Inject Context context;
+    @Inject AccEngine mAccEngine;
+    @Inject Context mContext;
 
     @Inject
     public PatternRecognition(AccEngine accEngine, Context context) {
-        this.accEngine = accEngine;
-        this.context = context;
+        this.mAccEngine = accEngine;
+        this.mContext = context;
     }
 
     public boolean hasBoardedBus() {
         //if machine.accuracy > threshold
-        Machine machine = new Machine(accEngine, context);
+        Machine machine = new Machine(mAccEngine, mContext);
         if (machine.foundStairPattern()) {
             return true;
         }
@@ -52,7 +52,7 @@ public class PatternRecognition {
     }
 
     public double getAvg() {
-        Machine machine = new Machine(accEngine, context);
+        Machine machine = new Machine(mAccEngine, mContext);
         return machine.getAvgIdx();
     }
 }

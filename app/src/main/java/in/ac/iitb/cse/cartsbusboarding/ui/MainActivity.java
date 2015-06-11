@@ -56,10 +56,10 @@ import static in.ac.iitb.cse.cartsbusboarding.utils.Util.isMyServiceRunning;
 public class MainActivity extends AppCompatActivity implements AccDisplayController {
 
     private static final String TAG = LogUtils.makeLogTag(MainActivity.class);
-    @Inject AccEngine accEngine;
-    @Inject GsmEngine gsmEngine;
-    private SwipeRefreshLayout accRefreshLayout;
-    private SwipeRefreshLayout gsmRefreshLayout;
+    @Inject AccEngine mAccEngine;
+    @Inject GsmEngine mGsmEngine;
+    private SwipeRefreshLayout mAccRefreshLayout;
+    private SwipeRefreshLayout mGsmRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,16 +83,16 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
     }
 
     private void setRefreshLayoutListeners() {
-        accRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.acc_swipe_refresh_layout);
-        gsmRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.gsm_swipe_refresh_layout);
+        mAccRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.acc_swipe_refresh_layout);
+        mGsmRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.gsm_swipe_refresh_layout);
         SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 textViewClicked(null);
             }
         };
-        accRefreshLayout.setOnRefreshListener(refreshListener);
-        gsmRefreshLayout.setOnRefreshListener(refreshListener);
+        mAccRefreshLayout.setOnRefreshListener(refreshListener);
+        mGsmRefreshLayout.setOnRefreshListener(refreshListener);
     }
 
     void setupPollingButton() {
@@ -119,10 +119,10 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
     }
 
     public void textViewClicked(View v) {
-        gsmRefreshLayout.setRefreshing(true);
-        new GsmDisplayTask(gsmEngine, MainActivity.this).execute();
-        accRefreshLayout.setRefreshing(true);
-        new AccDisplayTask(accEngine, MainActivity.this, this.getApplicationContext()).execute();
+        mGsmRefreshLayout.setRefreshing(true);
+        new GsmDisplayTask(mGsmEngine, MainActivity.this).execute();
+        mAccRefreshLayout.setRefreshing(true);
+        new AccDisplayTask(mAccEngine, MainActivity.this, this.getApplicationContext()).execute();
         setupPollingButton();
 
         appendGpsData();
@@ -152,11 +152,11 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
                                     + "<br/>"
                                     + "My get Speed: " + (int) data.getMySpeed()
                                     + "<br/>"
-//                                  +"speed(getDisT): "+ String.format(format, gsmEngine.getSpeed(2000)) )
+//                                  +"speed(getDisT): "+ String.format(format, mGsmEngine.getSpeed(2000)) )
                     )
             );
         }
-        gsmRefreshLayout.setRefreshing(false);
+        mGsmRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
                             + "Entropy: " + String.format(format, data.getEntropy()))
             );
         }
-        accRefreshLayout.setRefreshing(false);
+        mAccRefreshLayout.setRefreshing(false);
     }
 
     @Override

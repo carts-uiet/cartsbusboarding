@@ -39,24 +39,24 @@ public class AccService extends Service {
     // This is the object that receives interactions from clients. See
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
-    private AccListener accListener;
+    private AccListener mAccListener;
 
     @Override
     public void onCreate() {
         super.onCreate();
         /** Context needed to create sensor manager in listener */
-        accListener = new AccListener(this.getApplicationContext());
+        mAccListener = new AccListener(this.getApplicationContext());
         LOGV(TAG, "Started ! ! !");
-        LOGI(TAG, "SensorSpeed: " + accListener.getSensorSpeed());
+        LOGI(TAG, "SensorSpeed: " + mAccListener.getSensorSpeed());
     }
 
     /* Getter */
     public AccData getCurrentData() {
-        return accListener.getCurrentData();
+        return mAccListener.getCurrentData();
     }
 
     public Queue getDataList() {
-        return accListener.getDataList();
+        return mAccListener.getDataList();
     }
 
     @Override

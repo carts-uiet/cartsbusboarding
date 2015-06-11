@@ -42,49 +42,49 @@ import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGV;
  */
 public class AccListener implements SensorEventListener {
     private static final String TAG = LogUtils.makeLogTag(AccListener.class);
-    private final SensorManager sensorManager;
-    private final Sensor sensor;
+    private final SensorManager mSensorManager;
+    private final Sensor mSensor;
     /**
-     * data: Most recent acceleration value
+     * mData: Most recent acceleration value
      */
-    private AccData data;
+    private AccData mData;
     /**
      * localBuffer contains acceleration values and is cleared externally
      */
-    private ConcurrentLinkedQueue<AccData> localBuffer;
+    private ConcurrentLinkedQueue<AccData> mLocalBuffer;
     /**
      * Flag indicates that we need to empty the buffer after returning it
      */
-    private boolean mustClearBufferNow;
+    private boolean mMustClearBufferNow;
     private Context mContext;
 
     AccListener(Context context) {
         mContext = context;
-        sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
-        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
         if (sensorList.size() < 1) {
             Toast.makeText(mContext, R.string.accelerometer_not_found, Toast.LENGTH_LONG).show();
         }
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        //this.sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-        this.sensorManager.registerListener(this, sensor, getSensorSpeed());
-        localBuffer = new ConcurrentLinkedQueue();
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        //this.mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        this.mSensorManager.registerListener(this, mSensor, getSensorSpeed());
+        mLocalBuffer = new ConcurrentLinkedQueue();
         clearBuffer();
         LOGV(TAG, "SensorList: " + sensorList.toString());
-        LOGV(TAG, "Sensor MinDelay: " + sensor.getMinDelay() + " microseconds");
+        LOGV(TAG, "Sensor MinDelay: " + mSensor.getMinDelay() + " microseconds");
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() != Sensor.TYPE_ACCELEROMETER) return;
-        data = new AccData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
+        mData = new AccData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
 
         //If update is called before returning buffer, it will send an empty buffer to calling method
-        if (mustClearBufferNow) {
+        if (mMustClearBufferNow) {
             clearBuffer();
         }
-        localBuffer.offer(data);
-        //localBuffer.add(data);
+        mLocalBuffer.offer(mData);
+        //mLocalBuffer.add(mData);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class AccListener implements SensorEventListener {
      * @return most recent acc value
      */
     public AccData getCurrentData() {
-        return data;
+        return mData;
     }
 
     /**
@@ -108,9 +108,9 @@ public class AccListener implements SensorEventListener {
      * @return Queue of AccData values
      */
     public ConcurrentLinkedQueue<AccData> getDataList() {
-        mustClearBufferNow = true;
+        mMustClearBufferNow = true;
         //XXX: Returning a reference, which might be modified here and outside, while clear is called
-        return localBuffer;
+        return mLocalBuffer;
     }
 
     /**
@@ -118,14 +118,14 @@ public class AccListener implements SensorEventListener {
      * Flag indicates data will be collected not fetched
      */
     private void clearBuffer() {
-        localBuffer.clear();
-        mustClearBufferNow = false;
+        mLocalBuffer.clear();
+        mMustClearBufferNow = false;
     }
 
     /**
-     * Defines the current sensor speed used to register the listener
+     * Defines the current mSensor speed used to register the listener
      * <p>Possible ways:
-     * <li>int SENSOR_DELAY_FASTEST get sensor data as fast as possible</li>
+     * <li>int SENSOR_DELAY_FASTEST get mSensor data as fast as possible</li>
      * <li>int SENSOR_DELAY_GAME rate suitable for games</li>
      * <li>int SENSOR_DELAY_NORMAL rate (default) suitable for screen orientation changes</li>
      * <li>int SENSOR_DELAY_UI rate suitable for the user interface</li>

@@ -40,16 +40,16 @@ public class GsmEngine implements Engine {
     public static final String TAG = LogUtils.makeLogTag(GsmEngine.class);
     private final Context mContext;
     private GsmService mGsmService;
-    private GsmData data;
+    private GsmData mData;
     private ServiceConnection mServiceConnection;
-    private GsmData saved_source, saved_destination;
-    private long saved_startTime, saved_endTime;
+    private GsmData mSavedSource, mSavedDestination;
+    private long mSavedStartTime, mSavedEndTime;
 
     public GsmEngine(Context context) {
         mContext = context;
         mContext.startService(new Intent(mContext, GsmService.class));
 
-        saved_source = saved_destination = null;
+        mSavedSource = mSavedDestination = null;
         initServiceConnection();
     }
 
@@ -74,8 +74,8 @@ public class GsmEngine implements Engine {
 
     @Override
     public GsmData getCurrentData() {
-        data = mGsmService.getCurrentData();
-        return data;
+        mData = mGsmService.getCurrentData();
+        return mData;
     }
 
     public boolean hasSpeed() {
@@ -127,27 +127,27 @@ public class GsmEngine implements Engine {
 
         // Temporary logs
         LOGE(TAG, "Time: " + (end_time - start_time));
-        LOGE(TAG, "Source" + saved_source.toString());
-        LOGE(TAG, "Destination" + saved_destination.toString());
+        LOGE(TAG, "Source" + mSavedSource.toString());
+        LOGE(TAG, "Destination" + mSavedDestination.toString());
         return (dist / time);
     }
 
     public double myGetSpeed() {
-        if (saved_destination == null) {
-            saved_source = mGsmService.getCurrentData();
-            saved_startTime = Calendar.getInstance().getTimeInMillis();
+        if (mSavedDestination == null) {
+            mSavedSource = mGsmService.getCurrentData();
+            mSavedStartTime = Calendar.getInstance().getTimeInMillis();
         } else {
-            saved_source = saved_destination;
-            saved_startTime = saved_endTime;
+            mSavedSource = mSavedDestination;
+            mSavedStartTime = mSavedEndTime;
         }
-        saved_destination = mGsmService.getCurrentData();
-        saved_endTime = Calendar.getInstance().getTimeInMillis();
-        double dist = getDistance(saved_source, saved_destination);
+        mSavedDestination = mGsmService.getCurrentData();
+        mSavedEndTime = Calendar.getInstance().getTimeInMillis();
+        double dist = getDistance(mSavedSource, mSavedDestination);
 
         // Temporary logs
-        LOGE(TAG, "Source" + saved_source.toString());
-        LOGE(TAG, "Destination" + saved_destination.toString());
-        long time = saved_endTime - saved_startTime;
+        LOGE(TAG, "Source" + mSavedSource.toString());
+        LOGE(TAG, "Destination" + mSavedDestination.toString());
+        long time = mSavedEndTime - mSavedStartTime;
         return (dist / time);
     }
 }

@@ -185,7 +185,7 @@ public class Machine {
                 double feature_value = features[rowIndex][colIndex];
                 output_strings += (rowIndex + 1) + ":" + feature_value + " ";
             }
-            LOGD(TAG, output_strings);
+            LOGV(TAG, output_strings);
             output_strings += "\n";
         }
         //XXX: This is just one line!
@@ -213,7 +213,7 @@ public class Machine {
             for (Integer feature : tmp.keySet()) {
                 x[featureIndex] = new svm_node();
                 x[featureIndex].index = feature;
-//                LOGD(TAG+" feature value",""+tmp.get(feature));
+//                LOGV(TAG+" feature value",""+tmp.get(feature));
                 x[featureIndex].value = tmp.get(feature);
                 //LOGE("train index:value",x[featureIndex].index+":"+x[featureIndex].value);
 

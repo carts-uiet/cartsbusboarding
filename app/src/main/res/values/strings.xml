@@ -13,5 +13,7 @@
     <string name="placeholder_acc_data">Average IDX: 2.0\nTIME DOMAIN FEATURES:\nMean: 9.12345 m/s2\nStd: 0.12345 m/s2\n\nFREQUENCY DOMAIN FEATURES:\nDC Comp: 4976:12345\nEnergy: 6.12345</string>
     <string name="no_acc_data">No Acceleration Data Available Yet!</string>
     <string name="no_gsm_data">No GSM Data Available Yet!</string>
+    <string name="btn_stop_polling">Stop Polling</string>
+    <string name="btn_start_polling">Start Polling</string>
 
 </resources>

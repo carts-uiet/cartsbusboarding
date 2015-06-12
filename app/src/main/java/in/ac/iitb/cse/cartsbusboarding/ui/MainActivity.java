@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
     void setupPollingButton() {
         Button pollingButton = (Button) findViewById(R.id.button_polling);
         if (isMyServiceRunning(this, PollingService.class)) {
-            pollingButton.setText("Stop Polling");
+            pollingButton.setText(getString(R.string.btn_stop_polling));
         } else {
-            pollingButton.setText("Start Polling");
+            pollingButton.setText(getString(R.string.btn_start_polling));
         }
     }
 
@@ -108,10 +108,10 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
     public void pollingButtonClicked(View v) {
         Button pollingButton = (Button) findViewById(R.id.button_polling);
         if (isMyServiceRunning(this, PollingService.class)) {
-            pollingButton.setText("Start Polling");
+            pollingButton.setText(getString(R.string.btn_start_polling));
             stopService(new Intent(this, PollingService.class));
         } else {
-            pollingButton.setText("Stop Polling");
+            pollingButton.setText(getString(R.string.btn_stop_polling));
             Intent serviceIntent = new Intent(this, PollingService.class);
             startService(serviceIntent);
         }

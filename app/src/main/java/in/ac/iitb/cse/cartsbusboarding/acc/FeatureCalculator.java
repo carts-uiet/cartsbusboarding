@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
 
-import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGD;
+import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGV;
 
 public class FeatureCalculator {
     private static final String TAG = LogUtils.makeLogTag(FeatureCalculator.class);
@@ -84,19 +84,19 @@ public class FeatureCalculator {
         /*Loop will only read upto windows in multiples of windowSize(Last window with values less
           than windowSize is delt in next if condition)
         */
-        LOGD(TAG, "MEAN ARRAY: ");
+        LOGV(TAG, "MEAN ARRAY: ");
         while (endIndex < (noOfWindows * windowSize)) {
             startIndex = endIndex;
             endIndex += windowSize;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
             windowMeans[index++] = getMean(temp);
-            LOGD(TAG, "mean" + (index - 1) + " " + windowMeans[index - 1]);
+            LOGV(TAG, "mean" + (index - 1) + " " + windowMeans[index - 1]);
         }
         if (endIndex < data.size()) {
             startIndex = endIndex;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, data.size()));
             windowMeans[index] = getMean(temp);
-            LOGD(TAG, "mean" + (index) + " " + windowMeans[index]);
+            LOGV(TAG, "mean" + (index) + " " + windowMeans[index]);
         }
 
         return windowMeans;
@@ -139,19 +139,19 @@ public class FeatureCalculator {
         /*Loop will only read upto windows in multiples of windowSize(Last window with values less
           than windowSize is delt in next if condition)
         */
-        LOGD(TAG, "STD ARRAY: ");
+        LOGV(TAG, "STD ARRAY: ");
         while (endIndex < (noOfWindows * windowSize)) {
             startIndex = endIndex;
             endIndex += windowSize;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
             windowStd[index++] = getStd(temp);
-            LOGD(TAG, "std" + (index - 1) + " " + windowStd[index - 1]);
+            LOGV(TAG, "std" + (index - 1) + " " + windowStd[index - 1]);
         }
         if (endIndex < data.size()) {
             startIndex = endIndex;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, data.size()));
             windowStd[index] = getStd(temp);
-            LOGD(TAG, "std" + (index) + " " + windowStd[index]);
+            LOGV(TAG, "std" + (index) + " " + windowStd[index]);
         }
 
         return windowStd;
@@ -193,19 +193,19 @@ public class FeatureCalculator {
         /*Loop will only read upto windows in multiples of windowSize(Last window with values less
           than windowSize is delt in next if condition)
         */
-        LOGD(TAG, "DC Comp. ARRAY: ");
+        LOGV(TAG, "DC Comp. ARRAY: ");
         while (endIndex < (noOfWindows * windowSize)) {
             startIndex = endIndex;
             endIndex += windowSize;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
             windowdc[index++] = getDCComponent(temp);
-            LOGD(TAG, "dc comp" + (index - 1) + " " + windowdc[index - 1]);
+            LOGV(TAG, "dc comp" + (index - 1) + " " + windowdc[index - 1]);
         }
         if (endIndex < data.size()) {
             startIndex = endIndex;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, data.size()));
             windowdc[index] = getDCComponent(temp);
-            LOGD(TAG, "dc comp" + (index) + " " + windowdc[index]);
+            LOGV(TAG, "dc comp" + (index) + " " + windowdc[index]);
         }
 
         return windowdc;
@@ -248,19 +248,19 @@ public class FeatureCalculator {
         /*Loop will only read upto windows in multiples of windowSize(Last window with values less
           than windowSize is delt in next if condition)
         */
-        LOGD(TAG, "ENERGY ARRAY: ");
+        LOGV(TAG, "ENERGY ARRAY: ");
         while (endIndex < (noOfWindows * windowSize)) {
             startIndex = endIndex;
             endIndex += windowSize;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, endIndex));
             windowEnergy[index++] = getEnergy(temp);
-            LOGD(TAG, "energy" + (index - 1) + " " + windowEnergy[index - 1]);
+            LOGV(TAG, "energy" + (index - 1) + " " + windowEnergy[index - 1]);
         }
         if (endIndex < data.size()) {
             startIndex = endIndex;
             ArrayList<AccData> temp = new ArrayList(data.subList(startIndex, data.size()));
             windowEnergy[index] = getEnergy(temp);
-            LOGD(TAG, "energy" + (index) + " " + windowEnergy[index]);
+            LOGV(TAG, "energy" + (index) + " " + windowEnergy[index]);
         }
 
         return windowEnergy;

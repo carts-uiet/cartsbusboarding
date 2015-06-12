@@ -1,7 +1,6 @@
 package in.ac.iitb.cse.cartsbusboarding.ui;
 
 import android.app.Application;
-import in.ac.iitb.cse.cartsbusboarding.DaggerMainApplicationComponent;
 
 public class MainApplication extends Application {
 

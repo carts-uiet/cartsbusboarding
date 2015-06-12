@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 public interface MainApplicationComponent {
     /* These are all the places where dagger is injecting stuff */
     void inject(MainApplication application);
-    void inject(MainActivity demoActivity);
+    void inject(MainActivity mainActivity);
     void inject(PollingService pollingService);
-    void inject(AccService service);
+    void inject(AccService accService);
 }

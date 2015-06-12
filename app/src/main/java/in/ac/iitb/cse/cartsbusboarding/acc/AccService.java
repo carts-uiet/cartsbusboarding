@@ -27,8 +27,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import in.ac.iitb.cse.cartsbusboarding.ui.MainApplication;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
+import javax.inject.Inject;
 import java.util.Queue;
 
 import static in.ac.iitb.cse.cartsbusboarding.utils.LogUtils.LOGI;
@@ -39,15 +41,18 @@ public class AccService extends Service {
     // This is the object that receives interactions from clients. See
     // RemoteService for a more complete example.
     private final IBinder mBinder = new LocalBinder();
-    private AccListener mAccListener;
+    @Inject AccListener mAccListener;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        /** Context needed to create sensor manager in listener */
-        mAccListener = new AccListener(this.getApplicationContext());
+        initializeDaggerGraphToInjectDependency();
         LOGV(TAG, "Started ! ! !");
         LOGI(TAG, "SensorSpeed: " + mAccListener.getSensorSpeed());
+    }
+
+    private void initializeDaggerGraphToInjectDependency() {
+        ((MainApplication) getApplication()).component().inject(this);
     }
 
     /* Getter */

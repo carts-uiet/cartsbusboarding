@@ -32,6 +32,7 @@ import android.widget.Toast;
 import in.ac.iitb.cse.cartsbusboarding.R;
 import in.ac.iitb.cse.cartsbusboarding.utils.LogUtils;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -56,9 +57,9 @@ public class AccListener implements SensorEventListener {
      * Flag indicates that we need to empty the buffer after returning it
      */
     private boolean mMustClearBufferNow;
-    private Context mContext;
+    @Inject Context mContext;
 
-    AccListener(Context context) {
+    public AccListener(Context context) {
         mContext = context;
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);

@@ -46,6 +46,7 @@ import static libsvm.svm.svm_train;
  */
 public class Machine {
     private static final String TAG = LogUtils.makeLogTag(Machine.class);
+    public static final String TRAINING_MODEL_FILE = "cbb_training_model";
     private static svm_model mModelInstance = null;
     @Inject AccEngine mAccEngine;
     @Inject Context mContext;
@@ -59,7 +60,60 @@ public class Machine {
         mAccEngine = accEngine;
         mContext = context;
         if (mModelInstance == null)
-            mModelInstance = trainMachine();
+            mModelInstance = getTrainedModel();
+    }
+
+    public svm_model getTrainedModel() {
+        svm_model model = readModel();
+        if (model == null) {
+            model = trainMachine();
+            writeModel(model);
+        }
+        return model;
+    }
+
+    private svm_model readModel() {
+        svm_model model = null;
+        try {
+            InputStream stream = mContext.openFileInput(TRAINING_MODEL_FILE);
+            InputStream buffer = new BufferedInputStream(stream);
+            ObjectInput input = new ObjectInputStream(buffer);
+            try {
+                model = (svm_model) input.readObject();
+            } finally {
+                input.close();
+            }
+            LOGI(TAG, "Read training model from file: " + TRAINING_MODEL_FILE);
+        } catch (ClassNotFoundException e) {
+            LOGE(TAG, "Unable to convert input object to svm_model");
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            LOGE(TAG, "Training model file not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return model;
+    }
+
+    private void writeModel(svm_model model) {
+        try {
+            FileOutputStream fileOutputStream = mContext.openFileOutput(TRAINING_MODEL_FILE, Context.MODE_PRIVATE);
+            OutputStream outputStream = new BufferedOutputStream(fileOutputStream);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+            try {
+                objectOutputStream.writeObject(model);
+            } finally {
+                objectOutputStream.close();
+            }
+            LOGI(TAG, "Wrote training model to file: " + TRAINING_MODEL_FILE);
+        } catch (FileNotFoundException e) {
+            LOGE(TAG, "Training model file not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+            LOGE(TAG, "Unable to save training model");
+            e.printStackTrace();
+        }
     }
 
     /**

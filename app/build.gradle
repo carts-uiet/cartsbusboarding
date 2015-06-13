@@ -31,6 +31,16 @@ android {
         }
     }
 
+    productFlavors {
+        demo {
+            applicationId "in.ac.iitb.cse.cartsbusboarding.debug"
+            versionName "0.1.4-demo"
+        }
+        full {
+            applicationId "in.ac.iitb.cse.cartsbusboarding"
+        }
+    }
+
     sourceSets {
         androidTest.setRoot('src/test')
         debug {

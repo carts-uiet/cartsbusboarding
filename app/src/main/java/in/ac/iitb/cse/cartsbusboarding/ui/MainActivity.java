@@ -40,6 +40,7 @@ import in.ac.iitb.cse.cartsbusboarding.PollingService;
 import in.ac.iitb.cse.cartsbusboarding.R;
 import in.ac.iitb.cse.cartsbusboarding.acc.AccEngine;
 import in.ac.iitb.cse.cartsbusboarding.controllers.AccDisplayController;
+import in.ac.iitb.cse.cartsbusboarding.datacollection.DataSyncIntentService;
 import in.ac.iitb.cse.cartsbusboarding.models.AccDisplayData;
 import in.ac.iitb.cse.cartsbusboarding.models.GsmDisplayData;
 import in.ac.iitb.cse.cartsbusboarding.gsm.GsmData;
@@ -104,16 +105,26 @@ public class MainActivity extends AppCompatActivity implements AccDisplayControl
         }
     }
 
+    private void driveDemo() {
+        DataSyncIntentService.startActionDriveDemo(this);
+    }
 
     public void pollingButtonClicked(View v) {
-        Button pollingButton = (Button) findViewById(R.id.button_polling);
-        if (isMyServiceRunning(this, PollingService.class)) {
-            pollingButton.setText(getString(R.string.btn_start_polling));
-            stopService(new Intent(this, PollingService.class));
+        if (true) {
+            Button pollingButton = (Button) findViewById(R.id.button_polling);
+            pollingButton.setText("Drive Demo Started");
+            driveDemo();
         } else {
-            pollingButton.setText(getString(R.string.btn_stop_polling));
-            Intent serviceIntent = new Intent(this, PollingService.class);
-            startService(serviceIntent);
+            Button pollingButton = (Button) findViewById(R.id.button_polling);
+            if (isMyServiceRunning(this, PollingService.class)) {
+                pollingButton.setText(getString(R.string.btn_start_polling));
+                stopService(new Intent(this, PollingService.class));
+            } else {
+                pollingButton.setText(getString(R.string.btn_stop_polling));
+                Intent serviceIntent = new Intent(this, PollingService.class);
+                startService(serviceIntent);
+            }
+            //Maybe call setupPollingButton here!
         }
         //Maybe call setupPollingButton here!
     }

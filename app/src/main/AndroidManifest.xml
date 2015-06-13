@@ -1,48 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="in.ac.iitb.cse.cartsbusboarding">
+    package="in.ac.iitb.cse.cartsbusboarding" >
 
     <!-- PERMISSIONS -->
     <!-- To vibrate on shake -->
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- GsmEngine -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Data Sync Upload Service -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-            android:name=".ui.MainApplication"
-            android:allowBackup="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+        android:name=".ui.MainApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
         <activity
-                android:name=".ui.MainActivity"
-                android:label="@string/app_name">
+            android:name=".ui.MainActivity"
+            android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
-                android:name="in.ac.iitb.cse.cartsbusboarding.gsm.GsmService"
-                android:enabled="true"
-                android:exported="true"/>
+            android:name=".gsm.GsmService"
+            android:enabled="true"
+            android:exported="true" />
         <service
-                android:name="in.ac.iitb.cse.cartsbusboarding.acc.AccService"
-                android:enabled="true"
-                android:exported="true"/>
+            android:name=".acc.AccService"
+            android:enabled="true"
+            android:exported="true" />
         <service
-                android:name="in.ac.iitb.cse.cartsbusboarding.PollingService"
-                android:enabled="true"
-                android:exported="true">
+            android:name=".PollingService"
+            android:enabled="true"
+            android:exported="true" >
         </service>
 
         <activity
-                android:name=".ui.SettingsActivity"
-                android:label="@string/title_activity_settings">
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
+
+        <service
+            android:name=".datacollection.DataSyncIntentService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

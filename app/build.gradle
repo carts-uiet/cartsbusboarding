@@ -9,8 +9,8 @@ android {
         applicationId "in.ac.iitb.cse.cartsbusboarding"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 14
-        versionName "0.1.4"
+        versionCode 15
+        versionName "0.1.5"
     }
 
     packagingOptions {
@@ -34,7 +34,7 @@ android {
     productFlavors {
         demo {
             applicationId "in.ac.iitb.cse.cartsbusboarding.debug"
-            versionName "0.1.4-demo"
+            versionName "0.1.5-demo"
         }
         full {
             applicationId "in.ac.iitb.cse.cartsbusboarding"
